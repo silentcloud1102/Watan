@@ -32,7 +32,7 @@ int row_number(int tilenum) {
         } else {
             return (tilenum * 2) + (row_number(tilenum) - 2);
         }
-    }
+  }
 
 
 
