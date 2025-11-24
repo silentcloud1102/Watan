@@ -45,6 +45,9 @@ export class Board {
     std::vector<Criteria> course_criteria;
     public:
         Board(std::string seed = "");
+        void update_tiles(int roll_num, int goose_tile) const;
+        Criteria& getCriteria(int criteria_num) const;
+        Goal& getGoals(int goal_num) const;
 };
 
 friend ostream &operator<<(ostream &out, const Board &b);

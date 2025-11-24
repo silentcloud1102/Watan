@@ -140,6 +140,14 @@ Board::Board(string seed = "") {
     }
 }
 
+Criteria& Board::getCriteria(int criteria_num) const {
+    return course_criterion[criteria_num];
+}
+
+Goal& Board::getGoals(int goal_num) const {
+    return goals[goal_num];
+}
+
 ostream &operator<<(ostream &out, const Board &b) {
     out << "                                   |" << b.course_criteria[0].getnum() << "|--" << b.goals[0].getnum() << "--|" << b.course_criteria[1].getnum() << "|" << endl;
     out << "                                   /            \\" << endl;
