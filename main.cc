@@ -8,6 +8,10 @@ using namespace std;
 
 int main(int argc, char** argv){
 
+    if (argc <= 1){
+        // no arguments;
+    }
+
     istringstream iss {argv[1]};
     string command;
     while (iss >> command){
