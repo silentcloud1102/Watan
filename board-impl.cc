@@ -24,7 +24,7 @@ Board::Board(string seed = "") {
     //  Initialize all objects
     // ============================================================
 
-    vector<string> names = {
+    vector<string> resource_names = {
         "CAFFEINE",
         "LAB",
         "LECTURE",
@@ -42,7 +42,7 @@ Board::Board(string seed = "") {
     for (int i = 0; i < 19; ++i) {
         int resource_type = rng() % 6;
         int dice_val = (rng() % 11) + 2;
-        tiles.emplace_back(names[resource_type], dice_val, i);
+        tiles.emplace_back(resource_names[resource_type], dice_val, i);
     }
 
     const vector<vector<int>> goalTocourse_criteria = {
@@ -56,7 +56,7 @@ Board::Board(string seed = "") {
     };
 
     // ============================================================
-    //  goal → ADJACENT goals
+    //  Goal → adjacent Goals
     // ============================================================
     const vector<vector<int>> goalAdj = {
         {1,2}, {0,3,6}, {0,4,7}, {1,5,6}, {2,7,8}, {3,9,13}, {1,3,10,14},
@@ -78,7 +78,7 @@ Board::Board(string seed = "") {
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
     for (int e = 0; e < 72; ++e) {
-        goals[e].addAdjacentVertex(goalTocourse_criteria.at(e));
+        goals[e].addAdjacentcourse_criterion(goalTocourse_criteria.at(e));
         goals[e].addAdjacentgoal(goalAdj.at(e));
     }
 
@@ -108,11 +108,11 @@ Board::Board(string seed = "") {
     };
 
     // ===================================================================
-    // Assign goals to tiles
+    // Giving tiles the goals that border it
     //
-    // No algorithm since the relationship between the goals are 
-    // interesting: 
-    // - there would be two patterns for goals (top goals vs side goals)
+    // No algorithm because the relationship between the goals and tilenum 
+    // a bit convoluted: 
+    // - there would be two patterns for goals (top sides vs other sides)
     // =====================================================================
     for (int t = 0; t < 19; ++t) {
         for (int e_idx : tilegoals[t]) {
@@ -125,18 +125,18 @@ Board::Board(string seed = "") {
     // Created algorithm for course_criteria based on tile numbers
     // ============================================================
     for (int t = 0; t < 19; ++t) {
-        int vertex1 = first_vertex(stoi(tiles[t].getTilenum()));
-        int vertex2 = vertex1 + 1;
-        int vertex3 = down_vertex_coord(vertex1);
-        int vertex4 = vertex3 + 1; 
-        int vertex5 = down_vertex_coord(vertex3);
-        int vertex6 = vertex5 + 1;
-        tiles[t].addVertex(course_criteria[vertex1]);
-        tiles[t].addVertex(course_criteria[vertex2]);
-        tiles[t].addVertex(course_criteria[vertex3]);
-        tiles[t].addVertex(course_criteria[vertex4]);
-        tiles[t].addVertex(course_criteria[vertex5]);
-        tiles[t].addVertex(course_criteria[vertex6]);
+        int course_criterion1 = first_course_criterion(stoi(tiles[t].getTilenum()));
+        int course_criterion2 = course_criterion1 + 1;
+        int course_criterion3 = down_course_criterion_coord(course_criterion1);
+        int course_criterion4 = course_criterion3 + 1; 
+        int course_criterion5 = down_course_criterion_coord(course_criterion3);
+        int course_criterion6 = course_criterion5 + 1;
+        tiles[t].addcourse_criterion(course_criteria[course_criterion1]);
+        tiles[t].addcourse_criterion(course_criteria[course_criterion2]);
+        tiles[t].addcourse_criterion(course_criteria[course_criterion3]);
+        tiles[t].addcourse_criterion(course_criteria[course_criterion4]);
+        tiles[t].addcourse_criterion(course_criteria[course_criterion5]);
+        tiles[t].addcourse_criterion(course_criteria[course_criterion6]);
     }
 }
 
