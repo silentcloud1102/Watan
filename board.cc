@@ -1,8 +1,14 @@
 export module Board;
 
+<<<<<<< HEAD
 import <iostream>;
 import <string>;
 import <vector>;
+=======
+import iostream;
+import string;
+import vector;
+>>>>>>> e30777ae1155ec6e52feaf869c555417d4bce4f7
 import Criteria;
 import Goals;
 import Tiles;
