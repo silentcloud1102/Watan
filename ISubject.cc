@@ -8,7 +8,7 @@ export class ISubject{
         int location;
     
     public:
-        ISubject(int location) {}
+        ISubject(int location): location{location}
         
         virtual void acquire(IObserver* student) = 0;
 };

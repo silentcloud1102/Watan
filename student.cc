@@ -2,7 +2,7 @@ export module Student;
 
 import <iostream>;
 
-import Resources;
+import Resource;
 import IObserver;
 
 export class Student : public IObserver {
