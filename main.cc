@@ -20,7 +20,7 @@ int main(int argc, char** argv){
             unsigned seed_val = 69;
             try {
             seed_val = stoi(seed);
-            } catch( invalid_argument & e ) {
+            } catch(invalid_argument & e ) {
             } catch(out_of_range & e ) {
             }
             default_random_engine rng{seed_val};        
