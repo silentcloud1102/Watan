@@ -40,9 +40,11 @@ int first_vertex(int tilenum) {
 
 
 export class Board {
+    int goose_tile;
     std::vector<Tile> tiles;
     std::vector<Goal> goals;
     std::vector<Criteria> course_criteria;
+    std::string goose_printer(int tile_num) const;
     public:
         Board(std::string seed = "");
         void update_tiles(int roll_num, int goose_tile) const;
