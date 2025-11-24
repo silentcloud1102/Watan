@@ -43,7 +43,6 @@ class Edge {
     string owner;
     vector<int> adjacent_vertices;
     vector<int> adjacent_edges;
-  
     
       Edge(int num, string str) : number(num), owner(str) {}
       void addAdjacentVertex(const vector<int> &v) { adjacent_vertices = v; }
