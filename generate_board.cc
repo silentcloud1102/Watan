@@ -129,10 +129,13 @@ class Board {
           // ============================================================
           //  Randomizing our tiles
           // ============================================================
-          if (seed == "") {
-              seed = "69"; // same test case each time
+          int seed_val = 69;
+          try {
+            seed_val = stoi(seed);
+          } catch( invalid_argument & e ) {
+          } catch(out_of_range & e ) {
           }
-          default_random_engine rng{stoi(seed)};
+          default_random_engine rng{seed_val};
           
           // ============================================================
           //  Initialize all objects
@@ -301,7 +304,7 @@ ostream &operator<<(ostream &out, const Board &b) {
 }
 
 int main() {
-    Board b;
+    Board b("1");
     // board printing
     cout << b;
     for (int t = 0; t < b.tiles.size(); ++t) {
