@@ -3,7 +3,7 @@ export module Board;
 import iostream;
 import string;
 import vector;
-import CourseCriterion;
+import Criteria;
 import Goals;
 using namespace std;
 

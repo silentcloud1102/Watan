@@ -1,6 +1,7 @@
 export module IObserver;
 
-export class IObserver{
+import Resources;
 
-    
-}
+export class IObserver{
+    virtual void resourceNotify(Resource rchange) = 0;
+};
