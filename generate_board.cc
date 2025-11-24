@@ -314,7 +314,7 @@ ostream &operator<<(ostream &out, const Board &b) {
 }
 
 int main() {
-    Board b = Board {1,"1"};
+    Board b = Board {5,"1"};
     // board printing
     cout << b;
     for (int t = 0; t < b.tiles.size(); ++t) {
