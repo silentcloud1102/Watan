@@ -11,7 +11,8 @@ import Goals;
 import Tile;
 using namespace std;
 
-string Board::goose_printer(int tile_num) {
+string Board::goose_printer(string tile) const {
+    int tile_num = stoi(tile);
     if (goose_tile == tile_num) {
         return "\\     GEESE      /";
     } else {
@@ -24,10 +25,13 @@ Board::Board(string seed = "") {
     // ============================================================
     //  Randomizing our tiles
     // ============================================================
-    if (seed == "") {
-        seed = "I am a random test case :)"; // same test case each time
+    unsigned seed_val = 69;
+    try {
+        seed_val = stoi(seed);
+    } catch( invalid_argument & e ) {
+    } catch(out_of_range & e ) {
     }
-    default_random_engine rng{stoi(seed)};
+    default_random_engine rng{seed_val};
     
     // ============================================================
     //  Initialize all objects
@@ -43,10 +47,10 @@ Board::Board(string seed = "") {
     };
 
     for (int i = 0; i < 54; ++i) {
-        course_criteria.emplace_back(i);
+        course_criteria.emplace_back(i,"");
     }
     for (int i = 0; i < 72; ++i) {
-        goals.emplace_back(i);
+        goals.emplace_back(i,"");
     }
     for (int i = 0; i < 19; ++i) {
         int resource_type = rng() % 6;
@@ -171,39 +175,39 @@ ostream &operator<<(ostream &out, const Board &b) {
     out << "                                 " << b.goals[1].getnum() << "      " << b.tiles[0].getTilenum() << "     " << b.goals[2].getnum() << endl;
     out << "                                 /     " << b.tiles[0].getResource() << "\\" << endl;
     out << "                    |" << b.course_criteria[2].getnum() << "|--" << b.goals[3].getnum() << "--|" << b.course_criteria[3].getnum() << "|       " << b.tiles[0].getDice() << "       |" << b.course_criteria[4].getnum() << "|--" << b.goals[4].getnum() << "--|" << b.course_criteria[5].getnum() << "|" << endl;
-    out << "                    /            " << goose_printer(tiles[0].getTilenum()) << "            \\" << endl;
+    out << "                    /            " << b.goose_printer(b.tiles[0].getTilenum()) << "            \\" << endl;
     out << "                  " << b.goals[5].getnum() << "      " << b.tiles[1].getTilenum() << "     " << b.goals[6].getnum() << "             " << b.goals[7].getnum() << "      " << b.tiles[2].getTilenum() << "     " << b.goals[8].getnum() << endl;
     out << "                  /     " << b.tiles[1].getResource() << "\\            /     " << b.tiles[2].getResource() << "\\" << endl;
     out << "     |" << b.course_criteria[6].getnum() << "|--" << b.goals[9].getnum() << "--|" << b.course_criteria[7].getnum() << "|       " << b.tiles[1].getDice() << "       |" << b.course_criteria[8].getnum() << "|--" << b.goals[10].getnum() << "--|" << b.course_criteria[9].getnum() << "|       " << b.tiles[2].getDice() << "       |" << b.course_criteria[10].getnum() << "|--" << b.goals[11].getnum() << "--|" << b.course_criteria[11].getnum() << "|" << endl;
-    out << "     /            " << goose_printer(tiles[1].getTilenum()) << "            " << goose_printer(tiles[2].getTilenum()) << "            \\" << endl;
+    out << "     /            " << b.goose_printer(b.tiles[1].getTilenum()) << "            " << b.goose_printer(b.tiles[2].getTilenum()) << "            \\" << endl;
     out << "   " << b.goals[12].getnum() << "      " << b.tiles[3].getTilenum() << "     " << b.goals[13].getnum() << "             " << b.goals[14].getnum() << "      " << b.tiles[4].getTilenum() << "     " << b.goals[15].getnum() << "             " << b.goals[16].getnum() << "      " << b.tiles[5].getTilenum() << "     " << b.goals[17].getnum() << endl;
     out << "   /     " << b.tiles[3].getResource() << "\\            /     " << b.tiles[4].getResource() << "\\            /     " << b.tiles[5].getResource() << "\\" << endl;
     out << "|" << b.course_criteria[12].getnum() << "|       " << b.tiles[3].getDice() << "       |" << b.course_criteria[13].getnum() << "|--" << b.goals[18].getnum() << "--|" << b.course_criteria[14].getnum() << "|       " << b.tiles[4].getDice() << "       |" << b.course_criteria[15].getnum() << "|--" << b.goals[19].getnum() << "--|" << b.course_criteria[16].getnum() << "|       " << b.tiles[5].getDice() << "       |" << b.course_criteria[17].getnum() << "|" << endl;
-    out << "   " << goose_printer(tiles[3].getTilenum()) << "            " << goose_printer(tiles[4].getTilenum()) << "            " << goose_printer(tiles[5].getTilenum()) << endl;
+    out << "   " << b.goose_printer(b.tiles[3].getTilenum()) << "            " << b.goose_printer(b.tiles[4].getTilenum()) << "            " << b.goose_printer(b.tiles[5].getTilenum()) << endl;
     out << "   " << b.goals[20].getnum() << "             " << b.goals[21].getnum() << "      " << b.tiles[6].getTilenum() << "     " << b.goals[22].getnum() << "             " << b.goals[23].getnum() << "      " << b.tiles[7].getTilenum() << "     " << b.goals[24].getnum() << "             " << b.goals[25].getnum() << endl;
     out << "     \\            /     " << b.tiles[6].getResource() << "\\            /     " << b.tiles[7].getResource() << "\\            /" << endl;
     out << "     |" << b.course_criteria[18].getnum() << "|--" << b.goals[26].getnum() << "--|" << b.course_criteria[19].getnum() << "|       " << b.tiles[6].getDice() << "       |" << b.course_criteria[20].getnum() << "|--" << b.goals[27].getnum() << "--|" << b.course_criteria[21].getnum() << "|       " << b.tiles[7].getDice() << "       |" << b.course_criteria[22].getnum() << "|--" << b.goals[28].getnum() << "--|" << b.course_criteria[23].getnum() << "|" << endl;
-    out << "     /            " << goose_printer(tiles[6].getTilenum()) << "            " << goose_printer(tiles[7].getTilenum()) << "            \\" << endl;
+    out << "     /            " << b.goose_printer(b.tiles[6].getTilenum()) << "            " << b.goose_printer(b.tiles[7].getTilenum()) << "            \\" << endl;
     out << "   " << b.goals[29].getnum() << "      " << b.tiles[8].getTilenum() << "     " << b.goals[30].getnum() << "             " << b.goals[31].getnum() << "      " << b.tiles[9].getTilenum() << "     " << b.goals[32].getnum() << "             " << b.goals[33].getnum() << "      " << b.tiles[10].getTilenum() << "     " << b.goals[34].getnum() << endl;
     out << "   /     " << b.tiles[8].getResource() << "\\            /     " << b.tiles[9].getResource() << "\\            /     " << b.tiles[10].getResource() << "\\" << endl;
     out << "|" << b.course_criteria[24].getnum() << "|       " << b.tiles[8].getDice() << "       |" << b.course_criteria[25].getnum() << "|--" << b.goals[35].getnum() << "--|" << b.course_criteria[26].getnum() << "|       " << b.tiles[9].getDice() << "       |" << b.course_criteria[27].getnum() << "|--" << b.goals[36].getnum() << "--|" << b.course_criteria[28].getnum() << "|       " << b.tiles[10].getDice() << "       |" << b.course_criteria[29].getnum() << "|" << endl;
-    out << "   " << goose_printer(tiles[8].getTilenum()) << "            " << goose_printer(tiles[9].getTilenum()) << "            " << goose_printer(tiles[10].getTilenum()) << endl;
+    out << "   " << b.goose_printer(b.tiles[8].getTilenum()) << "            " << b.goose_printer(b.tiles[9].getTilenum()) << "            " << b.goose_printer(b.tiles[10].getTilenum()) << endl;
     out << "   " << b.goals[37].getnum() << "             " << b.goals[38].getnum() << "      " << b.tiles[11].getTilenum() << "     " << b.goals[39].getnum() << "             " << b.goals[40].getnum() << "      " << b.tiles[12].getTilenum() << "     " << b.goals[41].getnum() << "             " << b.goals[42].getnum() << endl;
     out << "     \\            /     " << b.tiles[11].getResource() << "\\            /     " << b.tiles[12].getResource() << "\\            /" << endl;
     out << "     |" << b.course_criteria[30].getnum() << "|--" << b.goals[43].getnum() << "--|" << b.course_criteria[31].getnum() << "|       " << b.tiles[11].getDice() << "       |" << b.course_criteria[32].getnum() << "|--" << b.goals[44].getnum() << "--|" << b.course_criteria[33].getnum() << "|       " << b.tiles[12].getDice() << "       |" << b.course_criteria[34].getnum() << "|--" << b.goals[45].getnum() << "--|" << b.course_criteria[35].getnum() << "|" << endl;
-    out << "     /            " << goose_printer(tiles[11].getTilenum()) << "            " << goose_printer(tiles[12].getTilenum()) << "            \\" << endl;
+    out << "     /            " << b.goose_printer(b.tiles[11].getTilenum()) << "            " << b.goose_printer(b.tiles[12].getTilenum()) << "            \\" << endl;
     out << "   " << b.goals[46].getnum() << "      " << b.tiles[13].getTilenum() << "     " << b.goals[47].getnum() << "             " << b.goals[48].getnum() << "      " << b.tiles[14].getTilenum() << "     " << b.goals[49].getnum() << "             " << b.goals[50].getnum() << "      " << b.tiles[15].getTilenum() << "     " << b.goals[51].getnum() << endl;
     out << "   /     " << b.tiles[13].getResource() << "\\            /     " << b.tiles[14].getResource() << "\\            /     " << b.tiles[15].getResource() << "\\" << endl;
     out << "|" << b.course_criteria[36].getnum() << "|       " << b.tiles[13].getDice() << "       |" << b.course_criteria[37].getnum() << "|--" << b.goals[52].getnum() << "--|" << b.course_criteria[38].getnum() << "|       " << b.tiles[14].getDice() << "       |" << b.course_criteria[39].getnum() << "|--" << b.goals[53].getnum() << "--|" << b.course_criteria[40].getnum() << "|       " << b.tiles[15].getDice() << "       |" << b.course_criteria[41].getnum() << "|" << endl;
-    out << "   " << goose_printer(tiles[13].getTilenum()) << "            " << goose_printer(tiles[14].getTilenum()) << "            " << goose_printer(tiles[15].getTilenum()) << endl;
+    out << "   " << b.goose_printer(b.tiles[13].getTilenum()) << "            " << b.goose_printer(b.tiles[14].getTilenum()) << "            " << b.goose_printer(b.tiles[15].getTilenum()) << endl;
     out << "   " << b.goals[54].getnum() << "             " << b.goals[55].getnum() << "      " << b.tiles[16].getTilenum() << "     " << b.goals[56].getnum() << "             " << b.goals[57].getnum() << "      " << b.tiles[17].getTilenum() << "     " << b.goals[58].getnum() << "             " << b.goals[59].getnum() << endl;
     out << "     \\            /     " << b.tiles[16].getResource() << "\\            /     " << b.tiles[17].getResource() << "\\            /" << endl;
     out << "     |" << b.course_criteria[42].getnum() << "|--" << b.goals[60].getnum() << "--|" << b.course_criteria[43].getnum() << "|       " << b.tiles[16].getDice() << "       |" << b.course_criteria[44].getnum() << "|--" << b.goals[61].getnum() << "--|" << b.course_criteria[45].getnum() << "|       " << b.tiles[17].getDice() << "       |" << b.course_criteria[46].getnum() << "|--" << b.goals[62].getnum() << "--|" << b.course_criteria[47].getnum() << "|" << endl;
-    out << "                  " << goose_printer(tiles[16].getTilenum()) << "            " << goose_printer(tiles[17].getTilenum()) << endl;
+    out << "                  " << b.goose_printer(b.tiles[16].getTilenum()) << "            " << b.goose_printer(b.tiles[17].getTilenum()) << endl;
     out << "                  " << b.goals[63].getnum() << "             " << b.goals[64].getnum() << "      " << b.tiles[18].getTilenum() << "     " << b.goals[65].getnum() << "             " << b.goals[66].getnum() << endl;
     out << "                    \\            /     " << b.tiles[18].getResource() << "\\            /" << endl;
     out << "                    |" << b.course_criteria[48].getnum() << "|--" << b.goals[67].getnum() << "--|" << b.course_criteria[49].getnum() << "|       " << b.tiles[18].getDice() << "       |" << b.course_criteria[50].getnum() << "|--" << b.goals[68].getnum() << "--|" << b.course_criteria[51].getnum() << "|" << endl;
-    out << "                                 " << goose_printer(tiles[18].getTilenum()) << endl;
+    out << "                                 " << b.goose_printer(b.tiles[18].getTilenum()) << endl;
     out << "                                 " << b.goals[69].getnum() << "             " << b.goals[70].getnum() << endl;
     out << "                                   \\            /" << endl;
     out << "                                   |" << b.course_criteria[52].getnum() << "|--" << b.goals[71].getnum() << "--|" << b.course_criteria[53].getnum() << "|" << endl;

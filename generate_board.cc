@@ -91,7 +91,7 @@ class Tile {
 
   Tile(string res, int dc, int num) : resource(res), dice(dc), tilenum(num) {}
   
-  int getTilenum() const {
+  string getTilenum() const {
     if (tilenum < 10) {
       return " " + to_string(tilenum);
     }
@@ -139,7 +139,7 @@ class Board {
           // ============================================================
           //  Randomizing our tiles
           // ============================================================
-          int seed_val = 69;
+          unsigned seed_val = 69;
           try {
             seed_val = stoi(seed);
           } catch( invalid_argument & e ) {
@@ -252,7 +252,7 @@ class Board {
           // Created algorithm for course_criteria based on tile numbers
           // ============================================================
           for (int t = 0; t < 19; ++t) {
-              int course_criterion1 = first_course_criterion(stoi(b.tiles[t].getTilenum()));
+              int course_criterion1 = first_course_criterion(stoi(tiles[t].getTilenum()));
               int course_criterion2 = course_criterion1 + 1;
               int course_criterion3 = down_course_criterion_coord(course_criterion1);
               int course_criterion4 = course_criterion3 + 1; 
@@ -274,7 +274,7 @@ ostream &operator<<(ostream &out, const Board &b) {
     out << "                                 " << b.goals[1].getnum() << "      " << b.tiles[0].getTilenum() << "     " << b.goals[2].getnum() << endl;
     out << "                                 /     " << b.tiles[0].getResource() << "\\" << endl;
     out << "                    |" << b.course_criteria[2].getnum() << "|--" << b.goals[3].getnum() << "--|" << b.course_criteria[3].getnum() << "|       " << b.tiles[0].getDice() << "       |" << b.course_criteria[4].getnum() << "|--" << b.goals[4].getnum() << "--|" << b.course_criteria[5].getnum() << "|" << endl;
-    out << "                    /            " << b.goose_printer((b.tiles[0]).getTilenum()) << "            \\" << endl;
+    out << "                    /            " << b.goose_printer(b.tiles[0].getTilenum()) << "            \\" << endl;
     out << "                  " << b.goals[5].getnum() << "      " << b.tiles[1].getTilenum() << "     " << b.goals[6].getnum() << "             " << b.goals[7].getnum() << "      " << b.tiles[2].getTilenum() << "     " << b.goals[8].getnum() << endl;
     out << "                  /     " << b.tiles[1].getResource() << "\\            /     " << b.tiles[2].getResource() << "\\" << endl;
     out << "     |" << b.course_criteria[6].getnum() << "|--" << b.goals[9].getnum() << "--|" << b.course_criteria[7].getnum() << "|       " << b.tiles[1].getDice() << "       |" << b.course_criteria[8].getnum() << "|--" << b.goals[10].getnum() << "--|" << b.course_criteria[9].getnum() << "|       " << b.tiles[2].getDice() << "       |" << b.course_criteria[10].getnum() << "|--" << b.goals[11].getnum() << "--|" << b.course_criteria[11].getnum() << "|" << endl;
@@ -314,7 +314,7 @@ ostream &operator<<(ostream &out, const Board &b) {
 }
 
 int main() {
-    Board b("1",-1);
+    Board b = Board {1,"1"};
     // board printing
     cout << b;
     for (int t = 0; t < b.tiles.size(); ++t) {
