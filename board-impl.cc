@@ -140,6 +140,14 @@ Board::Board(string seed = "") {
     }
 }
 
+void Board::update_tiles(int roll_num, int goose_tile) const {
+    for (int i = 0; i < 19; ++i) {
+        if (i != goose_tile) {
+            tiles[i].distributeResources();
+        }
+    }
+}
+
 Criteria& Board::getCriteria(int criteria_num) const {
     return course_criterion[criteria_num];
 }
