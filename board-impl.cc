@@ -12,6 +12,37 @@ import Tile;
 import Resource;
 using namespace std;
 
+int down_vertex_coord(int n) {
+    if (n < 2 || n > 48) {
+        return n + 3;
+    } else if (n < 6 || n > 42) {
+        return n + 5;
+    } else {
+        return n + 6;
+    }
+}
+
+int row_number(int tilenum) {
+    if (tilenum == 0) {
+        return 0;
+    } else if (tilenum == 18) {
+        return 9;
+    } else if (((tilenum % 5) == 1) || ((tilenum % 5) == 2)) {
+        return (2 * (tilenum / 5)) + 1;
+    } else {
+        return (2 *(tilenum / 5)) + 2;
+    }
+}
+int first_vertex(int tilenum) {
+    if (tilenum < 6) {
+        return tilenum * 2;
+    } else if (tilenum == 18) {
+        return 44;
+    } else {
+        return (tilenum * 2) + (row_number(tilenum) - 2);
+    }
+}
+
 string Board::goose_printer(string tile) const {
     int tile_num = stoi(tile);
     if (goose_tile == tile_num) {
@@ -212,4 +243,11 @@ ostream &operator<<(ostream &out, const Board &b) {
     out << "                                   \\            /" << endl;
     out << "                                   |" << b.course_criteria[52].getnum() << "|--" << b.goals[71].getnum() << "--|" << b.course_criteria[53].getnum() << "|" << endl;
     return out;
+}
+
+void updateGoose(int new_goosetile) {
+    // assumes that we are given a valid tilenum -> Game can check whether or not it is valid
+    if (new_goosetile != goose_tile) {
+        goose_tile = new_goosetile;
+    }
 }

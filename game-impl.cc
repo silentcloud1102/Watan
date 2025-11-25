@@ -3,20 +3,36 @@ module Game;
 import Board;
 
 void Game::diceRolls(bool isfair){
+    // =========================================================
+    // Generating the dicerolls
+    // =========================================================
+    int roll;
     if (isfair){
         // random generate
+        unsigned seed_val = 69;
+        default_random_engine rng{seed_val};
+        int roll1 = (rng() % 6) + 1;
+        int roll2 = (rng() % 6) + 1;
+        roll = roll1 + roll2;
     } else {
         // loaded
-        int roll;
         while (true){
             cout << "Input a roll between 2 and 12: ";
             cin >> roll;
             if ((roll < 2) || (12 < roll)){
                 cout < "Invalid roll." << endl;
             } else {
-                return roll;
+                break;
             }
         }
-        
+    }
+
+    // =========================================================
+    // using the implications of the dice roll
+    // =========================================================
+    if (roll == 7) {
+
+    } else {
+        update_tiles(roll, goose_tile);
     }
 }

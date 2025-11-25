@@ -12,8 +12,8 @@ export class Goal : public ISubject {
   public:
     explicit Goal(int location): 
     std::string getnum() const;
-    bool adjacent_goal_check(int location) const;
-    bool adjacent_criteria_check(int location) const;
+    bool adjacent_goal_check(ISubject * location) const;
+    bool adjacent_criteria_check(ISubject * location) const;
     void addAdjacentcourse_criterion(const vector<int> &v);
     void addAdjacentgoal(const vector<int> &e);
 };
