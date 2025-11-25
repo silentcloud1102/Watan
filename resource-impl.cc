@@ -1,23 +1,16 @@
 module Resource;
 
-
 import <string>;
 
+Resource::Resource(int caffeine, int lab, int lecture, int study, int tutorial)
+    : caffeine{caffeine}, lab{lab}, lecture{lecture}, study{study}, tutorial{tutorial} {}
 
-int caffeine;
-int lab;
-int lecture;
-int study;
-int tutorial;
-
-Resource::Resource(int caffeine, int lab,  int lecture, int study, int tutorial): caffeine{caffeine}, lab{lab}, 
-                                                            lecture{lecture}, study{study}, tutorial{tutorial} {}
 Resource::Resource(std::string resource) {
     if (resource == "CAFFEINE") {
         caffeine = 1;
     } else if (resource == "LAB") {
-        lab = 1
-    } else if (resource == "LAB") {
+        lab = 1;
+    } else if (resource == "LECTURE") {
         lecture = 1;
     } else if (resource == "STUDY") {
         study = 1;
@@ -26,12 +19,59 @@ Resource::Resource(std::string resource) {
     }
 }
 
+Resource Resource::operator+(const Resource &other) const {
+    return Resource(
+        caffeine + other.caffeine,
+        lab + other.lab,
+        lecture + other.lecture,
+        study + other.study,
+        tutorial + other.tutorial
+    );
+}
 
-Resource operator+(Resource &other);
-Resource operator-(Resource &other);
+Resource Resource::operator-(const Resource &other) const {
+    return Resource(
+        caffeine - other.caffeine,
+        lab - other.lab,
+        lecture - other.lecture,
+        study - other.study,
+        tutorial - other.tutorial
+    );
+}
 
-Resource& operator-=(Resource &other);
-Resource& operator+=(Resource &other);
-auto operator<=>(const Resource &other) const = default;
+Resource& Resource::operator+=(const Resource &other) {
+    caffeine += other.caffeine;
+    lab += other.lab;
+    lecture += other.lecture;
+    study += other.study;
+    tutorial += other.tutorial;
+    return *this;
+}
 
-int count();
+Resource& Resource::operator-=(const Resource &other) {
+    caffeine -= other.caffeine;
+    lab -= other.lab;
+    lecture -= other.lecture;
+    study -= other.study;
+    tutorial -= other.tutorial;
+    return *this;
+}
+bool Resource::operator<=(const Resource &other) const {
+    return caffeine <= other.caffeine &&
+           lab <= other.lab &&
+           lecture <= other.lecture &&
+           study <= other.study &&
+           tutorial <= other.tutorial;
+}
+
+bool Resource::operator>=(const Resource &other) const {
+    return caffeine >= other.caffeine &&
+           lab >= other.lab &&
+           lecture >= other.lecture &&
+           study >= other.study &&
+           tutorial >= other.tutorial;
+}
+
+int Resource::count() const {
+    return caffeine + lab + lecture + study + tutorial;
+}

@@ -16,7 +16,7 @@ void Game::diceRolls(bool isfair){
         roll = roll1 + roll2;
     } else {
         // loaded
-        while (true){
+        while (true) {
             cout << "Input a roll between 2 and 12: ";
             cin >> roll;
             if ((roll < 2) || (12 < roll)){
@@ -31,8 +31,9 @@ void Game::diceRolls(bool isfair){
     // using the implications of the dice roll
     // =========================================================
     if (roll == 7) {
-
+        // let them move the goose somewhere, then check for stealing
+        gameBoard.updateGoose()
     } else {
-        update_tiles(roll, goose_tile);
+        update_tiles(roll);
     }
 }

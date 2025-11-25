@@ -17,7 +17,7 @@ class Resource {
 
     Resource& operator-=(Resource &other);
     Resource& operator+=(Resource &other);
-    auto operator<=>(const Resource &other) const = default;
-
-    int count();
+    bool operator<=(const Resource &other) const;
+    bool operator>=(const Resource &other) const;
+    int count() const;
 };

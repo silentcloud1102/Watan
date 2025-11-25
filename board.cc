@@ -19,6 +19,7 @@ export class Board {
         Criteria& getCriteria(int criteria_num) const;
         Goal& getGoals(int goal_num) const;
         void updateGoose(int new_goosetile);
+        int getGooseTile() const;
 };
 
 friend ostream &operator<<(ostream &out, const Board &b);

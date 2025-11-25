@@ -251,3 +251,7 @@ void updateGoose(int new_goosetile) {
         goose_tile = new_goosetile;
     }
 }
+
+int getGooseTile() const {
+    return goose_tile;
+}
