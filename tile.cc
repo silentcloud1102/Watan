@@ -8,14 +8,14 @@ import Criterion;
 import Resource;
 
 class Tile {
-  string resource_type;
+  std::string resource_type;
   int dice;
   int tilenum;
   std::vector<*ISubject> goals;
   std::vector<*ISubject> course_criteria;
   public:
     void distribute_resources() const {
-      resource = Resource {1,0,0,0,0,0};
+      resource = Resource(resource_type);
       for (int i = 0; i < 6; ++i) {
         course_criteria[i]->newResource(resource);
       }

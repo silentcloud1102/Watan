@@ -126,7 +126,7 @@ class Board {
         vector<Tile> tiles;
         vector<goal> goals;
         vector<course_criterion> course_criteria;
-        string goose_printer(string tile) const{
+        string goose_printer(string tile) const {
           int tile_num = stoi(tile);
           if (goose_tile == tile_num) {
               return "\\     GEESE      /";

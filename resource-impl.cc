@@ -10,7 +10,22 @@ int lecture;
 int study;
 int tutorial;
 
-Resource(int caffeine = 0, int lab = 0,  int lecture = 0, int study = 0, int tutorial = 0);
+Resource::Resource(int caffeine, int lab,  int lecture, int study, int tutorial): caffeine{caffeine}, lab{lab}, 
+                                                            lecture{lecture}, study{study}, tutorial{tutorial} {}
+Resource::Resource(std::string resource) {
+    if (resource == "CAFFEINE") {
+        caffeine = 1;
+    } else if (resource == "LAB") {
+        lab = 1
+    } else if (resource == "LAB") {
+        lecture = 1;
+    } else if (resource == "STUDY") {
+        study = 1;
+    } else if (resource == "TUTORIAL") {
+        tutorial = 1;
+    }
+}
+
 
 Resource operator+(Resource &other);
 Resource operator-(Resource &other);

@@ -5,10 +5,12 @@ import <vector>;
 import ISubject;
 using namespace std;
 
-void addAdjacentcourse_criterion(const vector<int> &v) { adjacent_course_criterion = v; }
-void addAdjacentgoal(const vector<int> &e) { adjacent_goals = e; }
+Goal::Goal(int location): 
 
-bool adjacent_goal_check(int location) {
+void Goal::addAdjacentcourse_criterion(const vector<int> &v) { adjacent_course_criterion = v; }
+void Goal::addAdjacentgoal(const vector<int> &e) { adjacent_goals = e; }
+
+bool Goal::adjacent_goal_check(int location) {
     while (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
         if (*it == location) {
             return true;
@@ -16,7 +18,7 @@ bool adjacent_goal_check(int location) {
     }
     return false;
 }
-bool adjacent_criteria_check(int location) {
+bool Goal::adjacent_criteria_check(int location) {
     while (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
         if (*it == location) {
             return true;
@@ -25,8 +27,8 @@ bool adjacent_criteria_check(int location) {
     return false;
 }
 
-string getnum() {
-    if (owner != '') {
+string Goal::getnum() {
+    if (owner != ' ') {
         return owner + "A";
     }
     
