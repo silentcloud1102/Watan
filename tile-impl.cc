@@ -8,11 +8,13 @@ import Resource;
 
 
 void Tile::distribute_resources() const {
-      Resource resource = Resource(resource_type);
+      Resource resource(resource_type);
       for (int i = 0; i < 6; ++i) {
         course_criteria[i]->newResource(resource);
       }
-    }
+}
+
+
 Tile::Tile(std::string res, int dc, int num) : resource_type(res), dice(dc), tilenum(num) {}
 
 std::string Tile::getTilenum() const {
