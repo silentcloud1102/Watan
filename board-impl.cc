@@ -9,6 +9,7 @@ import <random>;
 import Criteria;
 import Goals;
 import Tile;
+import Resource;
 using namespace std;
 
 string Board::goose_printer(string tile) const {
@@ -36,7 +37,6 @@ Board::Board(string seed = "") {
     // ============================================================
     //  Initialize all objects
     // ============================================================
-
     vector<string> resource_names = {
         "CAFFEINE",
         "LAB",

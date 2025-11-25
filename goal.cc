@@ -1,12 +1,16 @@
 export module Goal;
 
+import <string>;
+import <vector>;
 import ISubject;
 
 export class Goal : public ISubject {
-    vector<int> adjacent_course_criterion;
-    vector<int> adjacent_goals;
-
-    Goal(int location): 
+  int index;
+  std::string owner;
+  vector<int> adjacent_course_criterion;
+  vector<int> adjacent_goals;
+  public:
+    explicit Goal(int location): 
     string getnum() const {
       if (owner != "") {
           return owner;
@@ -17,6 +21,8 @@ export class Goal : public ISubject {
           }
           return to_string(number);
     }
+    void addAdjacentcourse_criterion(const vector<int> &v) { adjacent_course_criterion = v; }
+    void addAdjacentgoal(const vector<int> &e) { adjacent_goals = e; }
 };
 
 class goal {
@@ -26,6 +32,5 @@ class goal {
     
     
       goal(int num, string str) : number(num), owner(str) {}
-      void addAdjacentcourse_criterion(const vector<int> &v) { adjacent_course_criterion = v; }
-      void addAdjacentgoal(const vector<int> &e) { adjacent_goals = e; }
+      
 };
