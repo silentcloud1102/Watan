@@ -8,41 +8,46 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-    if (argc <= 1){
-        // no arguments;
-    }
+    int seed = 0; // default seed
+    string loadfile;
+    string boardfile;
 
-    istringstream iss {argv[1]};
-    string command;
-    while (iss >> command){
-        if (command == "-seed"){
-            int seed;
-            iss >> seed;
-            // ============================================================
-            //  Randomizing our tiles
-            // ============================================================
-            unsigned seed_val = 69;
-            try {
-            seed_val = stoi(seed);
-            } catch(invalid_argument & e ) {
-            } catch(out_of_range & e ) {
+    if (argc <= 1){
+        // no arguments, use default
+    } else {
+        for (int i = 1; i < argc; i++){
+            istringstream iss {argv[i]};
+            string command;
+            if (command == "-seed"){
+                if (i + 1 < argc){
+                    iss >> seed;
+                    ++i;
+                    // ============================================================
+                    //  Randomizing our tiles
+                    // ============================================================
+                    unsigned seed_val = 69;
+                    try {
+                    seed_val = stoi(seed);
+                    } catch(invalid_argument & e ) {
+                    } catch(out_of_range & e ) {
+                    }
+                    default_random_engine rng{seed_val};
+                }
+            } else if (command == "-load"){
+                if (i + 1 < argc){
+                    iss >> loadfile;
+                    ifstream ifsl{loadfile};
+                    ++i;
+                }
+            } else if (command = "-board"){
+                if (i + 1 < argc){
+                    iss >> boardfile;
+                    ifstream ifsb{boardfile};
+                    ++i;
+                }
             }
-            default_random_engine rng{seed_val};        
-        } else if (command == "-load"){
-            string loadfile;
-            iss >> loadfile;
-            ifstream ifsl{loadfile};
-        } else if (command = "-board"){
-            string boardfile;
-            iss >> boardfile;
-            ifstream ifsb{boardfile};
         }
     }
-
-    int seed = 0; // default seed
-    string loadfile = "";
-    string boardfile = "";
-
 
 
     // start game
