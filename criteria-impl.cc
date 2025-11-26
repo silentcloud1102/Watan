@@ -4,9 +4,11 @@ import <string>;
 import <vector>;
 import ISubject;
 
+explicit Criteria(int location): ISubject{location}, upgradeLevel{1}, owner{' '} {}
+
 std::string Criteria::getnum() {
     if (owner != ' ') {
-        vector<char> levels = {'A','M','E'};
+        std::vector<char> levels = {'A','M','E'};
         return owner + levels[upgradeLevel - 1];
     }
 
