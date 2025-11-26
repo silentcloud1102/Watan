@@ -61,3 +61,8 @@ Resource Goal::cost(){
     Resource goalCost = {0, 0, 0, 1, 1};
     return goalCost;
 }
+
+
+std::string get_save_string(){
+    return location;
+}

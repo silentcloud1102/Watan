@@ -51,6 +51,7 @@ int Criteria::get_level() const{
 // indicates whether it is valid to attempt to buy
 bool Criteria::adjacent() const{
     // check that there is no adjacent Criteria already owned
+    
     // check that there is an adjacent owned Goal
     return false;
 }
@@ -60,7 +61,6 @@ bool Criteria::adjacent() const{
 bool Criteria::owned() const{
     return owner != nullptr;
 }
-
 
 // UPGRADE LOGIC METHODS:
 
@@ -130,10 +130,14 @@ void Criteria::addAdjacentgoal(const std::vector<int> &e) {
     adjacent_goals = e; 
 }
 
-
+// Notify Observer
 void Criteria::newResource(string r) const {
     Resource rchange{r, upgradeLevel};
     if (owned()) {
         owner->resourceNotify(rchange);
     }
+}
+
+void Criteria::acquire(IObserver* student) {
+    owner = student;
 }

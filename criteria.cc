@@ -19,6 +19,9 @@ export class Criteria : public ISubject {
 
       // "subscription" method
       void acquire(IObserver* student) override;
+
+      // Notification method
+      void newResource(string r) const;
       
       // Printing methods
       std::string get_num() const;
@@ -35,5 +38,6 @@ export class Criteria : public ISubject {
 
       // save method
       std::string get_save_string() const;
-      void newResource(string r) const;
+
+      
 };
