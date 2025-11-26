@@ -4,7 +4,7 @@ import <string>;
 import <vector>;
 import ISubject;
 
-std::string Criteria::getnum() {
+std::string Criteria::get_num() {
     if (owner != ' ') {
         vector<char> levels = {'A','M','E'};
         return owner + levels[upgradeLevel - 1];

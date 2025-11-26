@@ -9,6 +9,6 @@ export class Criteria : public ISubject {
       explicit Criteria(int location): ISubject{location}, upgradeLevel{1} {
           owner = ' ';
         }
-      std::string getnum() const;
+      std::string get_num() const;
       void upgrade();
 };
