@@ -4,5 +4,5 @@ import Resource;
 
 export class IObserver{
     public:
-        virtual void resourceNotify(Resource rchange) = 0;
+        virtual void resource_notify(Resource rchange) = 0;
 };
