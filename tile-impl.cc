@@ -8,9 +8,8 @@ import Resource;
 
 
 void Tile::distribute_resources() const {
-      Resource resource(resource_type);
       for (int i = 0; i < 6; ++i) {
-        course_criteria[i]->newResource(resource);
+        course_criteria[i]->newResource(resource_type);
       }
 }
 

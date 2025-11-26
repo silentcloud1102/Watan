@@ -126,3 +126,11 @@ void Criteria::addAdjacentcourse_criterion(const std::vector<int> &v) {
 void Criteria::addAdjacentgoal(const std::vector<int> &e) { 
     adjacent_goals = e; 
 }
+
+
+void Criteria::newResource(string r) const {
+    Resource rchange{r, upgradeLevel};
+    if (owned()) {
+        owner->resourceNotify(rchange);
+    }
+}

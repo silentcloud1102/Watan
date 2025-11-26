@@ -35,4 +35,5 @@ export class Criteria : public ISubject {
 
       // save method
       std::string get_save_string() const;
+      void newResource(string r) const;
 };
