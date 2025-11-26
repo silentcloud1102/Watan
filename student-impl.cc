@@ -6,7 +6,7 @@ import ISubject;
 Student(const std::string colour, Board * board): 
     name{colour}, board{board} {}
 
-std::string get_name() const{
+std::string get_name() {
     return name;
 }
 
@@ -59,7 +59,7 @@ void buy_goal(int id, bool set_up){
 }
 
 // will not be run at set-up, no need to include a set-up override
-void upgrade_criteria(int id){
+void upgrade_criteria(int id) {
     bool found = false;
     for(auto val: criteria){
         if (val == id) {
@@ -86,7 +86,7 @@ void upgrade_criteria(int id){
 
 }
 
-bool can_afford(const Resource & query){
+bool can_afford(const Resource & query) const {
     return held_resources >= query;
 }
 
