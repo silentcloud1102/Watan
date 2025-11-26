@@ -3,6 +3,7 @@ import <fstream>;
 import <string>;
 
 import Student;
+import Board;
 import enum;
 
 using namespace std;
@@ -13,45 +14,35 @@ int main(int argc, char** argv){
     string loadfile = "";
     string boardfile = "";
 
-    if (argc <= 1){
-        // no arguments, use default
-    } else {
-        for (int i = 1; i < argc; i++){
-            istringstream iss {argv[i]};
-            string command;
-            if (command == "-seed"){
-                if (i + 1 < argc){
-                    iss >> seed;
-                    ++i;
-                    // ============================================================
-                    //  Randomizing our tiles
-                    // ============================================================
-                    unsigned seed_val = 69;
-                    try {
-                    seed_val = stoi(seed);
-                    } catch(invalid_argument & e ) {
-                    } catch(out_of_range & e ) {
-                    }
-                    default_random_engine rng{seed_val};
+    for (int i = 1; i < argc; i++){
+
+        if (argv[i] == "-seed"){
+            if (i + 1 < argc){
+                istringstream iss {argv[i + 1]};
+                iss >> seed;
+                if (iss.fail()){
+                    iss.clear();
                 }
-            } else if (command == "-load"){
-                if (i + 1 < argc){
-                    iss >> loadfile;
-                    ifstream ifsl{loadfile};
-                    ++i;
-                }
-            } else if (command = "-board"){
-                if (i + 1 < argc){
-                    iss >> boardfile;
-                    ifstream ifsb{boardfile};
-                    ++i;
-                }
+                ++i;
+            }
+        } else if (argv[i] == "-load"){
+            if (i + 1 < argc){
+                loadfile = argv[i+1];
+                ifstream ifsl{loadfile};
+                ++i;
+            }
+        } else if (argv[i] = "-board"){
+            if (i + 1 < argc){
+                boardfile = argv[i+1];
+                ifstream ifsb{boardfile};
+                ++i;
             }
         }
     }
-
-
+    
+    Board board = Board(seed);
     // setting up board and seed
+    // update goose!
 
     if (loadfile != ""){
         while (true){
@@ -61,6 +52,13 @@ int main(int argc, char** argv){
             if (response == 'L'){
                 // read from file
                 // no board file
+                // vector<int> givenBoard;
+                // int temp;
+                // for (int i = 0; i < 38; ++i){
+                //     ifsl >> temp;
+                //     givenBoard.emplace_back(temp);
+                // }
+                // board.load_saveData(givenBoard);
                 break;
             } else if (response == 'N'){
                 // new game
@@ -74,44 +72,21 @@ int main(int argc, char** argv){
             cin >> response;
             if (response == 'B'){
                 // read from file
-                // no load file
+                vector<int> givenBoard;
+                int temp;
+                for (int i = 0; i < 38; ++i){
+                    ifsl >> temp;
+                    givenBoard.emplace_back(temp);
+                }
+                board.load_saveData(givenBoard);
                 break;
             } else if (response == 'N'){
                 // new game
                 break;
             }
         }
-
-
-        
-
-        // reading, will be moved
-        // 19 tile resources + 19 tile values = 38
-        int resourceNum;
-        int value;
-        for (int i = 0; i < 38; ++i){
-            ifsb >> resourceNum;
-            ifsb >> value;
-            
-            // reading conditions
-            // if (r == 0){
-            //     //"CAFFEINE"
-            // } else if (r == 1){
-            //     //"LAB",
-            // } else if (r == 2){
-            //     //"LECTURE",
-            // } else if (r == 3){
-            //     //"STUDY",
-            // } else if (r == 4){
-            //     //"TUTORIAL",
-            // } else if (r == 5){
-            //     //"NETFLIX"
-            //     value = -1;
-            // }
-
-            resType r = static_cast<resType>(resourceNum);
-        }
     }
+    
 
 
     // start game
@@ -130,12 +105,17 @@ int main(int argc, char** argv){
         cin >> intersection;
         //studentcolor.accquire(intersection);
     }
-    // only one direction right now, can do recursion but would need to make a function?
-    // is that ok in main, (design wise)
+    //backwards
+    for (int i = (turnOrder.length - 1); i > 0; --i){
+        cout << "Student " << // to_string(students[i]) 
+        cout << ", where do you want to complete an Assignment?";
+        int intersection;
+        cin >> intersection;
+        //studentcolor.accquire(intersection);
+    }
+    
     
     // printBoard();
-
-
     // start turn
     for (int i = 0; i < turnOrder.length(); ++i){
         cout << "Student " << //to_string(students[i]) << "'s turn.";
