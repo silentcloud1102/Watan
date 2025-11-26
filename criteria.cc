@@ -17,7 +17,6 @@ export class Criteria : public ISubject {
 
       // Printing methods
       std::string get_num() const;
-      char get_owner();
       int get_level() const;
 
       // Checks for buying
