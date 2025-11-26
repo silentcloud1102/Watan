@@ -19,17 +19,22 @@ void buy_criteria(int id, bool set_up){
     bool adjacent = target->adjacent(criteria, goals);
     bool owned = target->owned();
 
-    if(set_up || affordable && adjacent && !owned){
-        target->acquire(this);
-        held_resources -= cost;
-        criteria.push_back(id);
-    } else if (!adjacent){
-        throw "This criteria is not elligible to be bought.";
-    } else if (owned){
-        throw "This criteria is already owned.";
-    } else if (!affordable){
-        throw "You do not have enough resources.";
+    if(!set_up){
+        if (affordable && adjacent && !owned) {
+            held_resources -= cost;
+        } else if (!adjacent){
+            throw "This criteria is not elligible to be bought.";
+        } else if (owned){
+            throw "This criteria is already owned.";
+        } else if (!affordable){
+            throw "You do not have enough resources.";
+        }
     }
+
+    // if no exceptions were thrown or set_up is true, then add to list.
+    criteria.push_back(id);
+    target->acquire(this);
+    return;
 }
 
 void buy_goal(int id, bool set_up){

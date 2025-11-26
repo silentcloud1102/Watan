@@ -3,6 +3,7 @@ module Goal;
 import <string>;
 import <vector>;
 import ISubject;
+import Resource;
 
 Goal::Goal(int location): ISubject(location), owner(' ') {}
 
@@ -38,3 +39,20 @@ bool Goal::adjacent_criteria_check(int location) {
 
 void Goal::addAdjacentcourse_criterion(const std::vector<int> &v) { adjacent_course_criterion = v; }
 void Goal::addAdjacentgoal(const std::vector<int> &e) { adjacent_goals = e; }
+
+bool Goal::owned(){
+    return owner != nullptr;
+}
+
+char Goal::get_owner(){
+    if(owner){
+        return owner->get_name()[0];
+    } else {
+        return ' ';
+    }
+}
+
+Resource Goal::cost(){
+    Resource goalCost = {0, 0, 0, 1, 1};
+    return goalCost;
+}
