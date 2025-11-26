@@ -10,7 +10,8 @@ import IObserver;
 export class Student : public IObserver {
     std::string colour;
     Resource held_resources;
-    std::vector<IObserver *> criteria;
+    std::vector<int> criteria;
+    std::vector<int> goals;
     public:
         explicit Student(const std::string colour);
         std::string get_colour() const;
