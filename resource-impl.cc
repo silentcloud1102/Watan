@@ -76,3 +76,8 @@ bool Resource::operator>=(const Resource &other) const {
 int Resource::count() const {
     return caffeine + lab + lecture + study + tutorial;
 }
+
+
+void get_save_string() const {
+    // todo
+}
