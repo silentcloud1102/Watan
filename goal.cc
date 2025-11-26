@@ -19,4 +19,6 @@ export class Goal : public ISubject {
     bool adjacent_criteria_check(int location) const;
     void addAdjacentcourse_criterion(const vector<int> &v);
     void addAdjacentgoal(const vector<int> &e);
+
+    std::string get_save_string() const;
 };
