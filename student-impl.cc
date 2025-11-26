@@ -1,4 +1,5 @@
 module Student;
+import <sstream>;
 import Board;
 
 explicit Student(const std::string colour, Board * board): 
@@ -8,9 +9,8 @@ std::string get_colour() const{
     return colour;
 }
 
-void buy_criteria(int id){
 
-}
+void buy_criteria(int id);
 void buy_goal(int id);
 void upgrade_criteria(int id);
 
@@ -25,6 +25,25 @@ void resource_notify(Resource rchange) {
 
 // save logic
 std::string get_save_string() const {
+    std::ostringstream oss;
+    oss << held_resources.get_save_string();
 
+    oss << " g";
+    for(auto it = goals.begin(); it != goals.end(); it++){
+        oss << ' ' << *it ;
+    }
+
+    oss << " c";
+    for(auto it = criteria.begin(); it != criteria.end(); it++){
+        oss << ' ' << *it;
+    }
+
+    // turns the stringstream buffer to string
+    return oss.str();
+    // consider just passing oss instead of returning string
 }
-std::string read_save_string(std::string save_data);
+
+std::string read_save_string(std::string save_data) {
+    // placeholder for now: add for construction from save files
+    return "";
+}
