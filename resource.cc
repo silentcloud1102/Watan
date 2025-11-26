@@ -9,14 +9,15 @@ class Resource {
     int study = 0;
     int tutorial = 0;
 
-    Resource(int caffeine, int lab,  int lecture, int study, int tutorial);
-    explicit Resource(std::string resource);
-    
-    Resource operator+(Resource &other);
-    Resource operator-(Resource &other);
+    explicit Resource(int caffeine, int lab,  int lecture, int study, int tutorial);
 
-    Resource& operator-=(Resource &other);
-    Resource& operator+=(Resource &other);
+    explicit Resource(std::string resource, int amount = 1);
+    
+    Resource operator+(const Resource &other) const;
+    Resource operator-(const Resource &other) const;
+
+    Resource& operator-=(const Resource &other);
+    Resource& operator+=(const Resource &other);
     bool operator<=(const Resource &other) const;
     bool operator>=(const Resource &other) const;
     int count() const;
