@@ -19,3 +19,8 @@ std::string Criteria::get_num() {
 void Criteria::upgrade() {
     if ()
 }
+
+
+int Criteria::get_level() const{
+    return upgradeLevel;
+}

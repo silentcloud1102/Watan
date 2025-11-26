@@ -9,12 +9,28 @@ std::string get_colour() const{
     return colour;
 }
 
+// set_up boolean to override checks: useful for setting up from saves
+void buy_criteria(int id, bool set_up){
+    Criteria * target = board->getGoal(id);
+}
 
-void buy_criteria(int id);
-void buy_goal(int id);
-void upgrade_criteria(int id);
+void buy_goal(int id, bool set_up){
+    Goal * target = board->getGoal(id);
+}
 
-bool can_afford(Resource query){
+void upgrade_criteria(int id){
+    Criteria * target = board->getCriteria(id);
+    Resource cost = target->upgradeCost();
+
+
+    if(can_afford(cost)){
+        held_resources -= cost;
+        criteria.push_back(id);
+        target->set_owner(colour[0]);
+    }
+}
+
+bool can_afford(const Resource & query){
     return held_resources >= query;
 }
 
@@ -35,7 +51,7 @@ std::string get_save_string() const {
 
     oss << " c";
     for(auto it = criteria.begin(); it != criteria.end(); it++){
-        oss << ' ' << *it;
+        oss << ' ' << *it << *it;
     }
 
     // turns the stringstream buffer to string
