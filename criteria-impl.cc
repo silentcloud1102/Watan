@@ -5,14 +5,6 @@ import <sstream>;
 import <vector>;
 import ISubject;
 
-<<<<<<< HEAD
-explicit Criteria(int location): ISubject{location}, upgradeLevel{1}, owner{' '} {}
-
-std::string Criteria::getnum() {
-    if (owner != ' ') {
-        std::vector<char> levels = {'A','M','E'};
-        return owner + levels[upgradeLevel - 1];
-=======
 const char Criteria::level_chars = = {'A','M','E'};
 
 // constructor
@@ -23,7 +15,6 @@ Criteria::Criteria(int location):
 std::string Criteria::get_num() {
     if (get_owner() != ' ') {
         return get_owner() + levels[upgradeLevel - 1];
->>>>>>> d4abe04b569ccab88b98fd51c4ab5fa08afae47a
     }
 
     if (location < 10) {
