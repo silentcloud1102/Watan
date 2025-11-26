@@ -13,16 +13,22 @@ export class Criteria : public ISubject {
     std::vector<Resource> level_costs;
 
     public:
-      explicit Criteria(int location);
+      explicit Criteria(int location, int level = 1);
 
+      // Printing methods
       std::string get_num() const;
-
+      char get_owner();
       int get_level() const;
+
+      // Checks for buying
       bool max_level() const;
+      bool adjacent() const;
+      bool owned() const;
+
+      // Upgrade logic
+      Resource upgradeCost();
       void upgrade();
 
-      char get_owner();
-
-      
+      // save method
       std::string get_save_string() const;
 };

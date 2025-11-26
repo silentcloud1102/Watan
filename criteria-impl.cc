@@ -7,9 +7,10 @@ import ISubject;
 
 const char Criteria::level_chars = {'A','M','E'};
 
-Criteria::Criteria(int location):
+// constructor
+Criteria::Criteria(int location, int level):
     ISubject{location}, 
-    upgradeLevel{1} {}
+    upgradeLevel{level} {}
 
 std::string Criteria::get_num() {
     if (get_owner() != ' ') {
@@ -28,11 +29,19 @@ void Criteria::upgrade() {
 
 char Criteria::get_owner(){
     if(owner){
-        return owner->get_colour()[0];
+        return owner->get_name()[0];
     } else {
         return ' ';
     }
-    
+}
+
+bool Criteria::adjacent(){
+    // fill in later: check whether there are adjacent values.
+    return false;
+}
+
+bool Criteria::owned(){
+    return owner != nullptr;
 }
 
 int Criteria::get_level() const{

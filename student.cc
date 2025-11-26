@@ -1,6 +1,5 @@
 export module Student;
 
-import <iostream>;
 import <vector>;
 import <string>;
 
@@ -8,18 +7,19 @@ import Resource;
 import IObserver;
 
 export class Student : public IObserver {
-    std::string colour;
+    std::string name;
     Resource held_resources;
     std::vector<int> criteria;
     std::vector<int> goals;
     public:
         explicit Student(const std::string colour);
         std::string get_colour() const;
-        
-        void buy_criteria(int id);
-        void buy_goal(int id);
-        void upgrade_criteria(int id);
         bool can_afford(const Resource & query);
+
+        void buy_criteria(int id, bool set_up = false);
+        void buy_goal(int id, bool set_up = false);
+        void upgrade_criteria(int id);
+
 
         // TODO: what is goosed?
         // void goosed();
