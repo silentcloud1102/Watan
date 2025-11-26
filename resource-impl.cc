@@ -1,6 +1,7 @@
 module Resource;
 
 import <string>;
+import <sstream>;
 
 Resource::Resource(int caffeine, int lab, int lecture, int study, int tutorial)
     : caffeine{caffeine}, lab{lab}, lecture{lecture}, study{study}, tutorial{tutorial} {}
@@ -79,5 +80,10 @@ int Resource::count() const {
 
 
 void get_save_string() const {
-    // todo
+    std::ostringstream oss;
+    // may need to change if we decide to use an array instead
+    oss << caffeine << ' ' << lab << ' ' << lecture << ' ' << study << ' ' << tutorial;
+    // turns the stringstream buffer to string
+    return oss.str();
+    // consider just passing oss instead of returning string
 }
