@@ -1,12 +1,14 @@
 export module Game;
 
 import Board;
+import enum;
 
 export class Game {
     Board gameBoard;
     vector<Student> players;
     int cur_turn;
   public:
+    Game(Board gameBoard, vector<Student> players, int cur_turn = 0);
     void next_turn();
     void turn_num();
     void save(string filename);

@@ -1,6 +1,11 @@
 module Game;
 
 import Board;
+import enum;
+
+Game::Game(Board gameBoard, vector<Student> players, int cur_turn): 
+    Board{gameBoard}, players{players}, cur_Turn{cur_turn}{
+}
 
 void Game::dice_rolls(bool isfair){
     // =========================================================
@@ -36,4 +41,9 @@ void Game::dice_rolls(bool isfair){
     } else {
         update_tiles(roll);
     }
+}
+
+
+void Game::save(string filename){
+    // build load file
 }
