@@ -247,6 +247,7 @@ std::vector<int> saveData() {
         saved_data.emplace_back(j);
         saved_data.emplace_back(stoi(tiles[i].getTileNum()));
     }
+    return saved_data;
 }
 
 void Board::update_tiles(int roll_num) const {
