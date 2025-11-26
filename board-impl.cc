@@ -218,11 +218,36 @@ void Board::load_saveData(vector<int> save_data) {
 
     // resType r = static_cast<resType>(save_data[i]);
 
-    for (int i = 0; i < 38; i+=2) {
+    for (int i = 0; i < 38; i += 2) {
         int resource_type = save_data[i];
         int dice_val = save_data[i+1];
         tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
     }
+}
+
+std::vector<int> saveData() {
+    // resource names have trailing spaces since getResource() outputs the string with
+    // trailing spaces to have the board print properly
+    vector<string> resource_names_with_spaces = {
+        "CAFFEINE   ",
+        "LAB        ",
+        "LECTURE    ",
+        "STUDY      ",
+        "TUTORIAL   ",
+        "NETFLIX    "
+    };
+    vector<int> saved_data;
+    for (int i = 0; i < 19; i++) {
+        int resource_type = 0;
+        for (int j = 0; j < 6; j++) {
+            if (resource_names_with_spaces[j] == tiles[i].getResource()) {
+                resource_type = j;
+            }
+        }
+        saved_data.emplace_back(j);
+        saved_data.emplace_back(stoi(tiles[i].getTileNum()));
+    }
+    return saved_data;
 }
 
 void Board::update_tiles(int roll_num) const {

@@ -1,14 +1,19 @@
 import <iostream>;
 import <fstream>;
 import <string>;
+import <memory>;
 
 import Student;
 import Board;
+import Game;
 import enum;
 
 using namespace std;
 
 int main(int argc, char** argv){
+
+    numofPlayers = 4;
+    string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
     int seed = 0; // default seed
     string loadfile = "";
@@ -28,19 +33,26 @@ int main(int argc, char** argv){
         } else if (argv[i] == "-load"){
             if (i + 1 < argc){
                 loadfile = argv[i+1];
-                ifstream ifsl{loadfile};
                 ++i;
             }
         } else if (argv[i] = "-board"){
             if (i + 1 < argc){
                 boardfile = argv[i+1];
-                ifstream ifsb{boardfile};
                 ++i;
             }
         }
     }
     
-    Board board = Board(seed);
+    //Board board = Board(seed);
+    unique_ptr<Board> board = make_unique<Board>(Board(seed));
+    // default game
+    vector<Student> players;
+    for (int i = 0; i < numofPlayers; ++i){
+        Student s = Student{names[i], board};
+        players.emplace_back(s);
+    }
+    Game default_game = Game(*board, players);
+
     // setting up board and seed
     // update goose!
 
@@ -51,14 +63,38 @@ int main(int argc, char** argv){
             cin >> response;
             if (response == 'L'){
                 // read from file
-                // no board file
-                // vector<int> givenBoard;
-                // int temp;
-                // for (int i = 0; i < 38; ++i){
-                //     ifsl >> temp;
-                //     givenBoard.emplace_back(temp);
-                // }
-                // board.load_saveData(givenBoard);
+                int cur_turn;
+                ifstream ifsl{loadfile};
+                getline(ifsl, cur_turn);
+                vector<Student> players;
+                for (int i = 0; i < numofPlayers; ++i){
+                    string line;
+                    getline(ifsl, line);
+                    //playerColor pc = static_cast<playerColor>(i);
+                    Student s = Student{names[i], board};
+                    s.read_save_string(line);
+                    players.emplace_back(s);
+                }
+
+                // can i put in a function
+                vector<int> givenBoard;
+                int temp;
+                for (int i = 0; i < 38; ++i){
+                    ifsl >> temp;
+                    givenBoard.emplace_back(temp);
+                }
+                board->load_saveData(givenBoard);
+
+                int goose;
+                ifsl >> goose;
+                board->updateGoose(goose);
+
+
+                //////////////
+                ///////////
+                // not sure lol
+                default_game = Game(*board, players, cur_turn);
+
                 break;
             } else if (response == 'N'){
                 // new game
@@ -74,11 +110,12 @@ int main(int argc, char** argv){
                 // read from file
                 vector<int> givenBoard;
                 int temp;
+                ifstream ifsl{loadfile};
                 for (int i = 0; i < 38; ++i){
                     ifsl >> temp;
                     givenBoard.emplace_back(temp);
                 }
-                board.load_saveData(givenBoard);
+                board->load_saveData(givenBoard);
                 break;
             } else if (response == 'N'){
                 // new game
@@ -89,12 +126,7 @@ int main(int argc, char** argv){
     
 
 
-    // start game
-
-    Student Blue;
-    Student Red;
-    Student Orange;
-    Student Yellow;
+    // start game 
 
     Student * turnOrder[4] = {Blue, Red, Orange, Yellow};
 
@@ -113,8 +145,7 @@ int main(int argc, char** argv){
         cin >> intersection;
         //studentcolor.accquire(intersection);
     }
-    
-    
+
     // printBoard();
     // start turn
     for (int i = 0; i < turnOrder.length(); ++i){

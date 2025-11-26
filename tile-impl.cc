@@ -27,7 +27,7 @@ std::string Tile::getTilenum() const {
 std::string Tile::getResource() const {
     std::string result = resource_type;
     for(int i = 0; i < (11 - resource_type.length()); ++i) {
-    result += " ";
+        result += " ";
     }
     return result;
 }

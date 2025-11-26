@@ -21,4 +21,7 @@ export class Goal : public ISubject {
     void addAdjacentgoal(const vector<int> &e);
 
     std::string get_save_string() const;
+    bool owned();
+    char get_owner();
+    Resource cost();
 };
