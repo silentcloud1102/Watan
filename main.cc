@@ -89,6 +89,10 @@ int main(int argc, char** argv){
                 ifsl >> goose;
                 board->updateGoose(goose);
 
+
+                //////////////
+                ///////////
+                // not sure lol
                 default_game = Game(*board, players, cur_turn);
 
                 break;
