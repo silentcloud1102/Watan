@@ -1,36 +1,82 @@
 module Student;
 import <sstream>;
 import Board;
+import ISubject;
 
-explicit Student(const std::string colour, Board * board): 
-    colour{colour}, board{board} {}
+Student(const std::string colour, Board * board): 
+    name{colour}, board{board} {}
 
-std::string get_colour() const{
-    return colour;
+std::string get_name() const{
+    return name;
 }
 
 // set_up boolean to override checks: useful for setting up from saves
 void buy_criteria(int id, bool set_up){
-    Criteria * target = board->getGoal(id);
+    Criteria * target = board->getCriteria(id);
+    Resource cost = target->upgradeCost();
+
+    bool affordable = can_afford(cost);
+    bool adjacent = target->adjacent(criteria, goals);
+    bool owned = target->owned();
+
+    if(set_up || affordable && adjacent && !owned){
+        target->acquire(this);
+        held_resources -= cost;
+        criteria.push_back(id);
+    } else if (!adjacent){
+        throw "This criteria is not elligible to be bought.";
+    } else if (owned){
+        throw "This criteria is already owned.";
+    } else if (!affordable){
+        throw "You do not have enough resources.";
+    }
 }
 
 void buy_goal(int id, bool set_up){
     Goal * target = board->getGoal(id);
+    Resource cost = target->upgradeCost();
+
+    bool affordable = can_afford(cost);
+    bool adjacent = target->adjacent(criteria, goals);
+    bool owned = target->owned();
+
+    if(set_up || affordable && adjacent && !owned){
+        Goal->acquire(this);
+        held_resources -= cost;
+        goals.push_back(id);
+    } else if (!adjacent){
+        throw "This goal is not adjacent to any of your goals and criterion.";
+    } else if (owned){
+        throw "This goal is already owned.";
+    } else if (!affordable){
+        throw "You do not have enough resources.";
+    }
 }
 
+// will not be run at set-up, no need to include a set-up override
 void upgrade_criteria(int id){
+    bool found = false;
+    for(auto val: criteria){
+        if (val == id) {
+            found = true;
+            break;
+        }
+    }
+
+    if(!found){
+        throw "This criteria is not owned by student.";
+    }
+
     Criteria * target = board->getCriteria(id);
     Resource cost = target->upgradeCost();
 
-
     if(can_afford(cost) && !target->max_level()){
         held_resources -= cost;
-        criteria.push_back(id);
-        target->acquire(this);
+        target->upgrade();
     } else if (target->max_level()){
-        throw "Criteria is already max level.";
+        throw "This criteria is already max level.";
     } else if (!can_afford(cost)){
-        throw "You do not have enough resources.";
+        throw "The student does not have enough resources.";
     } 
 
 }
@@ -67,6 +113,6 @@ std::string get_save_string() const {
 }
 
 void read_save_string(std::string save_data) {
-    // placeholder for now: add for construction from save files
+    // placeholder for now: add for construction from save strings
     return;
 }
