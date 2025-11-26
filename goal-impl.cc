@@ -6,8 +6,17 @@ import ISubject;
 
 Goal::Goal(int location): ISubject(location), owner(' ') {}
 
-void Goal::addAdjacentcourse_criterion(const std::vector<int> &v) { adjacent_course_criterion = v; }
-void Goal::addAdjacentgoal(const std::vector<int> &e) { adjacent_goals = e; }
+std::string Goal::getnum() const {
+    if (owner != ' ') {
+        return owner + "A";
+    }
+    
+    if (location < 10) {
+        return " " + std::to_string(location);
+    
+    }
+    return std::to_string(location);
+}
 
 bool Goal::adjacent_goal_check(int location) {
     for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
@@ -27,14 +36,5 @@ bool Goal::adjacent_criteria_check(int location) {
     return false;
 }
 
-std::string Goal::getnum() const {
-    if (owner != ' ') {
-        return owner + "A";
-    }
-    
-    if (number < 10) {
-        return " " + std::to_string(number);
-    
-    }
-    return std::to_string(number);
-}
+void Goal::addAdjacentcourse_criterion(const std::vector<int> &v) { adjacent_course_criterion = v; }
+void Goal::addAdjacentgoal(const std::vector<int> &e) { adjacent_goals = e; }
