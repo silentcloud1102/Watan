@@ -8,9 +8,9 @@ import ISubject;
 const char Criteria::level_chars = = {'A','M','E'};
 
 // constructor
-Criteria::Criteria(int location):
+Criteria::Criteria(int location, int level):
     ISubject{location}, 
-    upgradeLevel{1} {}
+    upgradeLevel{level} {}
 
 std::string Criteria::get_num() {
     if (get_owner() != ' ') {
