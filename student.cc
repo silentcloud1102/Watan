@@ -19,7 +19,7 @@ export class Student : public IObserver {
         void buy_criteria(int id);
         void buy_goal(int id);
         void upgrade_criteria(int id);
-        bool can_afford(Resource query);
+        bool can_afford(const Resource & query);
 
         // TODO: what is goosed?
         // void goosed();
