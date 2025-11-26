@@ -52,18 +52,13 @@ string Board::goose_printer(string tile) const {
     }
 }
 
-Board::Board(string seed = "") {
+
+Board::Board(unsigned seed) {
     goose_tile = -1;
     // ============================================================
     //  Randomizing our tiles
     // ============================================================
-    unsigned seed_val = 69;
-    try {
-        seed_val = stoi(seed);
-    } catch( invalid_argument & e ) {
-    } catch(out_of_range & e ) {
-    }
-    default_random_engine rng{seed_val};
+    default_random_engine rng{seed};
     
     // ============================================================
     //  Initialize all objects
@@ -181,6 +176,24 @@ Board::Board(string seed = "") {
         tiles[t].addcourse_criterion(course_criteria[course_criterion4]);
         tiles[t].addcourse_criterion(course_criteria[course_criterion5]);
         tiles[t].addcourse_criterion(course_criteria[course_criterion6]);
+    }
+}
+
+void Board::load_saveData(vector<int> save_data) {
+    vector<string> resource_names = {
+        "CAFFEINE",
+        "LAB",
+        "LECTURE",
+        "STUDY",
+        "TUTORIAL",
+        "NETFLIX"
+    };
+
+    for (int i = 0; i < 38; ++i) {
+        resource_type = save_data[i];
+        ++i;
+        dice_val = save_data[i];
+        tiles.emplace_back(resource_names[resource_type], dice_val, i);
     }
 }
 

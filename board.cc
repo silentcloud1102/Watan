@@ -14,7 +14,8 @@ export class Board {
     std::vector<Criteria> course_criteria;
     std::string goose_printer(int tile_num) const;
     public:
-        Board(std::string seed = "");
+        Board(unsigned seed);
+        void load_saveData(std::vector<int> save_data);
         void update_tiles(int roll_num, int goose_tile) const;
         Criteria& getCriteria(int criteria_num) const;
         Goal& getGoals(int goal_num) const;
