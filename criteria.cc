@@ -1,6 +1,7 @@
 export module Criteria;
 
 import <string>;
+import <vector>;
 import Resource;
 import ISubject;
 
@@ -9,7 +10,7 @@ export class Criteria : public ISubject {
 
     // levels
     static const level_chars[3];
-    vector<Resource> level_costs;
+    std::vector<Resource> level_costs;
 
     public:
       explicit Criteria(int location);

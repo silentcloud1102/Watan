@@ -3,6 +3,7 @@ import <fstream>;
 import <string>;
 
 import Student;
+import enum;
 
 using namespace std;
 
@@ -86,27 +87,29 @@ int main(int argc, char** argv){
 
         // reading, will be moved
         // 19 tile resources + 19 tile values = 38
-        int r;
+        int resourceNum;
         int value;
         for (int i = 0; i < 38; ++i){
-            ifsb >> r;
+            ifsb >> resourceNum;
             ifsb >> value;
             
             // reading conditions
-            if (r == 0){
-                //"CAFFEINE"
-            } else if (r == 1){
-                //"LAB",
-            } else if (r == 2){
-                //"LECTURE",
-            } else if (r == 3){
-                //"STUDY",
-            } else if (r == 4){
-                //"TUTORIAL",
-            } else if (r == 5){
-                //"NETFLIX"
-                value = -1;
-            }
+            // if (r == 0){
+            //     //"CAFFEINE"
+            // } else if (r == 1){
+            //     //"LAB",
+            // } else if (r == 2){
+            //     //"LECTURE",
+            // } else if (r == 3){
+            //     //"STUDY",
+            // } else if (r == 4){
+            //     //"TUTORIAL",
+            // } else if (r == 5){
+            //     //"NETFLIX"
+            //     value = -1;
+            // }
+
+            resType r = static_cast<resType>(resourceNum);
         }
     }
 
