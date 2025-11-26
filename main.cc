@@ -40,7 +40,7 @@ int main(int argc, char** argv){
         }
     }
     
-    Board(seed);
+    Board board = Board(seed);
     // setting up board and seed
     // update goose!
 
@@ -58,7 +58,7 @@ int main(int argc, char** argv){
                 //     ifsl >> temp;
                 //     givenBoard.emplace_back(temp);
                 // }
-                // load_saveData(givenBoard);
+                // board.load_saveData(givenBoard);
                 break;
             } else if (response == 'N'){
                 // new game
@@ -78,7 +78,7 @@ int main(int argc, char** argv){
                     ifsl >> temp;
                     givenBoard.emplace_back(temp);
                 }
-                load_saveData(givenBoard);
+                board.load_saveData(givenBoard);
                 break;
             } else if (response == 'N'){
                 // new game
@@ -105,12 +105,17 @@ int main(int argc, char** argv){
         cin >> intersection;
         //studentcolor.accquire(intersection);
     }
-    // only one direction right now, can do recursion but would need to make a function?
-    // is that ok in main, (design wise)
+    //backwards
+    for (int i = (turnOrder.length - 1); i > 0; --i){
+        cout << "Student " << // to_string(students[i]) 
+        cout << ", where do you want to complete an Assignment?";
+        int intersection;
+        cin >> intersection;
+        //studentcolor.accquire(intersection);
+    }
+    
     
     // printBoard();
-
-
     // start turn
     for (int i = 0; i < turnOrder.length(); ++i){
         cout << "Student " << //to_string(students[i]) << "'s turn.";
