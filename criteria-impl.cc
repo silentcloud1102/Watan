@@ -123,6 +123,6 @@ void Criteria::addAdjacentcourse_criterion(const std::vector<int> &v) {
     adjacent_course_criterion = v; 
 }
 
-void Goal::addAdjacentgoal(const std::vector<int> &e) { 
+void Criteria::addAdjacentgoal(const std::vector<int> &e) { 
     adjacent_goals = e; 
 }
