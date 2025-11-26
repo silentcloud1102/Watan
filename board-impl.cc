@@ -189,11 +189,12 @@ void Board::load_saveData(vector<int> save_data) {
         "NETFLIX"
     };
 
-    for (int i = 0; i < 38; ++i) {
-        resource_type = save_data[i];
-        ++i;
-        dice_val = save_data[i];
-        tiles.emplace_back(resource_names[resource_type], dice_val, i);
+    // resType r = static_cast<resType>(save_data[i]);
+
+    for (int i = 0; i < 38; i+=2) {
+        int resource_type = save_data[i];
+        int dice_val = save_data[i+1];
+        tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
     }
 }
 
