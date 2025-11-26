@@ -10,7 +10,7 @@ export class Criteria : public ISubject {
 
     // levels
     static const char level_chars[3];
-    static Resource level_costs[3];
+    static const Resource level_costs[3];
 
     public:
       explicit Criteria(int location, int level = 1);
@@ -25,7 +25,7 @@ export class Criteria : public ISubject {
       bool owned() const;
 
       // Upgrade logic
-      Resource upgradeCost();
+      Resource & upgradeCost() const;
       void upgrade();
 
       // save method

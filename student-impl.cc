@@ -39,7 +39,7 @@ void buy_criteria(int id, bool set_up){
 
 void buy_goal(int id, bool set_up){
     Goal * target = board->getGoal(id);
-    Resource cost = target->upgradeCost();
+    Resource cost = target->cost();
 
     bool affordable = can_afford(cost);
     bool adjacent = target->adjacent(criteria, goals);

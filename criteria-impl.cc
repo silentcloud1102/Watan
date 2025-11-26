@@ -21,7 +21,7 @@ Criteria::Criteria(int location, int level):
 
 // returns a string representing the correct representation for printing
 // on the board. Different representation when owned.
-std::string Criteria::get_num() {
+std::string Criteria::get_num() const {
     // note: we will not use stringstream here because it is a simple concatenation
     // stringstream will be used when there are multiple fields to loop through
 
@@ -48,7 +48,7 @@ int Criteria::get_level() const{
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent(){
+bool Criteria::adjacent() const{
     // check that there is no adjacent Criteria already owned
     // check that there is an adjacent owned Goal
     return false;
@@ -56,7 +56,7 @@ bool Criteria::adjacent(){
 
 // boolean value representing whether an owner is already defined
 // indicates whether it is valid to attempt to buy
-bool Criteria::owned(){
+bool Criteria::owned() const{
     return owner != nullptr;
 }
 
@@ -64,7 +64,7 @@ bool Criteria::owned(){
 // upgrade logic methods: 
 
 // returns the upgrade cost of the current level as a resource
-Resource Criteria::upgradeCost(){
+Resource & Criteria::upgradeCost() const{
     if(!owned()){
         return level_costs[0]; // cost to "upgrade" to level 1
     } else if(max_level()){
