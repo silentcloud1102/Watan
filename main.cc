@@ -3,6 +3,7 @@ import <fstream>;
 import <string>;
 
 import Student;
+import enum;
 
 using namespace std;
 
@@ -53,34 +54,62 @@ int main(int argc, char** argv){
     // setting up board and seed
 
     if (loadfile != ""){
-        // read from file
-        // no board file
+        while (true){
+            cout << "Would like like to play on your loaded game or start a new game?[L/N] ";
+            char response;
+            cin >> response;
+            if (response == 'L'){
+                // read from file
+                // no board file
+                break;
+            } else if (response == 'N'){
+                // new game
+                break;
+            }
+        }
     } else if (boardfile != ""){
-        // read from file
-        // no load file
+        while (true){
+            cout << "Would like like to play on your board or start a new game?[B/N] ";
+            char response;
+            cin >> response;
+            if (response == 'B'){
+                // read from file
+                // no load file
+                break;
+            } else if (response == 'N'){
+                // new game
+                break;
+            }
+        }
 
+
+        
+
+        // reading, will be moved
         // 19 tile resources + 19 tile values = 38
-        int r;
+        int resourceNum;
         int value;
         for (int i = 0; i < 38; ++i){
-            ifsb >> r;
+            ifsb >> resourceNum;
             ifsb >> value;
             
             // reading conditions
-            if (r == 0){
-                //"CAFFEINE"
-            } else if (r == 1){
-                //"LAB",
-            } else if (r == 2){
-                //"LECTURE",
-            } else if (r == 3){
-                //"STUDY",
-            } else if (r == 4){
-                //"TUTORIAL",
-            } else if (r == 5){
-                //"NETFLIX"
-                value = -1;
-            }
+            // if (r == 0){
+            //     //"CAFFEINE"
+            // } else if (r == 1){
+            //     //"LAB",
+            // } else if (r == 2){
+            //     //"LECTURE",
+            // } else if (r == 3){
+            //     //"STUDY",
+            // } else if (r == 4){
+            //     //"TUTORIAL",
+            // } else if (r == 5){
+            //     //"NETFLIX"
+            //     value = -1;
+            // }
+
+            resType r = static_cast<resType>(resourceNum);
         }
     }
 

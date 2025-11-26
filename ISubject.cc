@@ -9,6 +9,6 @@ export class ISubject{
         int location;
     
     public:
-        ISubject(int location): location{location}
+        ISubject(int location): location{location}, owner{nullptr};
         virtual void acquire(IObserver* student) = 0;
 };

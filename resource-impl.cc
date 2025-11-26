@@ -1,21 +1,22 @@
 module Resource;
 
 import <string>;
+import <sstream>;
 
 Resource::Resource(int caffeine, int lab, int lecture, int study, int tutorial)
     : caffeine{caffeine}, lab{lab}, lecture{lecture}, study{study}, tutorial{tutorial} {}
 
-Resource::Resource(std::string resource) {
+Resource::Resource(std::string resource, int amount) {
     if (resource == "CAFFEINE") {
-        caffeine = 1;
+        caffeine = amount;
     } else if (resource == "LAB") {
-        lab = 1;
+        lab = amount;
     } else if (resource == "LECTURE") {
-        lecture = 1;
+        lecture = amount;
     } else if (resource == "STUDY") {
-        study = 1;
+        study = amount;
     } else if (resource == "TUTORIAL") {
-        tutorial = 1;
+        tutorial = amount;
     }
 }
 
@@ -56,6 +57,7 @@ Resource& Resource::operator-=(const Resource &other) {
     tutorial -= other.tutorial;
     return *this;
 }
+
 bool Resource::operator<=(const Resource &other) const {
     return caffeine <= other.caffeine &&
            lab <= other.lab &&
@@ -74,4 +76,14 @@ bool Resource::operator>=(const Resource &other) const {
 
 int Resource::count() const {
     return caffeine + lab + lecture + study + tutorial;
+}
+
+
+void get_save_string() const {
+    std::ostringstream oss;
+    // may need to change if we decide to use an array instead
+    oss << caffeine << ' ' << lab << ' ' << lecture << ' ' << study << ' ' << tutorial;
+    // turns the stringstream buffer to string
+    return oss.str();
+    // consider just passing oss instead of returning string
 }

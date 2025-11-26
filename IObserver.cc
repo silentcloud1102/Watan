@@ -3,5 +3,6 @@ export module IObserver;
 import Resource;
 
 export class IObserver{
-    virtual void resourceNotify(Resource rchange) = 0;
+    public:
+        virtual void resource_notify(Resource rchange) = 0;
 };

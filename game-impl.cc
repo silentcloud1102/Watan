@@ -2,7 +2,7 @@ module Game;
 
 import Board;
 
-void Game::diceRolls(bool isfair){
+void Game::dice_rolls(bool isfair){
     // =========================================================
     // Generating the dicerolls
     // =========================================================
@@ -32,7 +32,7 @@ void Game::diceRolls(bool isfair){
     // =========================================================
     if (roll == 7) {
         // let them move the goose somewhere, then check for stealing
-        gameBoard.updateGoose()
+        gameBoard.update_goose()
     } else {
         update_tiles(roll);
     }

@@ -7,9 +7,9 @@ export class Game {
     vector<Student> players;
     int cur_turn;
   public:
-    void nextTurn();
-    void turnNum();
+    void next_turn();
+    void turn_num();
     void save(string filename);
-    void diceRolls(bool isfair);
+    void dice_rolls(bool isfair);
 
 };
