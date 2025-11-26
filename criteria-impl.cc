@@ -5,7 +5,12 @@ import <sstream>;
 import <vector>;
 import ISubject;
 
-const char Criteria::level_chars = = {'A','M','E'};
+const char Criteria::level_chars[3] = {'A','M','E'};
+const Resource Criteria::level_costs[3] = {
+    Resource {1, 1, 1, 0, 1},
+    Resource {0, 0, 2, 3, 0},
+    Resource {3, 2, 2, 1, 2}
+};
 
 // constructor
 Criteria::Criteria(int location, int level):
@@ -23,8 +28,22 @@ std::string Criteria::get_num() {
     return std::to_string(location);
 }
 
+
+Resource Criteria::upgradeCost(){
+    if(!owned()){
+        return level_costs[0]; // cost to "upgrade" to level 1
+    } else if(max_level()){
+        return level_costs[upgradeLevel - 1];
+    } else{
+        return level_costs[upgradeLevel];
+    }
+}
+
 void Criteria::upgrade() {
-    if ()
+    if(upgradeLevel < 3){
+        upgradeLevel++;
+    }
+    return;
 }
 
 char Criteria::get_owner(){

@@ -9,8 +9,8 @@ export class Criteria : public ISubject {
     int upgradeLevel;
 
     // levels
-    static const level_chars[3];
-    std::vector<Resource> level_costs;
+    static const char level_chars[3];
+    static Resource level_costs[3];
 
     public:
       explicit Criteria(int location, int level = 1);
