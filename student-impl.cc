@@ -23,11 +23,16 @@ void upgrade_criteria(int id){
     Resource cost = target->upgradeCost();
 
 
-    if(can_afford(cost)){
+    if(can_afford(cost) && !target->max_level()){
         held_resources -= cost;
         criteria.push_back(id);
-        target->set_owner(colour[0]);
-    }
+        target->acquire(this);
+    } else if (target->max_level()){
+        throw "Criteria is already max level.";
+    } else if (!can_afford(cost)){
+        throw "You do not have enough resources.";
+    } 
+
 }
 
 bool can_afford(const Resource & query){
@@ -46,12 +51,14 @@ std::string get_save_string() const {
 
     oss << " g";
     for(auto it = goals.begin(); it != goals.end(); it++){
-        oss << ' ' << *it ;
+        Goal * target = board->getGoal(*it);
+        oss << ' ' << target->get_save_string();
     }
 
     oss << " c";
     for(auto it = criteria.begin(); it != criteria.end(); it++){
-        oss << ' ' << *it << *it;
+        Criteria * target = board->getCriteria(*it);
+        oss << ' ' << target->get_save_string();
     }
 
     // turns the stringstream buffer to string
@@ -59,7 +66,7 @@ std::string get_save_string() const {
     // consider just passing oss instead of returning string
 }
 
-std::string read_save_string(std::string save_data) {
+void read_save_string(std::string save_data) {
     // placeholder for now: add for construction from save files
-    return "";
+    return;
 }
