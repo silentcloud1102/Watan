@@ -14,8 +14,7 @@ export class Student : public IObserver {
     public:
         explicit Student(const std::string colour);
         std::string get_colour() const;
-        std::string get_save() const;
-        std::string read_save(std::string save_data);
+        
         void buy_criteria(int id);
         void buy_goal(int id);
         void upgrade_criteria(int id);
@@ -24,6 +23,10 @@ export class Student : public IObserver {
         // TODO: what is goosed?
         // void goosed();
 
-        // main method to modify resources
+        // main method to modify resources, inherited from IObserver
         void resource_notify(Resource rchange) override;
+
+        // save logic
+        std::string get_save_string() const;
+        void read_save_string(std::string save_data);
 };
