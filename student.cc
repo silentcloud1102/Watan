@@ -13,8 +13,8 @@ export class Student : public IObserver {
     std::vector<int> goals;
     public:
         explicit Student(const std::string colour);
-        std::string get_colour() const;
-        bool can_afford(const Resource & query);
+        std::string get_name() override;
+        bool can_afford(const Resource & query) const;
 
         void buy_criteria(int id, bool set_up = false);
         void buy_goal(int id, bool set_up = false);

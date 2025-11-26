@@ -5,6 +5,7 @@ import <sstream>;
 import <vector>;
 import ISubject;
 
+// CONSTANTS
 const char Criteria::level_chars[3] = {'A','M','E'};
 const Resource Criteria::level_costs[3] = {
     Resource {1, 1, 1, 0, 1},
@@ -12,16 +13,16 @@ const Resource Criteria::level_costs[3] = {
     Resource {3, 2, 2, 1, 2}
 };
 
-// constructor
+// CONSTRUCTOR
 Criteria::Criteria(int location, int level):
     ISubject{location}, 
     upgradeLevel{level} {}
 
-// Get methods for printing
+// GET METHODS: printing
 
 // returns a string representing the correct representation for printing
 // on the board. Different representation when owned.
-std::string Criteria::get_num() {
+std::string Criteria::get_num() const {
     // note: we will not use stringstream here because it is a simple concatenation
     // stringstream will be used when there are multiple fields to loop through
 
@@ -44,11 +45,11 @@ int Criteria::get_level() const{
     return upgradeLevel;
 }
 
-// logic for buying: for use post save loading
+// BUY LOGIC METHODS: for use post save loading
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent(){
+bool Criteria::adjacent() const{
     // check that there is no adjacent Criteria already owned
     // check that there is an adjacent owned Goal
     return false;
@@ -56,15 +57,15 @@ bool Criteria::adjacent(){
 
 // boolean value representing whether an owner is already defined
 // indicates whether it is valid to attempt to buy
-bool Criteria::owned(){
+bool Criteria::owned() const{
     return owner != nullptr;
 }
 
 
-// upgrade logic methods: 
+// UPGRADE LOGIC METHODS:
 
 // returns the upgrade cost of the current level as a resource
-Resource Criteria::upgradeCost(){
+Resource & Criteria::upgradeCost() const{
     if(!owned()){
         return level_costs[0]; // cost to "upgrade" to level 1
     } else if(max_level()){
@@ -73,7 +74,6 @@ Resource Criteria::upgradeCost(){
         return level_costs[upgradeLevel];
     }
 }
-
 
 // boolean value of whether the max level has been achieved
 // indicates whether it is valid to upgrade the Criteria
@@ -97,3 +97,32 @@ std::string Criteria::get_save_string() const{
     return oss.str();
 }
 
+
+// ADJACENCY LOGIC METHODS: utilized by Criteria::adjacent()
+
+
+bool Criteria::adjacent_goal_check(int location) {
+    for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
+        if (*it == location) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Criteria::adjacent_criteria_check(int location) {
+    for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
+        if (*it == location) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Criteria::addAdjacentcourse_criterion(const std::vector<int> &v) { 
+    adjacent_course_criterion = v; 
+}
+
+void Criteria::addAdjacentgoal(const std::vector<int> &e) { 
+    adjacent_goals = e; 
+}

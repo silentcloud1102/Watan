@@ -16,6 +16,7 @@ export class Board {
     public:
         Board(unsigned seed);
         void load_saveData(std::vector<int> save_data);
+        std::vector<int> saveData();
         void update_tiles(int roll_num, int goose_tile) const;
         Criteria& getCriteria(int criteria_num) const;
         Goal& getGoals(int goal_num) const;

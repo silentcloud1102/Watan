@@ -37,8 +37,13 @@ bool Goal::adjacent_criteria_check(int location) {
     return false;
 }
 
-void Goal::addAdjacentcourse_criterion(const std::vector<int> &v) { adjacent_course_criterion = v; }
-void Goal::addAdjacentgoal(const std::vector<int> &e) { adjacent_goals = e; }
+void Goal::addAdjacentcourse_criterion(const std::vector<int> &v) { 
+    adjacent_course_criterion = v; 
+}
+
+void Goal::addAdjacentgoal(const std::vector<int> &e) { 
+    adjacent_goals = e; 
+}
 
 bool Goal::owned(){
     return owner != nullptr;
