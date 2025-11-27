@@ -3,18 +3,26 @@ module Game;
 import Board;
 import enum;
 
+const numofPlayers = 4;
+const string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
+
 Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn): 
     Board{gameBoard}, players{players}, cur_Turn{cur_turn}, seed{seed}{
+        
         //Board board = Board(seed);
         // unique_ptr<Board> board = make_unique<Board>(Board(seed));
         gameBoard = Board(seed);
         for (int i = 0; i < numofPlayers; ++i){
-            Student s = Student{names[i], board};
+            Student s = Student{names[i], *gameBoard};
             players.emplace_back(s);
         }
 }
 
-void Game::updateBoard() {
+void Game::updateBoard(ifstream &file){
+
+}
+
+void Game::loadGame(ifstream &file){
     
 }
 

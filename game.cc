@@ -14,6 +14,7 @@ export class Game {
     void turn_num();
     void save(string filename);
     void dice_rolls(bool isfair);
-    void updateBoard();
+    void updateBoard(ifstream file);
+    void loadGame(ifstream file);
 
 };
