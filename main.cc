@@ -99,8 +99,88 @@ int main(int argc, char** argv){
 
     // start turn
     for (int i = 0; i < turnOrder.length(); ++i){
+        Student * player = &default_game.players[i];
+
         cout << "Student " << default_game.players[i].get_name() << "'s turn.";
-        default_game.players[i].print_status();
+        player->print_status();
+
+        string turn_command;
+        
+        //??????????? i don't get this part
+        cout << ">";
+        cin >> turn_command;
+
+        // is there default?
+        bool isfair;
+        // can i add field to student for their dice so it carries on from prev turns
+        if (turn_command == "load"){
+            isfair = false;
+        } else if (turn_command == "fair"){
+            isfair = true;
+        } else if (turn_command == "roll"){
+            default_game.dice_rolls(isfair);
+        } else {
+
+        }
+        // ??????????????
+
+        string command;
+        while (true){
+            cout << ">";
+            cin >> command;
+            if (command == "board"){
+                // printBoard();
+            } else if (command == "status"){
+                for (int i = 0; i < 4; ++i){
+                    player->print_status();
+                }
+            } else if (command == "criteria"){
+                // completions?
+            } else if (command == "achieve"){
+                cout << ">";
+                int goal;
+                cin >> goal;
+                player->buy_goal(goal);
+            } else if (command == "complete"){
+                int c;
+                cin >> c;
+                player->buy_criteria(c);
+            } else if (command == "improve"){
+                int c;
+                cin >> c;
+                player->upgrade_critiera(c);
+            } else if (command == "trade"){
+                string color;
+                string give_r;
+                string take_r;
+                cin >> color >> give_r >> take_r;
+                //trade
+            } else if (command == "next"){
+                break;
+            } else if (command == "save"){
+                string filename;
+                cin >> filename;
+                default_game.save(filename);
+            } else if (command == "help"){
+                cout << "Valid commands:" << endl;
+                cout << "board" << endl;
+                cout << "status" << endl;
+                cout << "criteria" << endl;
+                cout << "achieve <goal>" << endl;
+                cout << "complete <criterion>" << endl;
+                cout << "improve <criterion>" << endl;
+                cout << "trade <colour> <give> <take>" << endl;
+                cout << "next" << endl;
+                cout << "save <file>" << endl;
+                cout << "help" << endl;
+            } 
+        }
     }
+
+
+
+
+
+    
 
 }
