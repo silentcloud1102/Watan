@@ -2,6 +2,9 @@ export module Game;
 
 import Board;
 import enum;
+import <string>;
+
+using nameespace std;
 
 export class Game {
     Board gameBoard;

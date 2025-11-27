@@ -2,9 +2,13 @@ export module Student;
 
 import <vector>;
 import <string>;
+import <sstream>;
+import <iostream;
 
+import Board;
+import ISubject;
 import Resource;
-import IObserver;
+import IObserver
 
 export class Student : public IObserver {
     std::string name;

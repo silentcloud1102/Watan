@@ -1,7 +1,14 @@
 module Student;
+
+import <vector>;
+import <string>;
 import <sstream>;
+import <iostream;
+
 import Board;
 import ISubject;
+import Resource;
+import IObserver
 
 Student(const std::string colour, Board * board): 
     name{colour}, board{board} {}
@@ -123,5 +130,24 @@ std::string get_save_string() const {
 
 void read_save_string(std::string save_data) {
     // placeholder for now: add for construction from save strings
-    return;
+    istringstream iss {save_data};
+    int read;
+    int resources[5];
+    for (int i = 0; i < 5; ++i){
+        iss >> read;
+        resources[i] = read;
+    }
+    Resource r = {resources[0], resources[1], resources[2], resources[3], resources[4]};
+    this->resource_notify(r);
+
+    iss.ignore();
+    while (iss >> read){
+        this->buy_goal(read, true);
+    }
+    iss.clear();
+    iss.ignore();
+    while (iss >> read){
+        this->buy_criteia(read, true);
+    }
+    
 }
