@@ -49,9 +49,18 @@ int Criteria::get_level() const{
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent() const{
+bool Criteria::adjacent(int location) const{
     // check that there is no adjacent Criteria already owned
-    
+    for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
+        if (*it == location) {
+            break;
+        }
+    }
+    for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
+        if (location) {
+            return true;
+        }
+    }
     // check that there is an adjacent owned Goal
     return false;
 }

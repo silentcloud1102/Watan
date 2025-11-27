@@ -14,7 +14,7 @@ Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn):
         }
 }
 
-void Game::updateBoard(){
+void Game::updateBoard() {
     
 }
 

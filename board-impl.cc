@@ -165,10 +165,10 @@ Board::Board(unsigned seed) {
     };
 
     for (int i = 0; i < 54; ++i) {
-        course_criteria.emplace_back(i,"");
+        course_criteria.emplace_back(i);
     }
     for (int i = 0; i < 72; ++i) {
-        goals.emplace_back(i,"");
+        goals.emplace_back(i);
     }
     for (int i = 0; i < 19; ++i) {
         int resource_type = rng() % 6;
