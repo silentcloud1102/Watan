@@ -90,9 +90,9 @@ std::string Resource::get_save_string() const {
 }
 
 void Resource::print_resource_status() {
-    cout << caffeine << " caffeines,";
-    cout << lab << " labs,";
-    cout << lecture << " lectures,";
-    cout << study << " studies,";
-    cout << turtorial << " tutorials.";
+    std::cout << caffeine << " caffeines,";
+    std::cout << lab << " labs,";
+    std::cout << lecture << " lectures,";
+    std::cout << study << " studies,";
+    std::cout << tutorial << " tutorials.";
 }

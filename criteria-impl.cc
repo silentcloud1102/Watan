@@ -28,7 +28,7 @@ std::string Criteria::get_num() const {
 
     // if owner is not nullptr, owned. Return with owner char and current level
     if (owner) {
-        return owner->get_name[0] + levels[upgradeLevel - 1];
+        return owner->get_name[0] + std::to_str(upgradeLevel - 1);
     }
 
     // else, not owned. if the location is not two digits, add a space in front
@@ -49,7 +49,7 @@ int Criteria::get_level() const{
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent(int location) const{
+bool Criteria::adjacent(std::vector<int> &criteria, std::vector<int> &goals) const{
     // check that there is no adjacent Criteria already owned
     for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
         if (*it == location) {
@@ -129,7 +129,7 @@ bool Criteria::adjacent_criteria_check(int location) {
 }
 
 // adding the adjacent course criterion
-void addAdjacentcourse_criterion(ISubject* criteria) {
+void Criteria::addAdjacentcourse_criterion(ISubject* criteria) {
     adjacent_course_criterion.push_back(criteria);
 }
 

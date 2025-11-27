@@ -3,6 +3,7 @@ export module Criteria;
 import <string>;
 import <vector>;
 import Resource;
+import IObserver;
 import ISubject;
 
 export class Criteria : public ISubject {
@@ -11,8 +12,8 @@ export class Criteria : public ISubject {
     static const Resource level_costs[3];
   
     int upgradeLevel;
-    vector<ISubject *> adjacent_course_criterion;
-    vector<int> adjacent_goals;
+    std::vector<ISubject *> adjacent_course_criterion;
+    std::vector<int> adjacent_goals;
 
     public:
       explicit Criteria(int location, int level = 1);
@@ -21,7 +22,7 @@ export class Criteria : public ISubject {
       void acquire(IObserver* student) override;
 
       // Notification method
-      void newResource(string r) const;
+      void newResource(std::string r) const;
       
       // Printing methods
       std::string get_num() const;
@@ -29,7 +30,7 @@ export class Criteria : public ISubject {
 
       // Checks for buying
       bool max_level() const;
-      bool adjacent(vector<int> &criteria, vector<int> &goals) const;
+      bool adjacent(std::vector<int> &criteria, std::vector<int> &goals) const;
       bool owned() const;
 
       // Upgrade logic
@@ -38,6 +39,4 @@ export class Criteria : public ISubject {
 
       // save method
       std::string get_save_string() const;
-
-      
 };

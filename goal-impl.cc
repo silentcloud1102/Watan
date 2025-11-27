@@ -7,10 +7,10 @@ import IObserver;
 import ISubject;
 
 // DECLARING THE CONSTANT
-export const Resource Goal::resource_cost{0, 0, 0, 1, 1};
+const Resource Goal::resource_cost{0, 0, 0, 1, 1};
 
 // CONSTRUCTOR
-Goal::Goal(int location): ISubject(location), owner_char(' ') {}
+Goal::Goal(int location): ISubject(location) {}
 
 // GET METHODS
 std::string Goal::getnum() const {
@@ -68,7 +68,7 @@ bool Goal::owned() const{
 }
 
 // returns the eligibility of the goal based on adjacent goals/criteria
-bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
+bool Goal::adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
     // WIP
     return false;
 }
@@ -80,5 +80,5 @@ const Resource & Goal::cost() const {
 
 // Save method for saves
 std::string Goal::get_save_string() const{
-    return location;
+    return std::to_string(location);
 }

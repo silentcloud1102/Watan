@@ -6,7 +6,7 @@ import <string>;
 export class ISubject{
     protected:
         int location;
-        ISubject * owner;
+        IObserver * owner;
     
     public:
         ISubject(int location): location{location}, owner{nullptr} {}

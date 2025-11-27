@@ -251,7 +251,7 @@ void Board::load_saveData(vector<int> save_data) {
     }
 }
 
-string saveData() {
+string Board::saveData() {
     // resource names have trailing spaces since getResource() outputs the string with
     // trailing spaces to have the board print properly
     vector<string> resource_names_with_spaces = {
