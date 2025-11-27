@@ -3,8 +3,19 @@ module Game;
 import Board;
 import enum;
 
-Game::Game(Board gameBoard, vector<Student> players, int cur_turn): 
-    Board{gameBoard}, players{players}, cur_Turn{cur_turn}{
+Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn): 
+    Board{gameBoard}, players{players}, cur_Turn{cur_turn}, seed{seed}{
+        //Board board = Board(seed);
+        // unique_ptr<Board> board = make_unique<Board>(Board(seed));
+        gameBoard = Board(seed);
+        for (int i = 0; i < numofPlayers; ++i){
+            Student s = Student{names[i], board};
+            players.emplace_back(s);
+        }
+}
+
+void Game::updateBoard(){
+    
 }
 
 void Game::dice_rolls(bool isfair){

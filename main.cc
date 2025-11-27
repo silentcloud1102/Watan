@@ -43,15 +43,8 @@ int main(int argc, char** argv){
         }
     }
     
-    //Board board = Board(seed);
-    unique_ptr<Board> board = make_unique<Board>(Board(seed));
-    // default game
-    vector<Student> players;
-    for (int i = 0; i < numofPlayers; ++i){
-        Student s = Student{names[i], board};
-        players.emplace_back(s);
-    }
-    Game default_game = Game(*board, players);
+    
+    Game default_game = Game(seed);
 
     // setting up board and seed
     // update goose!
@@ -76,7 +69,7 @@ int main(int argc, char** argv){
                     players.emplace_back(s);
                 }
 
-                // can i put in a function
+                
                 vector<int> givenBoard;
                 int temp;
                 for (int i = 0; i < 38; ++i){
