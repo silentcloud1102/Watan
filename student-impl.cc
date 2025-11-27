@@ -40,6 +40,7 @@ void buy_criteria(int id, bool set_up){
 
     // if no exceptions were thrown or set_up is true, then add to list.
     criteria.push_back(id);
+    ++criteria_count;
     target->acquire(this);
     return;
 }
@@ -155,5 +156,5 @@ void read_save_string(std::string save_data) {
 void print_status(){
     cout << this->name << " has ";
     cout << this->critiera.size() << " course criteria,";
-    cout << this->held_resources.print_resource_status();
+    cout << this->held_resources.print_resource_status() << endl;
 }

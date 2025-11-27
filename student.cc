@@ -15,6 +15,7 @@ export class Student : public IObserver {
     Resource held_resources;
     std::vector<int> criteria;
     std::vector<int> goals;
+    int criteria_count;
     public:
         explicit Student(const std::string colour);
         std::string get_name() override;
@@ -24,6 +25,8 @@ export class Student : public IObserver {
         void buy_goal(int id, bool set_up = false);
         void upgrade_criteria(int id);
 
+        // bool trade(Student * colour, Resource give_r, Resource take_r); OR
+        bool trade(string colour, string give_r, string take_r);
 
         // TODO: what is goosed?
         // void goosed();
