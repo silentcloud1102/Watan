@@ -102,28 +102,30 @@ int main(int argc, char** argv){
         for (int i = 0; i < turnOrder.length(); ++i){
             Student * player = &default_game.players[i];
 
-            cout << "Student " << default_game.players[i].get_name() << "'s turn.";
-            player->print_status();
+            while (true){
+                cout << "Student " << default_game.players[i].get_name() << "'s turn.";
+                player->print_status();
 
-            string turn_command;
-            
-            //??????????? i don't get this part
-            cout << ">";
-            cin >> turn_command;
+                string turn_command;
+                cout << ">";
+                cin >> turn_command;
 
-            // is there default?
-            bool isfair;
-            // can i add field to student for their dice so it carries on from prev turns
-            if (turn_command == "load"){
-                isfair = false;
-            } else if (turn_command == "fair"){
-                isfair = true;
-            } else if (turn_command == "roll"){
-                default_game.dice_rolls(isfair);
-            } else {
-
+                if (turn_command == "load"){
+                    player->isfair = false;
+                } else if (turn_command == "fair"){
+                    player->isfair = true;
+                } 
+                
+                if (turn_command == "roll"){
+                    default_game.dice_rolls(player->isfair);
+                    break;
+                } 
             }
-            // ??????????????
+            
+
+
+
+
 
             string command;
             while (true){

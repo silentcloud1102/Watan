@@ -88,7 +88,47 @@ void Game::dice_rolls(bool isfair){
         // let them move the goose somewhere, then check for stealing
         gameBoard.update_goose()
     } else {
+        Resource old0 = players[0];
+        Resource old1 = players[1];
+        Resource old2 = players[2];
+        Resource old3 = players[3];
+        
+        // changes resource for players
         update_tiles(roll);
+
+        Resource diff[4];
+
+        diff[0] = players[0].held_resources - old0;
+        diff[1] = players[1].held_resources - old1;
+        diff[2] = players[2].held_resources - old2;
+        diff[3] = players[3].held_resources - old3;
+
+        bool changed = false;
+        
+        for (int i = 0; i < 4; ++i){
+            cout << "Student " << players[i] << " gained:";
+
+            if (diff[i].caffeine != 0){
+                cout << diff[i].caffeine << " CAFFEINE" << endl;
+                changed = true;
+            } else if (diff[i].lab != 0){
+                cout << diff[i].lab << " LAB" << endl;
+                changed = true;
+            } else if (diff[i].lecture != 0){
+                cout << diff[i].lecture << " LECTURE" << endl;
+                changed = true;
+            } else if (diff[i].study != 0){
+                cout << diff[i].study << " STUDY" << endl;
+                changed = true;
+            } else if (diff[i].tutorial != 0){
+                cout << diff[i].tutorial << " TUTORIAL" << endl;
+                changed = true;
+            }
+        }
+
+        if (!changed){
+            cout << "No students gained resources." << endl;
+        }
     }
 }
 
