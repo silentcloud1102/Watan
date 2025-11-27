@@ -184,7 +184,7 @@ Board::Board(unsigned seed) {
     }
     for (int i = 0; i < course_criteria.size(); ++i) {
         for (int idx : CriterionAdjCriterion[i]) {
-            course_criteria[i].addAdjacentcourse_criterion(course_criteria[idx]);
+            course_criteria[i].addAdjacentcourse_criterion(&course_criteria[idx]);
         }
         course_criteria[i].addAdjacentgoal(CriterionAdjGoals.at(i));
     }

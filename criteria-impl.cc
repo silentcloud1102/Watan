@@ -129,7 +129,7 @@ bool Criteria::adjacent_criteria_check(int location) {
 }
 
 // adding the adjacent course criterion
-void addAdjacentcourse_criterion(ISubject& criteria) {
+void addAdjacentcourse_criterion(ISubject* criteria) {
     adjacent_course_criterion.push_back(criteria);
 }
 
