@@ -98,7 +98,6 @@ void Criteria::upgrade() {
     return;
 }
 
-
 // Save string production, used by get_save_string of containing classes
 std::string Criteria::get_save_string() const{
     std::ostringstream oss;

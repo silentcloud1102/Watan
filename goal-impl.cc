@@ -63,8 +63,10 @@ bool Goal::owned() const{
     return owner != nullptr;
 }
 
-bool adjacent(vector<int> &criteria, vector<int> &goals) const{
-    break;
+// returns the eligibility of the goal based on adjacent goals/criteria
+bool adjacent_check(vector<int> &criteria, vector<int> &goals) const{
+    // WIP
+    return false;
 }
 
 // returns the cost in Resource

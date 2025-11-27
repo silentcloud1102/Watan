@@ -29,7 +29,7 @@ export class Criteria : public ISubject {
 
       // Checks for buying
       bool max_level() const;
-      bool adjacent() const;
+      bool adjacent(vector<int> &criteria, vector<int> &goals) const;
       bool owned() const;
 
       // Upgrade logic
