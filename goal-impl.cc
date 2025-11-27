@@ -5,8 +5,10 @@ import <vector>;
 import ISubject;
 import Resource;
 
+// CONSTRUCTOR
 Goal::Goal(int location): ISubject(location), owner(' ') {}
 
+// GET METHODS
 std::string Goal::getnum() const {
     if (owner != ' ') {
         return owner + "A";
@@ -19,6 +21,21 @@ std::string Goal::getnum() const {
     return std::to_string(location);
 }
 
+
+char Goal::get_owner(){
+    if(owner){
+        return owner->get_name()[0];
+    } else {
+        return ' ';
+    }
+}
+
+// Subscription Method
+void Goal::acquire(IObserver* student){
+    return;
+}
+
+// ADJACENCY LOGIC METHODS:
 bool Goal::adjacent_goal_check(int location) {
     for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
         if (*it == location) {
@@ -37,32 +54,27 @@ bool Goal::adjacent_criteria_check(int location) {
     return false;
 }
 
-void Goal::addAdjacentcourse_criterion(const std::vector<int> &v) { 
-    adjacent_course_criterion = v; 
+void Goal::set_adjacent_criteria(const std::vector<int> & criteria) { 
+    adjacent_criteria = criteria; 
 }
 
-void Goal::addAdjacentgoal(const std::vector<int> &e) { 
-    adjacent_goals = e; 
+void Goal::set_adjacent_goals(const std::vector<int> & goals) { 
+    adjacent_goals = goals; 
 }
+
+// BUY LOGIC METHODS:
 
 bool Goal::owned(){
     return owner != nullptr;
 }
 
-char Goal::get_owner(){
-    if(owner){
-        return owner->get_name()[0];
-    } else {
-        return ' ';
-    }
-}
 
 Resource Goal::cost(){
     Resource goalCost = {0, 0, 0, 1, 1};
     return goalCost;
 }
 
-
+// Save method for saves
 std::string get_save_string(){
     return location;
 }
