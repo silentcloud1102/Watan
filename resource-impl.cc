@@ -2,6 +2,7 @@ module Resource;
 
 import <string>;
 import <sstream>;
+import <iostream>;
 
 Resource::Resource(int caffeine, int lab, int lecture, int study, int tutorial)
     : caffeine{caffeine}, lab{lab}, lecture{lecture}, study{study}, tutorial{tutorial} {}
@@ -79,7 +80,7 @@ int Resource::count() const {
 }
 
 
-string get_save_string() const {
+std::string Resource::get_save_string() const {
     std::ostringstream oss;
     // may need to change if we decide to use an array instead
     oss << caffeine << ' ' << lab << ' ' << lecture << ' ' << study << ' ' << tutorial;
