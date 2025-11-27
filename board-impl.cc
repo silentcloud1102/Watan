@@ -164,13 +164,13 @@ Board::Board(unsigned seed) {
         "NETFLIX"
     };
 
-    for (int i = 0; i < 54; ++i) {
+    for (int i = 0; i < course_criteria.size(); ++i) {
         course_criteria.emplace_back(i);
     }
-    for (int i = 0; i < 72; ++i) {
+    for (int i = 0; i < goals.size(); ++i) {
         goals.emplace_back(i);
     }
-    for (int i = 0; i < 19; ++i) {
+    for (int i = 0; i < tiles.size(); ++i) {
         int resource_type = rng() % 6;
         int dice_val = (rng() % 11) + 2;
         tiles.emplace_back(resource_names[resource_type], dice_val, i);
@@ -178,12 +178,14 @@ Board::Board(unsigned seed) {
     // ============================================================
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
-    for (int e = 0; e < 72; ++e) {
+    for (int e = 0; e < goals.size(); ++e) {
         goals[e].addAdjacentcourse_criterion(GoalsAdjCriterion.at(e));
         goals[e].addAdjacentgoal(GoalsAdjGoals.at(e));
     }
-    for (int i = 0; i < 54; ++i) {
-        course_criteria[i].addAdjacentcourse_criterion(CriterionAdjCriterion.at(i));
+    for (int i = 0; i < course_criteria.size(); ++i) {
+        for (int idx : CriterionAdjCriterion[i]) {
+            course_criteria[i].addAdjacentcourse_criterion(course_criteria[idx]);
+        }
         course_criteria[i].addAdjacentgoal(CriterionAdjGoals.at(i));
     }
 
@@ -194,7 +196,7 @@ Board::Board(unsigned seed) {
     // a bit convoluted: 
     // - there would be two patterns for goals (top sides vs other sides)
     // =====================================================================
-    for (int t = 0; t < 19; ++t) {
+    for (int t = 0; t < tiles.size(); ++t) {
         for (int e_idx : tilegoals[t]) {
             if (e_idx < goals.size()) {
                 tiles[t].addgoal(goals[e_idx]);
@@ -204,7 +206,7 @@ Board::Board(unsigned seed) {
     // ============================================================
     // Created algorithm for course_criteria based on tile numbers
     // ============================================================
-    for (int t = 0; t < 19; ++t) {
+    for (int t = 0; t < tiles.size(); ++t) {
         int course_criterion1 = first_course_criterion(stoi(tiles[t].getTilenum()));
         int course_criterion2 = course_criterion1 + 1;
         int course_criterion3 = down_course_criterion_coord(course_criterion1);
@@ -232,7 +234,7 @@ void Board::load_saveData(vector<int> save_data) {
 
     // resType r = static_cast<resType>(save_data[i]);
 
-    for (int i = 0; i < 38; i += 2) {
+    for (int i = 0; i < save_data.size(); i += 2) {
         int resource_type = save_data[i];
         int dice_val = save_data[i+1];
         tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
@@ -251,9 +253,9 @@ string saveData() {
         "NETFLIX    "
     };
     string saved_data = "";
-    for (int i = 0; i < 19; i++) {
+    for (int i = 0; i < tiles.size(); i++) {
         int resource_type = 0;
-        for (int j = 0; j < 6; j++) {
+        for (int j = 0; j < resource_names_with_spaces.size(); j++) {
             if (resource_names_with_spaces[j] == tiles[i].getResource()) {
                 resource_type = to_string(j) + " ";
             }
@@ -270,7 +272,7 @@ string saveData() {
 
 // notifies the tiles based on the roll number
 void Board::update_tiles(int roll_num) const {
-    for (int i = 0; i < 19; ++i) {
+    for (int i = 0; i < tiles.size(); ++i) {
         if (i != goose_tile) {
             tiles[i].distributeResources();
         }

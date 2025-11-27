@@ -30,7 +30,7 @@ void Goal::acquire(IObserver* student){
 }
 
 // ADJACENCY LOGIC METHODS: subject to change
-bool Goal::adjacent_goal_check(int location) {
+bool Goal::adjacent_goal_check(int location) const {
     for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
         if (*it == location) {
             return true;
@@ -39,7 +39,7 @@ bool Goal::adjacent_goal_check(int location) {
     return false;
 }
 
-bool Goal::adjacent_criteria_check(int location) {
+bool Goal::adjacent_criteria_check(int location) const {
     for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
         if (*it == location) {
             return true;

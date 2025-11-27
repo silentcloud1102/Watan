@@ -129,8 +129,8 @@ bool Criteria::adjacent_criteria_check(int location) {
 }
 
 // adding the adjacent course criterion
-void Criteria::addAdjacentcourse_criterion(const std::vector<int> &v) { 
-    adjacent_course_criterion = v; 
+void addAdjacentcourse_criterion(ISubject& criteria) {
+    adjacent_course_criterion.push_back(criteria);
 }
 
 // adding the adjacent goals

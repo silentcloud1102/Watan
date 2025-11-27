@@ -23,7 +23,7 @@ void buy_criteria(int id, bool set_up){
         if (affordable && adjacent && !owned) {
             held_resources -= cost;
         } else if (!adjacent){
-            throw "This criteria is not elligible to be bought.";
+            throw "This criteria is not ellegible to be bought.";
         } else if (owned){
             throw "This criteria is already owned.";
         } else if (!affordable){
