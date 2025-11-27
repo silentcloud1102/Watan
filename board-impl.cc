@@ -298,7 +298,7 @@ ostream &operator<<(ostream &out, const Board &b) {
     string leadblank5 = "                    |";
     string leadblank6 = "                    /            ";
     string leadblank7 = "                  ";
-    string leadblank8 = "                 /     ";
+    string leadblank8 = "                  /     ";
     string leadblank9 = "     |";
     string leadblank10 = "     /            ";
     string leadblank11 = "   ";
@@ -315,12 +315,12 @@ ostream &operator<<(ostream &out, const Board &b) {
     string blank3 = "            ";
     string blank4 = "     ";
     string top1 = "|--";
-    string top2 = "--|"
+    string top2 = "--|";
     string middle1 = "\\            /     ";
     string middle2 = "\\            /";
     string middle3 = "            \\";
     string middle4 = "       |";
-    string middle5 = "|      ";
+    string middle5 = "|       ";
 
 
     // ============================================================
