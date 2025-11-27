@@ -44,7 +44,7 @@ int main(int argc, char** argv){
 
     if (loadfile != ""){
         while (true){
-            cout << "Would like like to play on your loaded game or start a new game?[L/N] ";
+            cout << "Would like like to play on your loaded game or start a new game?[L/N]" << endl << ">";
             char response;
             cin >> response;
             if (response == 'L'){
@@ -58,7 +58,7 @@ int main(int argc, char** argv){
         }
     } else if (boardfile != ""){
         while (true){
-            cout << "Would like like to play on your board or start a new game?[B/N] ";
+            cout << "Would like like to play on your board or start a new game?[B/N]" << endl << ">";
             char response;
             cin >> response;
             if (response == 'B'){
@@ -81,7 +81,7 @@ int main(int argc, char** argv){
 
     for (int i = 0; i < 4; ++i){
         cout << "Student " << default_game.players[i].get_name(); 
-        cout << ", where do you want to complete an Assignment?";
+        cout << ", where do you want to complete an Assignment?" << endl << ">";
         int intersection;
         cin >> intersection;
         default_game.players[i].buy_criteria(intersection);
@@ -89,7 +89,7 @@ int main(int argc, char** argv){
     //backwards
     for (int i = 3; i > 0; --i){
         cout << "Student " << default_game.players[i].get_name();
-        cout << ", where do you want to complete an Assignment?";
+        cout << ", where do you want to complete an Assignment?" << endl << ">";
         int intersection;
         cin >> intersection;
         default_game.players[i].buy_criteria(intersection);
@@ -155,7 +155,35 @@ int main(int argc, char** argv){
                     string give_r;
                     string take_r;
                     cin >> color >> give_r >> take_r;
-                    //trade
+
+                    while (true){
+                        cout << player->name << " offers " << color << " one " 
+                        cout << give_r << " for one " << take_r << "." << endl;
+                        cout << "Does " << color << " accept this offer?[yes/no]" << endl << ">";
+
+                        string ans;
+                        cin >> ans;
+                        if (ans == "yes"){
+                            Student * color2; 
+                            if (color == "Blue"){
+                                color2 = default_game.players[0];
+                            } else if (color == "Red"){
+                                color2 = default_game.players[1];
+                            } else if (color == "Orange"){
+                                color2 = default_game.players[2];
+                            } else if (color == "Yellow"){
+                                color2 = default_game.players[3];
+                            }
+
+                            // assumes give_r and take_r are all upper case, resource constructor
+                            player->trade(color2, give_r, take_r);
+
+                            break;
+                        } else if (ans == "no"){
+                            break;
+                        }
+                    }
+                    
                 } else if (command == "next"){
                     break;
                 } else if (command == "save"){

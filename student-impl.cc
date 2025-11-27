@@ -158,3 +158,11 @@ void print_status(){
     cout << this->critiera.size() << " course criteria,";
     cout << this->held_resources.print_resource_status() << endl;
 }
+
+void trade(Student * colour, string give_r, string take_r){
+    Resource r1 = Resource(give_r, 1);
+    Resource r2 = Resource(take_r, 1);
+
+    colour->held_resources += r2;
+    this->held_resources -= r1;
+}
