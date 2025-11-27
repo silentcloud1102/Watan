@@ -76,7 +76,7 @@ int main(int argc, char** argv){
 
 
     // start game 
-
+    
     Student * turnOrder[4] = {Blue, Red, Orange, Yellow};
 
     for (int i = 0; i < turnOrder.length(); ++i){

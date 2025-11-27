@@ -163,14 +163,19 @@ Board::Board(unsigned seed) {
         "TUTORIAL",
         "NETFLIX"
     };
+    
+    // have to use these values, since the vectors are currently empty.
+    int num_of_goals = 72;
+    int num_of_course_criteria = 54
+    int num_of_tiles = 19;
 
-    for (int i = 0; i < course_criteria.size(); ++i) {
+    for (int i = 0; i < num_of_course_criteria; ++i) {
         course_criteria.emplace_back(i);
     }
-    for (int i = 0; i < goals.size(); ++i) {
+    for (int i = 0; i < num_of_goals; ++i) {
         goals.emplace_back(i);
     }
-    for (int i = 0; i < tiles.size(); ++i) {
+    for (int i = 0; i < num_of_tiles; ++i) {
         int resource_type = rng() % 6;
         int dice_val = (rng() % 11) + 2;
         tiles.emplace_back(resource_names[resource_type], dice_val, i);
@@ -178,11 +183,11 @@ Board::Board(unsigned seed) {
     // ============================================================
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
-    for (int e = 0; e < goals.size(); ++e) {
+    for (int e = 0; e < num_of_goals; ++e) {
         goals[e].addAdjacentcourse_criterion(GoalsAdjCriterion.at(e));
         goals[e].addAdjacentgoal(GoalsAdjGoals.at(e));
     }
-    for (int i = 0; i < course_criteria.size(); ++i) {
+    for (int i = 0; i < num_of_course_criteria; ++i) {
         for (int idx : CriterionAdjCriterion[i]) {
             course_criteria[i].addAdjacentcourse_criterion(&course_criteria[idx]);
         }
@@ -196,7 +201,7 @@ Board::Board(unsigned seed) {
     // a bit convoluted: 
     // - there would be two patterns for goals (top sides vs other sides)
     // =====================================================================
-    for (int t = 0; t < tiles.size(); ++t) {
+    for (int t = 0; t < num_of_tiles; ++t) {
         for (int e_idx : tilegoals[t]) {
             if (e_idx < goals.size()) {
                 tiles[t].addgoal(goals[e_idx]);
@@ -206,7 +211,7 @@ Board::Board(unsigned seed) {
     // ============================================================
     // Created algorithm for course_criteria based on tile numbers
     // ============================================================
-    for (int t = 0; t < tiles.size(); ++t) {
+    for (int t = 0; t < num_of_tiles; ++t) {
         int course_criterion1 = first_course_criterion(stoi(tiles[t].getTilenum()));
         int course_criterion2 = course_criterion1 + 1;
         int course_criterion3 = down_course_criterion_coord(course_criterion1);
