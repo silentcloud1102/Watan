@@ -23,4 +23,5 @@ export class Resource {
         int count() const;
 
         std::string get_save_string() const;
+        void print_resource_status();
 };
