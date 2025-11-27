@@ -7,7 +7,7 @@ import Goals;
 import Criterion;
 import Resource;
 
-class Tile {
+export class Tile {
   std::string resource_type;
   int dice;
   int tilenum;

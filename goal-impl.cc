@@ -2,11 +2,15 @@ module Goal;
 
 import <string>;
 import <vector>;
-import ISubject;
 import Resource;
+import IObserver;
+import ISubject;
+
+// DECLARING THE CONSTANT
+export const Resource Goal::resource_cost{0, 0, 0, 1, 1};
 
 // CONSTRUCTOR
-Goal::Goal(int location): ISubject(location), owner(' ') {}
+Goal::Goal(int location): ISubject(location), owner_char(' ') {}
 
 // GET METHODS
 std::string Goal::getnum() const {
@@ -40,7 +44,7 @@ bool Goal::adjacent_goal_check(int location) const {
 }
 
 bool Goal::adjacent_criteria_check(int location) const {
-    for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
+    for (auto it = adjacent_criteria.begin(); it != adjacent_criteria.end(); ++it) {
         if (*it == location) {
             return true;
         }
@@ -64,17 +68,17 @@ bool Goal::owned() const{
 }
 
 // returns the eligibility of the goal based on adjacent goals/criteria
-bool adjacent_check(vector<int> &criteria, vector<int> &goals) const{
+bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
     // WIP
     return false;
 }
 
 // returns the cost in Resource
-Resource & Goal::cost() const {
-    return cost;
+const Resource & Goal::cost() const {
+    return resource_cost;
 }
 
 // Save method for saves
-std::string get_save_string() const{
+std::string Goal::get_save_string() const{
     return location;
 }

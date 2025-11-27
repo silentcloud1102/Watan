@@ -2,25 +2,25 @@ export module Resource;
 
 import <string>;
 
-class Resource {
+export class Resource {
     int caffeine = 0;
     int lab = 0;
     int lecture = 0;
     int study = 0;
     int tutorial = 0;
+    public:
+        explicit Resource(int caffeine, int lab,  int lecture, int study, int tutorial);
 
-    explicit Resource(int caffeine, int lab,  int lecture, int study, int tutorial);
+        explicit Resource(std::string resource, int amount = 1);
+        
+        Resource operator+(const Resource &other) const;
+        Resource operator-(const Resource &other) const;
 
-    explicit Resource(std::string resource, int amount = 1);
-    
-    Resource operator+(const Resource &other) const;
-    Resource operator-(const Resource &other) const;
+        Resource& operator-=(const Resource &other);
+        Resource& operator+=(const Resource &other);
+        bool operator<=(const Resource &other) const;
+        bool operator>=(const Resource &other) const;
+        int count() const;
 
-    Resource& operator-=(const Resource &other);
-    Resource& operator+=(const Resource &other);
-    bool operator<=(const Resource &other) const;
-    bool operator>=(const Resource &other) const;
-    int count() const;
-
-    std::string get_save_string() const;
+        std::string get_save_string() const;
 };

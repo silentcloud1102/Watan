@@ -5,10 +5,10 @@ import <string>;
 
 export class ISubject{
     protected:
-        ISubject * owner;
         int location;
+        ISubject * owner;
     
     public:
-        ISubject(int location): location{location}, owner{nullptr};
+        ISubject(int location): location{location}, owner{nullptr} {}
         virtual void acquire(IObserver* student) = 0;
 };
