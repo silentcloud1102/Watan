@@ -151,3 +151,9 @@ void read_save_string(std::string save_data) {
     }
     
 }
+
+void print_status(){
+    cout << this->name << " has ";
+    cout << this->critiera.size() << " course criteria,";
+    cout << this->held_resources.print_resource_status();
+}

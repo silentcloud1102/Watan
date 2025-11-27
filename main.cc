@@ -6,7 +6,6 @@ import <memory>;
 import Student;
 import Board;
 import Game;
-import enum;
 
 using namespace std;
 
@@ -77,28 +76,31 @@ int main(int argc, char** argv){
 
     // start game 
     
-    Student * turnOrder[4] = {Blue, Red, Orange, Yellow};
+    // Student * turnOrder[4] = {Blue, Red, Orange, Yellow};
+    // magic numbers!!! make numof players field in game?
 
-    for (int i = 0; i < turnOrder.length(); ++i){
-        cout << "Student " << // to_string(students[i]) 
+    for (int i = 0; i < 4; ++i){
+        cout << "Student " << default_game.players[i].get_name(); 
         cout << ", where do you want to complete an Assignment?";
         int intersection;
         cin >> intersection;
-        //studentcolor.accquire(intersection);
+        default_game.players[i].buy_criteria(intersection);
     }
     //backwards
-    for (int i = (turnOrder.length - 1); i > 0; --i){
-        cout << "Student " << // to_string(students[i]) 
+    for (int i = 3; i > 0; --i){
+        cout << "Student " << default_game.players[i].get_name();
         cout << ", where do you want to complete an Assignment?";
         int intersection;
         cin >> intersection;
-        //studentcolor.accquire(intersection);
+        default_game.players[i].buy_criteria(intersection);
     }
 
     // printBoard();
+
     // start turn
     for (int i = 0; i < turnOrder.length(); ++i){
-        cout << "Student " << //to_string(students[i]) << "'s turn.";
+        cout << "Student " << default_game.players[i].get_name() << "'s turn.";
+        default_game.players[i].print_status();
     }
 
 }

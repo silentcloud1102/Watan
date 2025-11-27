@@ -34,4 +34,6 @@ export class Student : public IObserver {
         // save logic
         std::string get_save_string() const;
         void read_save_string(std::string save_data);
+
+        void print_status();
 };
