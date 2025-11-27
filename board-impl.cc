@@ -163,8 +163,8 @@ Board::Board(unsigned seed) {
         "TUTORIAL",
         "NETFLIX"
     };
-    
-    // have to use these values, since the vectors are currently empty.
+
+    // constants for the desired sizes, to initialize and improve readability
     int num_of_goals = 72;
     int num_of_course_criteria = 54
     int num_of_tiles = 19;
