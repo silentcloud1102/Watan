@@ -242,7 +242,11 @@ void Board::load_saveData(vector<int> save_data) {
     for (int i = 0; i < save_data.size(); i += 2) {
         int resource_type = save_data[i];
         int dice_val = save_data[i+1];
-        tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
+        if (resource_type == 5){
+            continue;
+        } else {
+            tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
+        }
     }
 }
 
