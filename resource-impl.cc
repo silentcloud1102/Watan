@@ -79,7 +79,7 @@ int Resource::count() const {
 }
 
 
-void get_save_string() const {
+string get_save_string() const {
     std::ostringstream oss;
     // may need to change if we decide to use an array instead
     oss << caffeine << ' ' << lab << ' ' << lecture << ' ' << study << ' ' << tutorial;
