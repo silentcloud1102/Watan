@@ -1,7 +1,10 @@
 module Game;
 
 import Board;
+import <string>;
 import enum;
+
+using namespace std;
 
 const numofPlayers = 4;
 const string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
@@ -19,11 +22,36 @@ Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn):
 }
 
 void Game::updateBoard(ifstream &file){
-
+    // read from file
+    vector<int> givenBoard;
+    int temp;
+    for (int i = 0; i < 38; ++i){
+        if (!(file >> temp)){
+            break;
+        }
+        givenBoard.emplace_back(temp);
+    }
+    gameBoard->load_saveData(givenBoard);
 }
 
 void Game::loadGame(ifstream &file){
-    
+    int file_turn;
+    getline(ifsl, file_turn);
+    cur_turn = file_turn;
+
+    for (int i = 0; i < numofPlayers; ++i){
+        string line;
+        getline(file, line);
+        //playerColor pc = static_cast<playerColor>(i);
+        players[i].read_save_string(line);
+    }
+
+    // reads board line
+    this->updateBoard(file);
+
+    int goose;
+    file >> goose;
+    gameBoard->updateGoose(goose);
 }
 
 void Game::dice_rolls(bool isfair){

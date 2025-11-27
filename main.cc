@@ -12,9 +12,6 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-    numofPlayers = 4;
-    string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
-
     int seed = 0; // default seed
     string loadfile = "";
     string boardfile = "";
@@ -46,48 +43,14 @@ int main(int argc, char** argv){
     
     Game default_game = Game(seed);
 
-    // setting up board and seed
-    // update goose!
-
     if (loadfile != ""){
         while (true){
             cout << "Would like like to play on your loaded game or start a new game?[L/N] ";
             char response;
             cin >> response;
             if (response == 'L'){
-                // read from file
-                int cur_turn;
                 ifstream ifsl{loadfile};
-                getline(ifsl, cur_turn);
-                vector<Student> players;
-                for (int i = 0; i < numofPlayers; ++i){
-                    string line;
-                    getline(ifsl, line);
-                    //playerColor pc = static_cast<playerColor>(i);
-                    Student s = Student{names[i], board};
-                    s.read_save_string(line);
-                    players.emplace_back(s);
-                }
-
-                
-                vector<int> givenBoard;
-                int temp;
-                for (int i = 0; i < 38; ++i){
-                    ifsl >> temp;
-                    givenBoard.emplace_back(temp);
-                }
-                board->load_saveData(givenBoard);
-
-                int goose;
-                ifsl >> goose;
-                board->updateGoose(goose);
-
-
-                //////////////
-                ///////////
-                // not sure lol
-                default_game = Game(*board, players, cur_turn);
-
+                default_game.loadGame(ifsl);
                 break;
             } else if (response == 'N'){
                 // new game
@@ -100,15 +63,8 @@ int main(int argc, char** argv){
             char response;
             cin >> response;
             if (response == 'B'){
-                // read from file
-                vector<int> givenBoard;
-                int temp;
-                ifstream ifsl{loadfile};
-                for (int i = 0; i < 38; ++i){
-                    ifsl >> temp;
-                    givenBoard.emplace_back(temp);
-                }
-                board->load_saveData(givenBoard);
+                ifstream ifsb{boardfile};
+                default_game.updateBoard(ifsb);
                 break;
             } else if (response == 'N'){
                 // new game
