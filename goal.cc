@@ -6,6 +6,9 @@ import ISubject;
 
 export class Goal : public ISubject {
   char owner;
+
+  static const Resource cost = {0, 0, 0, 1, 1};
+
   vector<int> adjacent_criteria;
   vector<int> adjacent_goals;
   public:
@@ -14,14 +17,12 @@ export class Goal : public ISubject {
     // "subscription" method
     void acquire(IObserver* student) override;
    
-
     // Printing method
     std::string getnum() const;
-    char get_owner();
 
     // Buy logic methods:
-    Resource & cost();
-    bool owned();
+    Resource & cost() const;
+    bool owned() const;
     bool adjacent(vector<int> &criteria, vector<int> &goals) const;
 
     // Adjacency Methods
