@@ -1,8 +1,10 @@
 export module Game;
 
 import Board;
-import enum;
+import Student
 import <string>;
+import <fstream>;
+import <vector>;
 
 using nameespace std;
 

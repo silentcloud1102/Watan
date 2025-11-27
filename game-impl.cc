@@ -1,8 +1,10 @@
 module Game;
 
 import Board;
+import Student
 import <string>;
-import enum;
+import <fstream>;
+import <vector>;
 
 using namespace std;
 
@@ -93,4 +95,23 @@ void Game::dice_rolls(bool isfair){
 
 void Game::save(string filename){
     // build load file
+    ofstream out(filename);
+    if (!out) {
+        std::cerr << "open failed\n";
+        return;
+    }
+
+    // cur_turn
+    out << this->cur_turn << endl;
+
+    // players
+    for (int i = 0; i < numofPlayers; ++i){
+        this->players[i].get_save_string() << endl;
+    }
+
+    // board
+    out << this->gameBoard.saveData() << endl;
+
+    // goose
+    out << this->gameBoard.getGooseTile() << endl;
 }

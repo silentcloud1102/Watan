@@ -10,6 +10,7 @@ import Criteria;
 import Goals;
 import Tile;
 import Resource;
+import Student
 using namespace std;
 
 // gives the coordinate of the vertex below the provided coordinate

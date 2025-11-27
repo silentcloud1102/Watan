@@ -6,6 +6,7 @@ import <vector>;
 import Criteria;
 import Goals;
 import Tiles;
+import Student
 
 export class Board {
     int goose_tile;
