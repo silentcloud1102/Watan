@@ -71,7 +71,7 @@ int main(int argc, char** argv){
                 cin >> response;
                 if (response == 'B'){
                     ifstream ifsb{boardfile};
-                    default_game.updateBoard(ifsb);
+                    default_game.board_from_file(ifsb);
                     break;
                 } else if (response == 'N'){
                     // new game

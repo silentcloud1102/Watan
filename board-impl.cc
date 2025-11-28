@@ -212,7 +212,7 @@ Board::Board(unsigned seed) {
     for (int t = 0; t < num_of_tiles; ++t) {
         for (int e_idx : tilegoals[t]) {
             if (e_idx < goals.size()) {
-                tiles[t]->addgoal(goals[e_idx].get());
+                tiles[t]->add_goal(goals[e_idx].get());
             }
         }
     }
@@ -226,12 +226,12 @@ Board::Board(unsigned seed) {
         int course_criterion4 = course_criterion3 + 1; 
         int course_criterion5 = down_course_criterion_coord(course_criterion3);
         int course_criterion6 = course_criterion5 + 1;
-        tiles[t]->addcourse_criterion(course_criteria[course_criterion1].get());
-        tiles[t]->addcourse_criterion(course_criteria[course_criterion2].get());
-        tiles[t]->addcourse_criterion(course_criteria[course_criterion3].get());
-        tiles[t]->addcourse_criterion(course_criteria[course_criterion4].get());
-        tiles[t]->addcourse_criterion(course_criteria[course_criterion5].get());
-        tiles[t]->addcourse_criterion(course_criteria[course_criterion6].get());
+        tiles[t]->add_criteria(course_criteria[course_criterion1].get());
+        tiles[t]->add_criteria(course_criteria[course_criterion2].get());
+        tiles[t]->add_criteria(course_criteria[course_criterion3].get());
+        tiles[t]->add_criteria(course_criteria[course_criterion4].get());
+        tiles[t]->add_criteria(course_criteria[course_criterion5].get());
+        tiles[t]->add_criteria(course_criteria[course_criterion6].get());
     }
 }
 
