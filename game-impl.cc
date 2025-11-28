@@ -1,15 +1,17 @@
 module Game;
 
-import Board;
-import Student
+import <iostream>;
 import <string>;
 import <fstream>;
 import <vector>;
 import <stdexcept>;
 
+import Board;
+import Student;
 
-const numofPlayers = 4;
-const string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
+
+const int numofPlayers = 4;
+const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
 Game::Game(int seed, Board gameBoard, std::vector<Student> players, int cur_turn): 
     Board{gameBoard}, players{players}, cur_Turn{cur_turn}, seed{seed}{
@@ -75,10 +77,10 @@ void Game::dice_rolls(bool isfair, int playerIndex){
     } else {
         // loaded
         while (true) {
-            cout << "Input a roll between 2 and 12: ";
+            std::cout << "Input a roll between 2 and 12: ";
             cin >> roll;
             if ((roll < 2) || (12 < roll)){
-                cout < "Invalid roll." << endl;
+                std::cout < "Invalid roll." << std::endl;
             } else {
                 break;
             }
@@ -101,14 +103,14 @@ void Game::dice_rolls(bool isfair, int playerIndex){
                 players[i].held_resources -= r;
                 Resource * resources = players[i].held_resources;
 
-                cout << "Student " << players[i].name << "loses ";
-                cout << generate << "resources to the geese. They lose:" << endl;
+                std::cout << "Student " << players[i].name << "loses ";
+                std::cout << generate << "resources to the geese. They lose:" << std::endl;
 
-                cout << resources.caffeine << " CAFFIENE" << endl;
-                cout << resources.lab << " LAB" << endl;
-                cout << resources.lecture << " LECTURE" << endl;
-                cout << resources.study << " STUDY" << endl;
-                cout << resources.tutorial << " TUTORIAL" << endl;
+                std::cout << resources.caffeine << " CAFFIENE" << std::endl;
+                std::cout << resources.lab << " LAB" << std::endl;
+                std::cout << resources.lecture << " LECTURE" << std::endl;
+                std::cout << resources.study << " STUDY" << std::endl;
+                std::cout << resources.tutorial << " TUTORIAL" << std::endl;
             }
         }
 
@@ -116,7 +118,7 @@ void Game::dice_rolls(bool isfair, int playerIndex){
         // let them move the goose somewhere
         int goose;
         while (true){
-            cout << "Choose where to place the GEESE." << endl << ">";
+            std::cout << "Choose where to place the GEESE." << std::endl << ">";
             cin >> goose;
             if (goose < 0 || 18 < goose || (goose == gameBoard.goose_tile)){
                 // ask again;
@@ -129,7 +131,7 @@ void Game::dice_rolls(bool isfair, int playerIndex){
         
         // steal
         int steal_from_count = 0;
-        cout << "Student " << player[playerIndex].name << "can choose to steal from ";
+        std::cout << "Student " << player[playerIndex].name << "can choose to steal from ";
         for (int i = 0; i < numofPlayers; ++i){
             Resource zero = Resource{0,0,0,0,0};
             if (i == playerIndex){
@@ -143,9 +145,9 @@ void Game::dice_rolls(bool isfair, int playerIndex){
                     if (players[i].criteria[j] == gameBoard.tiles[goose].course_criteria[x]){
                         ++steal_from_count;
                         if (i == (numofPlayers - 1)){
-                            cout << players[i].name << "." << endl;
+                            std::cout << players[i].name << "." << std::endl;
                         } else {
-                            cout << players[i].name << ", ";
+                            std::cout << players[i].name << ", ";
                         }
                     }
                 }
@@ -153,9 +155,9 @@ void Game::dice_rolls(bool isfair, int playerIndex){
         }
 
         if (steal_from_count == 0){
-            cout << "Student " << players[playerIndex] << " has no students to steal from." << endl;
+            std::cout << "Student " << players[playerIndex] << " has no students to steal from." << std::endl;
         } else {
-            cout << "Choose a student to steal from." << endl << ">";
+            std::cout << "Choose a student to steal from." << std::endl << ">";
             string steal_from;
             cin >> steal_from;
             
@@ -175,8 +177,8 @@ void Game::dice_rolls(bool isfair, int playerIndex){
             Resource r;
             players[playerIndex].held_resources += r;
             players[steal_from_index].held_resources -= r;
-            cout << "Student " << players[playerIndex] << " steals " 
-            cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << endl;
+            std::cout << "Student " << players[playerIndex] << " steals " 
+            std::cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << std::endl;
         }
 
 
@@ -215,28 +217,28 @@ void Game::dice_rolls(bool isfair, int playerIndex){
         
         // Okay to have cin/cout here since this is our main interface with the game
         for (int i = 0; i < 4; ++i){
-            cout << "Student " << players[i] << " gained:";
+            std::cout << "Student " << players[i] << " gained:";
 
             if (diff[i].caffeine != 0){
-                std::cout << -diff[i].caffeine << " CAFFEINE" << std::endl;
+                 std::cout << -diff[i].caffeine << " CAFFEINE" << std::endl;
                 changed = true;
             } else if (diff[i].lab != 0){
-                std::cout << -diff[i].lab << " LAB" << std::endl;
+                 std::cout << -diff[i].lab << " LAB" << std::endl;
                 changed = true;
             } else if (diff[i].lecture != 0){
-                std::cout << -diff[i].lecture << " LECTURE" << std::endl;
+                 std::cout << -diff[i].lecture << " LECTURE" << std::endl;
                 changed = true;
             } else if (diff[i].study != 0){
-                std::cout << -diff[i].study << " STUDY" << std::endl;
+                 std::cout << -diff[i].study << " STUDY" << std::endl;
                 changed = true;
             } else if (diff[i].tutorial != 0){
-                std::cout << -diff[i].tutorial << " TUTORIAL" << std::endl;
+                 std::cout << -diff[i].tutorial << " TUTORIAL" << std::endl;
                 changed = true;
             }
         }
 
         if (!changed){
-            std::cout << "No students gained resources." << std::endl;
+             std::cout << "No students gained resources." << std::endl;
         }
     }
 }
@@ -246,7 +248,7 @@ void Game::save(std::string filename){
     // build load file
     std::ofstream out(filename);
     if (!out) {
-        std::cerr << "open failed\n";
+        std::cerr << "Open failed! Aborting save..." << std::endl;
         return;
     }
 
