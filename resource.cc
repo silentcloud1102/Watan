@@ -1,6 +1,7 @@
 export module Resource;
 
 import <string>;
+import <iostream>;
 
 export class Resource {
     int caffeine = 0;
@@ -23,5 +24,6 @@ export class Resource {
         int count() const;
 
         std::string get_save_string() const;
-        void print_resource_status();
+
+        friend std::ostream &operator<<(ostream &os, const Resource & resource);
 };

@@ -89,10 +89,14 @@ std::string Resource::get_save_string() const {
     // consider just passing oss instead of returning string
 }
 
-void Resource::print_resource_status() {
-    std::cout << caffeine << " caffeines,";
-    std::cout << lab << " labs,";
-    std::cout << lecture << " lectures,";
-    std::cout << study << " studies,";
-    std::cout << tutorial << " tutorials.";
+
+// output operator
+std::ostream &operator<<(ostream &os, const Resource & resource){
+    os << resource.caffeine << " caffeines, ";
+    os << resource.lab << " labs, ";
+    os << resource.lecture << " lectures, ";
+    os << resource.study << " studies, ";
+    os << "and " << resource.tutorial << " tutorials.";
+
+    return os;
 }
