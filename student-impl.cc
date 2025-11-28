@@ -5,6 +5,7 @@ import <sstream>;
 import <vector>;
 import <string>;
 import <iostream>;
+import <stdexcept>;
 
 import Resource;
 import Criteria;
@@ -20,8 +21,8 @@ Student::Student(const std::string & colour, Board * board):
 // Board interaction methods: includes logic override
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
-    Criteria * target = board->getCriteria(id);
-    const Resource & cost = target->upgradeCost();
+    Criteria * target = board->get_criteria(id);
+    const Resource & cost = target->upgrade_cost();
 
     bool affordable = can_afford(cost);
     bool adjacent = target->adjacent_check(criteria, goals);
@@ -31,11 +32,11 @@ void Student::buy_criteria(int id, bool set_up){
         if (affordable && adjacent && !owned) {
             held_resources -= cost;
         } else if (!adjacent){
-            throw "This criteria is not ellegible to be bought.";
+            throw std::runtime_error("This criteria is not ellegible to be bought.");
         } else if (owned){
-            throw "This criteria is already owned.";
+            throw std::runtime_error("This criteria is already owned.");
         } else if (!affordable){
-            throw "You do not have enough resources.";
+            throw std::runtime_error("You do not have enough resources.");
         }
     }
 
@@ -46,7 +47,7 @@ void Student::buy_criteria(int id, bool set_up){
 }
 
 void Student::buy_goal(int id, bool set_up){
-    Goal * target = board->getGoal(id);
+    Goal * target = board->get_goal(id);
     const Resource & cost = target->cost();
 
     bool affordable = can_afford(cost);
@@ -59,11 +60,11 @@ void Student::buy_goal(int id, bool set_up){
             held_resources -= cost;
             
         } else if (!adjacent){
-            throw "This goal is not adjacent to any of your goals and criterion.";
+            throw std::runtime_error("This goal is not adjacent to any of your goals and criterion.");
         } else if (owned){
-            throw "This goal is already owned.";
+            throw std::runtime_error("This goal is already owned.");
         } else if (!affordable){
-            throw "You do not have enough resources.";
+            throw std::runtime_error("You do not have enough resources.");
         }
     }
     target->acquire(this);
@@ -81,19 +82,19 @@ void Student::upgrade_criteria(int id) {
     }
 
     if(!found){
-        throw "This criteria is not owned by student.";
+        throw std::runtime_error("This criteria is not owned by student.");
     }
 
-    Criteria * target = board->getCriteria(id);
-    const Resource & cost = target->upgradeCost();
+    Criteria * target = board->get_criteria(id);
+    const Resource & cost = target->upgrade_cost();
 
     if(can_afford(cost) && !target->max_level()){
         held_resources -= cost;
         target->upgrade();
     } else if (target->max_level()){
-        throw "This criteria is already max level.";
+        throw std::runtime_error("This criteria is already max level.");
     } else if (!can_afford(cost)){
-        throw "The student does not have enough resources.";
+        throw std::runtime_error("The student does not have enough resources.");
     } 
 
 }
@@ -132,13 +133,13 @@ std::string Student::get_save_string() const {
 
     oss << " g";
     for(auto it = goals.begin(); it != goals.end(); it++){
-        Goal * target = board->getGoal(*it);
+        Goal * target = board->get_goal(*it);
         oss << ' ' << target->get_save_string();
     }
 
     oss << " c";
     for(auto it = criteria.begin(); it != criteria.end(); it++){
-        Criteria * target = board->getCriteria(*it);
+        Criteria * target = board->get_criteria(*it);
         oss << ' ' << target->get_save_string();
     }
 
