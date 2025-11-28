@@ -10,6 +10,7 @@ import Game;
 using namespace std;
 
 int main(int argc, char** argv){
+    int numofPlayers;
 
     int seed = 0; // default seed
     bool load = false;
@@ -78,15 +79,12 @@ int main(int argc, char** argv){
                 }
             }
         }
-        
-
 
         // start game 
         
         // Student * turnOrder[4] = {Blue, Red, Orange, Yellow};
-        // magic numbers!!! make numof players field in game?
 
-        for (int i = 0; i < 4; ++i){
+        for (int i = 0; i < numofPlayers; ++i){
             cout << "Student " << default_game.players[i].get_name(); 
             cout << ", where do you want to complete an Assignment?" << endl << ">";
             int intersection;
@@ -94,7 +92,7 @@ int main(int argc, char** argv){
             default_game.players[i].buy_criteria(intersection);
         }
         //backwards
-        for (int i = 3; i >= 0; --i){
+        for (int i = (numofPlayers - 1); i >= 0; --i){
             cout << "Student " << default_game.players[i].get_name();
             cout << ", where do you want to complete an Assignment?" << endl << ">";
             int intersection;
@@ -102,12 +100,12 @@ int main(int argc, char** argv){
             default_game.players[i].buy_criteria(intersection);
         }
 
-        // printBoard();
+        cout << game;
 
         bool playing_game = true;
         while (playing_game){
-            for (int i = 0; i < turnOrder.length(); ++i){
-                Student * player = &default_game.players[i];
+            for (int i = 0; i < numofPlayers; ++i){
+                Student * player = default_game.players[i];
 
                 while (true){
                     cout << "Student " << default_game.players[i].get_name() << "'s turn.";
@@ -134,13 +132,16 @@ int main(int argc, char** argv){
                     cout << ">";
                     cin >> command;
                     if (command == "board"){
-                        // printBoard();
+                        cout << game;
                     } else if (command == "status"){
                         for (int i = 0; i < 4; ++i){
                             player->print_status();
                         }
                     } else if (command == "criteria"){
-                        // completions?
+                        cout << ">";
+                        int criteria;
+                        cin >> criteria;
+                        player->buy_criteria(criteria);
                     } else if (command == "achieve"){
                         cout << ">";
                         int goal;
