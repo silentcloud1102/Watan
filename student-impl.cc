@@ -16,10 +16,10 @@ import Board;
 
 
 // Constants
-const MAX_GOAL = 71;
-const MAX_CRITERIA = 53;
-const MIN_GOAL = 0;
-const MIN_CRITERIA = 0;
+const int MAX_GOAL = 71;
+const int MAX_CRITERIA = 53;
+const int MIN_GOAL = 0;
+const int MIN_CRITERIA = 0;
 
 Student::Student(const std::string & colour, Board * board): name{colour}, board{board} {}
 
