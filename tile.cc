@@ -28,6 +28,7 @@ export class Tile {
     std::vector<std::string> criteria_ids() const;
 
     // set-up methods used by board
+    std::vector<std::string> adjacent_criteria_ids() const;
     void add_criteria(Criteria *v);
     void add_goal(Goal *e);
 

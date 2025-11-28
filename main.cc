@@ -18,11 +18,12 @@ int main(int argc, char** argv){
 
     string loadfile;
     string boardfile;
+    Game game = Game(seed);
 
     // Argument-line parsing;
     for (int i = 1; i < argc; i++){
 
-        if (string(argv[i]) == "-seed"){
+        if (to_string(argv[i]) == "-seed"){
             if (i + 1 < argc){
                 istringstream iss {argv[i + 1]};
                 iss >> seed;
@@ -96,6 +97,7 @@ int main(int argc, char** argv){
                 }
             }
         }
+        
 
         // start game 
         if(!load){
@@ -110,7 +112,7 @@ int main(int argc, char** argv){
                 Student * player = default_game.players[i];
 
                 while (true){
-                    cout << "Student " << default_game.players[i].get_name() << "'s turn.";
+                    cout << "Student " << default_game.players[i]->get_name() << "'s turn.";
 
                     string turn_command;
                     cout << ">";
