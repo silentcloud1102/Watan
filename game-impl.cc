@@ -100,8 +100,8 @@ void Game::roll_dice(bool isfair){
         }
         
         // stealing:
-        std::vector<std::string>> victim_ids = gameBoard->goose_victims();
-        std::vector<Student *>> victims;
+        std::vector<std::string> victim_ids = gameBoard->goose_victims();
+        std::vector<Student *>victims;
         for (int i = 0; i < numofPlayers; ++i){
             // if self or broke, don't steal :)
             if (i == active_id){
@@ -159,7 +159,7 @@ void Game::roll_dice(bool isfair){
                     players[i]->goosed(loss);
 
                     // use stringstream to read in.. a little inconvenient but it will do
-                    std::istringstream iss {print_output(loss.to_vector()[0], 1)};
+                    std::istringstream iss {Resource::print_output(loss.to_vector()[0], 1)};
                     std::string resource;
                     iss >> resource >> resource;
 
@@ -176,7 +176,7 @@ void Game::roll_dice(bool isfair){
     // Non Geese:
     } else {
        // Track resource distribution
-        Resource old[4];
+        Resource diff[4];
         for (int i = 0; i < 4; ++i){
             // saving old
             diff[i] = players[i]->get_resource();
@@ -353,6 +353,6 @@ void Game::load_game(std::ifstream &file){
 
 
 std::ostream& operator<<(std::ostream& os, Game& game){
-    os << game.gameBoard;
+    os << game->gameBoard;
     return os;
 }

@@ -388,7 +388,7 @@ int Board::get_goose_tile() const {
 std::vector<std::string> Board::goose_victims() const {
     int goose_tile = get_goose_tile();
     if(goose_tile != -1){
-        return tiles[goose_tile].criteria_ids();
+        return tiles[goose_tile]->criteria_ids();
     } else {
         return {};
     }
