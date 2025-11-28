@@ -25,45 +25,8 @@ Game::Game(int seed, Board gameBoard, std::vector<Student> players, int cur_turn
         }
 }
 
-void Game::board_from_file(std::ifstream &file){
-    // read from file
-    std::vector<int> givenBoard;
-    std::string line;
-    std::getline(file, line);
-
-    std::istringstream iss {line};
-    int temp;
-    for (int i = 0; i < 38; ++i){
-        if (!(iss >> temp)){
-            throw std::runtime_error("Invalid save file format, expected 38 integers");
-        }
-        givenBoard.emplace_back(temp);
-    }
-    gameBoard->load_save_data(givenBoard);
-
-}
-
-void Game::load_game(std::ifstream &file){
-    std::string line;
-    std::getline(file, line);
-    // first line is the turn number
-    cur_turn = std::stoi(line);
-
-    // next 4 lines are player data
-    for (int i = 0; i < numofPlayers; ++i){
-        std::getline(file, line);
-        //playerColor pc = static_cast<playerColor>(i);
-        players[i].read_save_string(line);
-    }
-
-    // reads board line
-    board_from_file(file);
-
-    std::getline(file, line);
-    gameBoard->update_goose(std::stoi(line));
-}
-
-void Game::dice_rolls(bool isfair, int playerIndex){
+// Interface methods:
+void Game::roll_dice(bool isfair, int playerIndex){
 
     // Generating the dicerolls
     int roll;
@@ -78,7 +41,7 @@ void Game::dice_rolls(bool isfair, int playerIndex){
         // loaded
         while (true) {
             std::cout << "Input a roll between 2 and 12: ";
-            cin >> roll;
+            std::cin >> roll;
             if ((roll < 2) || (12 < roll)){
                 std::cout < "Invalid roll." << std::endl;
             } else {
@@ -87,9 +50,7 @@ void Game::dice_rolls(bool isfair, int playerIndex){
         }
     }
 
-    // =========================================================
     // using the implications of the dice roll
-    // =========================================================
     if (roll == 7) {
         // lose half of resources if more than 10 randomly, print out
         for (int i = 0; i < numofPlayers; ++i){
@@ -243,7 +204,28 @@ void Game::dice_rolls(bool isfair, int playerIndex){
     }
 }
 
+// next turn (new active player)
+void next_turn(){
+    if(cur_turn == 0){
+        // game set-up round
+        // insert special logic here...
 
+        cur_turn++;
+        return;
+    }
+
+
+    active_id++;
+
+    if(active_id >= 4){
+        active_id = 0;
+        cur_turn++;
+    }
+}
+
+// Save methods:
+
+// Generate save
 void Game::save(std::string filename){
     // build load file
     std::ofstream out(filename);
@@ -261,10 +243,50 @@ void Game::save(std::string filename){
     }
 
     // board
-    out << this->gameBoard.save_data() << std::endl;
+    out << this->gameBoard.get_save_string() << std::endl;
 
     // goose
     out << this->gameBoard.get_goose_tile() << std::endl;
+}
+
+// Read board line from save (used by -board and -load)
+void Game::board_from_file(std::ifstream &file){
+    // read from file
+    std::vector<int> givenBoard;
+    std::string line;
+    std::getline(file, line);
+
+    std::istringstream iss {line};
+    int temp;
+    for (int i = 0; i < 38; ++i){
+        if (!(iss >> temp)){
+            throw std::runtime_error("Invalid save file format, expected 38 integers");
+        }
+        givenBoard.emplace_back(temp);
+    }
+    gameBoard->load_save_data(givenBoard);
+
+}
+
+// Read game from save, used by -load
+void Game::load_game(std::ifstream &file){
+    std::string line;
+    std::getline(file, line);
+    // first line is the turn number
+    cur_turn = std::stoi(line);
+
+    // next 4 lines are player data
+    for (int i = 0; i < numofPlayers; ++i){
+        std::getline(file, line);
+        //playerColor pc = static_cast<playerColor>(i);
+        players[i].read_save_string(line);
+    }
+
+    // reads board line
+    board_from_file(file);
+
+    std::getline(file, line);
+    gameBoard->update_goose(std::stoi(line));
 }
 
 
