@@ -24,7 +24,7 @@ Game::Game(int seed): cur_turn{0}, seed{seed}{
 
         // construct players vector
         for (int i = 0; i < numofPlayers; ++i){
-            players.emplace_back(std::make_unique<Student>(names[i], gameBoard->get()));
+            players.emplace_back(std::make_unique<Student>(names[i], gameBoard.get()));
         }
 }
 
@@ -215,22 +215,35 @@ void Game::roll_dice(bool isfair){
 }
 
 void Game::setup(){
+    // setup = true so buy_criteria does not deduct from held_resources.
     for (int i = 0; i < numofPlayers; ++i){
-            std::cout << "Student " << players[i]->get_name(); 
-            std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
-            int idx;
-            std::cin >> idx;
+        std::cout << *this;
+        std::cout << "Student " << players[i]->get_name(); 
+        std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
+        int idx;
+        std::cin >> idx;
+        try{
             players[i]->buy_criteria(idx, true);
+        } catch (const std::runtime_error &e) {
+            std::cerr << e.what() << std::endl;
+            i--;
         }
+    }
 
-        //backwards
-        for (int i = (numofPlayers - 1); i >= 0; --i){
-            cout << "Student " << players[i]->get_name();
-            cout << ", where do you want to complete an Assignment?" << std::endl << ">";
-            int idx;
-            std::cin >> idx;
-            default_game.players[i].buy_criteria(idx);
+    //backwards
+    for (int i = (numofPlayers - 1); i >= 0; --i){
+        std::cout << *this;
+        cout << "Student " << players[i]->get_name();
+        cout << ", where do you want to complete an Assignment?" << std::endl << ">";
+        int idx;
+        std::cin >> idx;
+        try{
+            players[i]->buy_criteria(idx, true);
+        } catch (const std::runtime_error &e) {
+            std::cerr << e.what() << std::endl;
+            i++;
         }
+    }
 
     cur_turn++;
     return;
@@ -238,13 +251,6 @@ void Game::setup(){
 
 // next turn (new active player)
 void Game::next_turn(){
-    if(cur_turn == 0){
-        // game set-up round
-        // insert special logic here...
-        setup();
-        
-    }
-
     active_id++;
 
     if(active_id >= numofPlayers){
