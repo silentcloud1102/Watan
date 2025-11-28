@@ -6,6 +6,7 @@ import <fstream>;
 import <vector>;
 import <stdexcept>;
 import <memory>;
+import <algorithm>;
 import <random>;
 
 import Resource
@@ -17,6 +18,7 @@ const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
 Game::Game(int seed): cur_turn{0}, seed{seed}{
+        std::default_random_engine rng{seed};
         // construct board
         std::unique_ptr<Board> gameBoard = std::make_unique<Board>(Board(seed));
 
@@ -26,6 +28,18 @@ Game::Game(int seed): cur_turn{0}, seed{seed}{
         }
 }
 
+Resource Game::generate_goosed(std::vector<int> resources, int amount){
+    std::shuffle(resources.begin(), resources.end(), rng);
+
+    int vals[5]{};
+    for(int i = 0;  i < amount; i++){
+        vals[resources[i]]++;
+    }
+
+    return Resource{vals[0], vals[1], vals[2], vals[3], vals[4]};
+}
+
+
 // Interface methods:
 void Game::roll_dice(bool isfair){
 
@@ -33,8 +47,6 @@ void Game::roll_dice(bool isfair){
     int roll;
     if (isfair){
         // random generation
-        unsigned seed_val = 69;
-        std::default_random_engine rng{seed_val};
         int roll1 = (rng() % 6) + 1;
         int roll2 = (rng() % 6) + 1;
         roll = roll1 + roll2;
@@ -50,22 +62,19 @@ void Game::roll_dice(bool isfair){
             }
         }
     }
+    std::cout << "Roll: " << roll << std::endl;
 
     // if 7, GEESE!
     if (roll == 7) {
-        // lose half of resources if more than 10 randomly, print out
-        for (int i = 0; i < numofPlayers; ++i){
-            int amount = players[i]->held_resources.count();
+        // randomly lose half of resources if more than 10, print out results of lost
+        for (auto it = players.begin(); it != players.end(); it++){
+            int amount = (*it)->resource_count();
             if (amount >= 10){
-                int generate = amount/2;
+                Resource loss = generate_goosed((*it)->resource_vector(), amount/2);
 
-                ///////// need to randomly generate half of what they have
+                (*it)->goosed(loss);
 
-                Resource r;
-                players[i]->held_resources -= r;
-                Resource * resources = players[i]->held_resources;
-
-                std::cout << "Student " << players[i]->name << "loses ";
+                std::cout << "Student " << (*it)->get_name() << " loses ";
                 std::cout << generate << "resources to the geese. They lose:" << std::endl;
 
                 std::cout << resources.caffeine << " CAFFIENE" << std::endl;
