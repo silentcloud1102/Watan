@@ -16,34 +16,52 @@ int main(int argc, char** argv){
     bool load = false;
     bool board = false;
 
-    string loadfile = "";
-    string boardfile = "";
+    string loadfile;
+    string boardfile;
 
+    // Argument-line parsing;
     for (int i = 1; i < argc; i++){
 
-        if (argv[i] == "-seed"){
+        if (string(argv[i]) == "-seed"){
             if (i + 1 < argc){
                 istringstream iss {argv[i + 1]};
                 iss >> seed;
                 if (iss.fail()){
-                    iss.clear();
+                    cerr << "Error: Seed could not be read, must be integer value." << endl;
+                    return 1; 
                 }
                 ++i;
+            } else {
+                cerr << "Error: Provide seed after -seed argument!" << endl;
+                return 1;
             }
-        } else if (argv[i] == "-load"){
+        } else if (string(argv[i]) == "-load"){
             if (i + 1 < argc){
                 loadfile = argv[i+1];
                 ++i;
+            } else {
+                cerr << "Error: Provide filename after -load argument!" << endl;
+                return 1;
             }
             load = true;
-        } else if (argv[i] = "-board"){
+        } else if (string(argv[i]) = "-board"){
             if (i + 1 < argc){
                 boardfile = argv[i+1];
                 ++i;
+            } else {
+                cerr << "Error: Provide filename after -board argument!" << endl;
+                return 1;
             }
+
             board = true;
         }
     }
+
+    if(board && load){
+        cerr << "Error: Invalid combination!" << endl;
+        return 1;
+    }
+
 
     bool play_again = true;
     while (play_again){
