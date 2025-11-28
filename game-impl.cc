@@ -33,27 +33,27 @@ void Game::board_from_file(ifstream &file){
         }
         givenBoard.emplace_back(temp);
     }
-    gameBoard->load_saveData(givenBoard);
+    gameBoard->load_save_data(givenBoard);
 }
 
-void Game::loadGame(ifstream &file){
-    int file_turn;
-    getline(ifsl, file_turn);
-    cur_turn = file_turn;
+void Game::load_game(std::ifstream &file){
+    std::string line;
+    std::getline(file, line);
+    // first line is the turn number
+    cur_turn = line.stoi();
 
+    // next 4 lines are player data
     for (int i = 0; i < numofPlayers; ++i){
-        string line;
-        getline(file, line);
+        std::getline(file, line);
         //playerColor pc = static_cast<playerColor>(i);
         players[i].read_save_string(line);
     }
 
     // reads board line
-    this->board_from_file(file);
+    board_from_file(file);
 
-    int goose;
-    file >> goose;
-    gameBoard->updateGoose(goose);
+    std::getline(file, line)
+    gameBoard->update_goose(line.stoi());
 }
 
 void Game::dice_rolls(bool isfair){
@@ -120,7 +120,7 @@ void Game::dice_rolls(bool isfair){
                 // ask again;
                 continue;
             } else {
-                gameBoard.updateGoose(goose);
+                gameBoard.update_goose(goose);
                 break;
             } 
         }
@@ -208,10 +208,10 @@ void Game::save(string filename){
     }
 
     // board
-    out << this->gameBoard.saveData() << endl;
+    out << this->gameBoard.save_data() << endl;
 
     // goose
-    out << this->gameBoard.getGooseTile() << endl;
+    out << this->gameBoard.get_goose_tile() << endl;
 }
 
 
