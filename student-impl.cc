@@ -96,7 +96,6 @@ void Student::buy_goal(int id, bool set_up) {
         }
     }
     target->acquire(this);
-    add_adjacent_goal(id);
     goals.push_back(id);
 }
 
