@@ -176,7 +176,7 @@ int first_course_criterion(int tilenum) {
 
 // prints GEESE if the tile is a goosetile, blank otherwise
 std::string Board::goose_printer(std::string tile) const {
-    int tile_num = stoi(tile);
+    int tile_num = std::stoi(tile);
     if (goose_tile == tile_num) {
         return "\\     GEESE      /";
     } else {
@@ -248,7 +248,7 @@ Board::Board(unsigned seed): goose_tile{-1} {
     // Created algorithm for course_criteria based on tile numbers
     // ============================================================
     for (int t = 0; t < num_of_tiles; ++t) {
-        int course_criterion1 = first_course_criterion(stoi(tiles[t]->get_tilenum()));
+        int course_criterion1 = first_course_criterion(std::stoi(tiles[t]->get_tilenum()));
         int course_criterion2 = course_criterion1 + 1;
         int course_criterion3 = down_course_criterion_coord(course_criterion1);
         int course_criterion4 = course_criterion3 + 1; 
@@ -280,40 +280,27 @@ void Board::load_save_data(std::vector<int> save_data) {
 }
 
 std::string Board::save_data() {
-    // resource names have trailing spaces since->get_resource() outputs the string with
-    // trailing spaces to have the board print properly
-    std::vector<std::string> resource_names_with_spaces = {
-        "CAFFEINE   ",
-        "LAB        ",
-        "LECTURE    ",
-        "STUDY      ",
-        "TUTORIAL   ",
-        "NETFLIX    "
-    };
-    std::string saved_data = "";
+    std::ostringstream oss;
     for (int i = 0; i < tiles.size(); i++) {
-        int resource_type = 0;
-        for (int j = 0; j < resource_names_with_spaces.size(); j++) {
-            if (resource_names_with_spaces[j] == tiles[i]->get_resource()) {
-                resource_type = j;
+        std::string target_resource = tiles[i]->get_resource(false);
+
+        // loop through resource names, add matching index to output stream
+        for (int j = 0; j < resource_names.size(); j++) {
+            if (resource_names[j] == target_resource) {
+                oss << j;
+                break;
             }
         }
-        saved_data += to_string(resource_type); 
-        saved_data += " ";
-        if (i != 18) { // adds a space if it is not the last item
-            saved_data += tiles[i]->get_tilenum();
-            saved_data += " ";
-        } else {
-            saved_data += tiles[i]->get_tilenum();
-        }
+
+        oss << ' ' << tiles[i]->get_tilenum(false) << ' ';
     }
-    return saved_data;
+    return oss.str();
 }
 
 // notifies the tiles based on the roll number
 void Board::update_tiles(int roll_num) const {
     for (int i = 0; i < tiles.size(); ++i) {
-        if(tiles[i]->get_dice().stoi() == roll_num && i != goose_tile){
+        if(std::stoi(tiles[i]->get_dice(false)) == roll_num && i != goose_tile){
             tiles[i]->distribute_resources();
         }
         // else nothing
