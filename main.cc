@@ -10,7 +10,7 @@ import Game;
 using namespace std;
 
 int main(int argc, char** argv){
-    int numofPlayers;
+    int numofPlayers = 4;
 
     int seed = 0; // default seed
     bool load = false;
