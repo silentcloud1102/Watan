@@ -134,7 +134,7 @@ std::string Student::get_save_string() const {
 
     oss << " c";
     for(auto it = criteria.begin(); it != criteria.end(); it++){
-        criteria * target = board->getCriteria(*it);
+        Criteria * target = board->getCriteria(*it);
         oss << ' ' << target->get_save_string();
     }
 
@@ -153,7 +153,7 @@ void Student::read_save_string(std::string save_data) {
         iss >> read;
         resources[i] = read;
     }
-    Resource r = {resources[0], resources[1], resources[2], resources[3], resources[4]};
+    Resource r {resources[0], resources[1], resources[2], resources[3], resources[4]};
     this->resource_notify(r);
 
     iss.ignore();
