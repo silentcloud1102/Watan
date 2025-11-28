@@ -26,8 +26,6 @@ export class Goal : public ISubject {
     bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const;
 
     // Adjacency Methods
-    bool adjacent_goal_check(int location) const;
-    bool adjacent_criteria_check(int location) const;
     void set_adjacent_criteria(const std::vector<int> & criteria);
     void set_adjacent_goals(const std::vector<int> & goals);
 
