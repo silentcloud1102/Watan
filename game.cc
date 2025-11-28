@@ -20,7 +20,7 @@ export class Game {
     void turn_num();
     void save(string filename);
     void dice_rolls(bool isfair);
-    void updateBoard(ifstream &file);
+    void board_from_file(ifstream &file);
     void loadGame(ifstream &file);
     friend ostream& operator<<(ostream& os, Game& game);
 };

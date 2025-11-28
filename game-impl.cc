@@ -23,7 +23,7 @@ Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn):
         }
 }
 
-void Game::updateBoard(ifstream &file){
+void Game::board_from_file(ifstream &file){
     // read from file
     vector<int> givenBoard;
     int temp;
@@ -49,7 +49,7 @@ void Game::loadGame(ifstream &file){
     }
 
     // reads board line
-    this->updateBoard(file);
+    this->board_from_file(file);
 
     int goose;
     file >> goose;
