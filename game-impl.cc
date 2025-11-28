@@ -40,8 +40,33 @@ Resource Game::generate_goosed(std::vector<int> resources, int amount){
 
 
 // Interface methods:
-void Game::roll_dice(bool isfair){
+void Game::roll_dice(){
+    bool isfair = true;
 
+    std::string cmd;
+    while(true){
+        std::cout << "Available commands:" << std::endl;
+        std::cout << "load" << std::endl;
+        std::cout << "fair" << std::endl;
+        std::cout << "roll" << std::endl;
+        std::cout << ">";
+        std::cin >> cmd;
+
+        if(cmd == "load"){
+            std::cout << "Dice set to loaded." << std::endl;
+            isfair = false;
+        } else if (cmd == "fair") {
+            std::cout << "Dice set to fair." << std::endl;
+            isfair = true;
+        } else if (cmd == "roll") {
+            std::cout << "Rolling...";
+            std::cin >> cmd;
+            break;
+        } else {
+            std::cerr << "Unknown command. Try again." << std::endl;
+        }
+    }
+    
     // Generating the dicerolls
     int roll;
     if (isfair){
@@ -55,7 +80,7 @@ void Game::roll_dice(bool isfair){
             std::cout << "Input a roll between 2 and 12: ";
             std::cin >> roll;
             if ((roll < 2) || (12 < roll)){
-                std::cout << "Invalid roll." << std::endl;
+                std::cerr << "Invalid roll." << std::endl;
             } else {
                 break;
             }
@@ -267,14 +292,15 @@ void Game::begin_turn() const {
     std::cout << *players[active_id];
 
     // Then proceed to dice roll logic...
+    roll_dice();
 }
 
 
-void criteria(){
+void Game::criteria(){
     std::cout << players[active_id]->completions();
 }
 
-void achieve(int goal){
+void Game::achieve(int goal){
     try{
         players[active_id]->buy_goal(goal);
     } catch (const std::runtime_error &e){
@@ -282,7 +308,7 @@ void achieve(int goal){
     }
 }
 
-void complete(int criteria){
+void Game::complete(int criteria){
     try{
         players[active_id]->buy_criteria(criteria);
     } catch (const std::runtime_error &e){
@@ -291,7 +317,7 @@ void complete(int criteria){
     return;
 }
 
-void improve(int criteria){
+void Game::improve(int criteria){
     try{
         players[active_id]->upgrade_criteria(criteria);
     } catch (const std::runtime_error &e){
@@ -300,11 +326,11 @@ void improve(int criteria){
     return;
 }
 
-void trade(std::string colour, std::string give, std::string take){
+void Game::trade(std::string colour, std::string give, std::string take){
 
 }
 
-void help() const{
+void Game::help() const{
     cout << "Valid Commands:" << endl;
     cout << "board" << endl;
     cout << "status" << endl;
