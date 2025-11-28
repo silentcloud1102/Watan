@@ -1,24 +1,24 @@
 module Student;
 
+import <iostream>;
+import <sstream>;
 import <vector>;
 import <string>;
-import <sstream>;
-import <iostream;
 
-import Board;
-import ISubject;
 import Resource;
-import IObserver
+import IObserver;
+import ISubject;
+import Board;
 
 Student(const std::string colour, Board * board): 
     name{colour}, board{board} {}
 
-std::string get_name() {
+std::string Student::get_name() {
     return name;
 }
 
 // set_up boolean to override checks: useful for setting up from saves
-void buy_criteria(int id, bool set_up){
+void Student::buy_criteria(int id, bool set_up){
     Criteria * target = board->getCriteria(id);
     Resource & cost = target->upgradeCost();
 
@@ -45,7 +45,7 @@ void buy_criteria(int id, bool set_up){
     return;
 }
 
-void buy_goal(int id, bool set_up){
+void Student::buy_goal(int id, bool set_up){
     Goal * target = board->getGoal(id);
     Resource & cost = target->cost();
 
@@ -71,7 +71,7 @@ void buy_goal(int id, bool set_up){
 }
 
 // will not be run at set-up, no need to include a set-up override
-void upgrade_criteria(int id) {
+void Student::upgrade_criteria(int id) {
     bool found = false;
     for(auto val: criteria){
         if (val == id) {
@@ -98,17 +98,17 @@ void upgrade_criteria(int id) {
 
 }
 
-bool can_afford(const Resource & query) const {
+bool Student::can_afford(const Resource & query) const {
     return held_resources >= query;
 }
 
 // main method to modify resources, inherited from IObserver
-void resource_notify(Resource rchange) {
+void Student::resource_notify(Resource rchange) {
     held_resources += rchange;
 }
 
 // save logic
-std::string get_save_string() const {
+std::string Student::get_save_string() const {
     std::ostringstream oss;
     oss << held_resources.get_save_string();
 
@@ -130,7 +130,7 @@ std::string get_save_string() const {
 }
 
 // set student values based on save string
-void read_save_string(std::string save_data) {
+void Student::read_save_string(std::string save_data) {
     // placeholder for now: add for construction from save strings
     istringstream iss {save_data};
     int read;
@@ -154,13 +154,13 @@ void read_save_string(std::string save_data) {
     
 }
 
-void print_status(){
+void Student::print_status(){
     cout << this->name << " has ";
     cout << this->criteria.size() << " course criteria,";
     cout << this->held_resources.print_resource_status() << endl;
 }
 
-void trade(Student * colour, string give_r, string take_r){
+void Student::trade(Student * colour, string give_r, string take_r){
     Resource r1 = Resource(give_r, 1);
     Resource r2 = Resource(take_r, 1);
 
