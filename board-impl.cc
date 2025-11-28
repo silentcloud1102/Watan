@@ -20,7 +20,6 @@ import Resource;
 // i.e. GoalsAdjCriterion[5] is the vector containing the ids of the criterion adjacent to goal 5 
 // (the 6th goal since we start counting from 0)
 
-
 //  Adjacent course criterion for each goal
 const std::vector<std::vector<int>> Board::GoalsAdjCriterion = {
     {0, 1}, {0, 3}, {1, 4}, {2, 3}, {4, 5}, {2, 7}, {3, 8}, {4, 9}, {5, 10}, {6, 7}, {8, 9}, {10, 11},
@@ -265,16 +264,7 @@ Board::Board(unsigned seed): goose_tile{-1} {
 }
 
 // Save methods
-void Board::load_saveData(std::vector<int> save_data) {
-    std::vector<std::string> resource_names = {
-        "CAFFEINE",
-        "LAB",
-        "LECTURE",
-        "STUDY",
-        "TUTORIAL",
-        "NETFLIX"
-    };
-
+void Board::load_save_data(std::vector<int> save_data) {
     // resType r = static_cast<resType>(save_data[i]);
 
     for (int i = 0; i < save_data.size(); i += 2) {
@@ -289,7 +279,7 @@ void Board::load_saveData(std::vector<int> save_data) {
     }
 }
 
-std::string Board::saveData() {
+std::string Board::save_data() {
     // resource names have trailing spaces since->getResource() outputs the string with
     // trailing spaces to have the board print properly
     std::vector<std::string> resource_names_with_spaces = {
@@ -331,14 +321,14 @@ void Board::update_tiles(int roll_num) const {
 }
 
 // returns the criteria at that location
-Criteria* Board::getCriteria(int criteria_num) const {
+Criteria* Board::get_criteria(int criteria_num) const {
     // returns a raw pointer, no worries that Player will outlive Board
     // they will both die alongside Game
     return course_criteria[criteria_num].get();
 }
 
 // returns the goal at that location
-Goal* Board::getGoal(int goal_num) const {
+Goal* Board::get_goal(int goal_num) const {
     // returns raw pointer, again no worries that Player will be able to access
     // post deletion as both will die alongside Game
     return goals[goal_num].get();
@@ -347,11 +337,9 @@ Goal* Board::getGoal(int goal_num) const {
 
 ostream &operator<<(ostream &out, const Board &b) {
 
-
-
-    // ============================================================
     // Printing the board using our constants
-    // ============================================================
+    // Those with eyes: beware!
+    // Skip the next few lines for your own good...
     out << leadblank1 << b.course_criteria[0]->getnum() << top1 << b.goals[0]->getnum() << top2 << b.course_criteria[1]->getnum() << "|" << endl;
     out << leadblank2 << endl;
     out << leadblank3 << b.goals[1]->getnum() << blank1 << b.tiles[0]->getTilenum() << blank4 << b.goals[2]->getnum() << endl;
@@ -394,17 +382,17 @@ ostream &operator<<(ostream &out, const Board &b) {
     out << leadblank13 << endl;
     out << leadblank1 << b.course_criteria[52]->getnum() << top1 << b.goals[71]->getnum() << top2 << b.course_criteria[53]->getnum() << "|" << endl;
     return out;
+    // hallelujah
 }
 
 // updating where the goose position is, assuming that out of bounds values
-// indicates that they wish to take the goose off the board 
-// (also assumes main will ensure the values are correct, so it will accept any value)
-void Board::updateGoose(int new_goosetile) {
+// indicates that the goose is off the board 
+void Board::update_goose(int new_goose_tile) {
     // assumes that we are given a valid tilenum -> Game can check whether or not it is valid
-    goose_tile = new_goosetile;
+    goose_tile = new_goose_tile;
 }
 
 // provides the tile where the goose is located
-int Board::getGooseTile() const {
+int Board::get_goose_tile() const {
     return goose_tile;
 }

@@ -44,18 +44,18 @@ export class Board {
         void update_tiles(int roll_num) const;
 
         // get methods that return pointers, for Student to access and acquire/upgrade
-        Criteria* getCriteria(int criteria_num) const;
-        Goal* getGoal(int goal_num) const;
+        Criteria* get_criteria(int criteria_num) const;
+        Goal* get_goal(int goal_num) const;
 
         // goose handling
-        void updateGoose(int new_goosetile);
-        int getGooseTile() const;
+        void update_goose(int new_goose_tile);
+        int get_goose_tile() const;
 
         // output
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 
         // save methods
-        void load_saveData(std::vector<int> save_data);
-        std::string saveData();
+        void load_save_data(std::vector<int> save_data);
+        std::string save_data();
 };
 
