@@ -23,7 +23,7 @@ export class Goal : public ISubject {
     // Buy logic methods:
     const Resource & cost() const;
     bool owned() const;
-    bool adjacent(std::vector<int> &criteria, std::vector<int> &goals) const;
+    bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const;
 
     // Adjacency Methods
     bool adjacent_goal_check(int location) const;
