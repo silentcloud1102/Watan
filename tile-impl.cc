@@ -5,9 +5,8 @@ import <string>;
 
 import ISubject;
 import Resource;
-
-
-
+import Goal;
+import Criteria;
 
 Tile::Tile(std::string res, int dc, int num) : resource_type(res), dice(dc), tilenum(num) {}
 
