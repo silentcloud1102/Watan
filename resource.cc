@@ -25,5 +25,5 @@ export class Resource {
 
         std::string get_save_string() const;
 
-        friend std::ostream &operator<<(ostream &os, const Resource & resource);
+        friend std::ostream &operator<<(std::ostream &os, const Resource & resource);
 };

@@ -91,7 +91,7 @@ std::string Resource::get_save_string() const {
 
 
 // output operator
-std::ostream &operator<<(ostream &os, const Resource & resource){
+std::ostream &operator<<(std::ostream &os, const Resource & resource){
     os << resource.caffeine << " caffeines, ";
     os << resource.lab << " labs, ";
     os << resource.lecture << " lectures, ";
