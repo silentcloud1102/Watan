@@ -4,6 +4,16 @@ import <string>;
 import <sstream>;
 import <iostream>;
 
+// Constant for use by methods
+const std::vector<std::string> resource_names = {
+    "CAFFEINE",
+    "LAB",
+    "LECTURE",
+    "STUDY",
+    "TUTORIAL",
+};
+
+
 Resource::Resource(int caffeine, int lab, int lecture, int study, int tutorial)
     : caffeine{caffeine}, lab{lab}, lecture{lecture}, study{study}, tutorial{tutorial} {}
 
@@ -92,6 +102,10 @@ std::vector<int> Resource::to_vector() const {
     return ret_val;
 }
 
+
+std::string print_output(int type, int amount) const{
+
+}
 
 std::string Resource::get_save_string() const {
     std::ostringstream oss;
