@@ -185,8 +185,8 @@ Board::Board(unsigned seed) {
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
     for (int e = 0; e < num_of_goals; ++e) {
-        goals[e].addAdjacentcourse_criterion(GoalsAdjCriterion.at(e));
-        goals[e].addAdjacentgoal(GoalsAdjGoals.at(e));
+        goals[e].set_adjacent_criteria(GoalsAdjCriterion.at(e));
+        goals[e].set_adjacent_goals(GoalsAdjGoals.at(e));
     }
     for (int i = 0; i < num_of_course_criteria; ++i) {
         
@@ -196,9 +196,9 @@ Board::Board(unsigned seed) {
             course_criteria[i].addAdjacentcourse_criterion(&course_criteria[idx]);
         }
         */
-       
-        course_criteria[i].addAdjacentcourse_criterion(CriterionAdjCriterion.at(i));
-        course_criteria[i].addAdjacentgoal(CriterionAdjGoals.at(i));
+
+        course_criteria[i].set_adjacent_criteria(CriterionAdjCriterion.at(i));
+        course_criteria[i].set_adjacent_goals(CriterionAdjGoals.at(i));
     }
 
     // ===================================================================
