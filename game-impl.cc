@@ -172,3 +172,9 @@ void Game::save(string filename){
     // goose
     out << this->gameBoard.getGooseTile() << endl;
 }
+
+
+ostream& operator<<(ostream& os, Game& game){
+    os << game.gameBoard;
+    return os;
+}
