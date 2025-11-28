@@ -189,12 +189,12 @@ void Game::roll_dice(bool isfair){
         for (int i = 0; i < 4; ++i){
             diff[i] = players[i]->get_resource() - diff[i];
             if(diff[i].count()){
-                change = true;
+                changed = true;
             }
             // measures the change
         }
 
-        if(change){
+        if(changed){
             for (int i = 0; i < 4; ++i){
                 if(diff[i].count() == 0){
                     continue;
@@ -202,7 +202,7 @@ void Game::roll_dice(bool isfair){
 
                 std::cout << "Student " << players[i]->get_name() << " gained:";
 
-                vector<int> gains = diff[i].to_vector(false);
+                std::vector<int> gains = diff[i].to_vector(false);
                 for(int i = 0; i < gains.size(); i++){
                     std::cout << Resource::print_output(i, gains[i]) << std::endl;
                 }
@@ -353,6 +353,6 @@ void Game::load_game(std::ifstream &file){
 
 
 std::ostream& operator<<(std::ostream& os, Game& game){
-    os << game->gameBoard;
+    os << game.gameBoard;
     return os;
 }
