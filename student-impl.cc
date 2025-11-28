@@ -14,12 +14,23 @@ import IObserver;
 import ISubject;
 import Board;
 
+
+// Constants
+const MAX_GOAL = 71;
+const MAX_CRITERIA = 53;
+const MIN_GOAL = 0;
+const MIN_CRITERIA = 0;
+
 Student::Student(const std::string & colour, Board * board): name{colour}, board{board} {}
 
 
 // Board interaction methods: includes logic override
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
+    if(id > MAX_CRITERIA || id < MIN_CRITERIA){
+        throw std::runtime_error("Given index is out of range.");
+    }
+
     Criteria * target = board->get_criteria(id);
     const Resource & cost = target->upgrade_cost();
 
@@ -72,6 +83,10 @@ void Student::buy_criteria(int id, bool set_up){
 
 // buy method for goal, again providing a set_up switch
 void Student::buy_goal(int id, bool set_up) {
+    if(id > MAX_GOAL || id < MIN_GOAL){
+        throw std::runtime_error("Given index is out of range.");
+    }
+
     Goal * target = board->get_goal(id);
     const Resource & cost = target->cost();
 
