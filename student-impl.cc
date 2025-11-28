@@ -61,16 +61,18 @@ void Student::buy_goal(int id, bool set_up){
     bool affordable = can_afford(cost);
     bool adjacent = target->adjacent_check(criteria, goals);
     bool owned = target->owned();
+    
+    if (owned){
+        throw std::runtime_error("This goal is already owned, cannot have two owners!");
+    }
 
     if(!set_up){
-        if(affordable && adjacent && !owned){
+        if(affordable && adjacent &&){
             
             held_resources -= cost;
             
         } else if (!adjacent){
             throw std::runtime_error("This goal is not adjacent to any of your goals and criterion.");
-        } else if (owned){
-            throw std::runtime_error("This goal is already owned.");
         } else if (!affordable){
             throw std::runtime_error("You do not have enough resources.");
         }
