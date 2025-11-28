@@ -212,7 +212,7 @@ Board::Board(unsigned seed): goose_tile{-1} {
             dice_val = (rng() % 11) + 2;
         }
         if (resource_type == 5) {
-            dice_val == 7;
+            dice_val = 7;
         }
         //tiles.emplace_back(resource_names[resource_type], dice_val, i);
         tiles.emplace_back(std::make_unique<Tile>(resource_names[resource_type], dice_val, i));
@@ -273,7 +273,7 @@ Board::Board(unsigned seed): goose_tile{-1} {
 // Save methods
 void Board::load_save_data(std::vector<int> save_data) {
     // resType r = static_cast<resType>(save_data[i]);
-
+    
     for (int i = 0; i < save_data.size(); i += 2) {
         int resource_type = save_data[i];
         int dice_val = save_data[i+1];
@@ -281,7 +281,8 @@ void Board::load_save_data(std::vector<int> save_data) {
             continue;
         } else {
             //tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
-            tiles.emplace_back(std::make_unique<Tile>(resource_names[resource_type], dice_val, i/2));
+            tiles[i/2]->set_dicenum(dice_val);
+            tiles[i/2]->set_resource_type(resource_names[resource_type]);
         }
     }
 }

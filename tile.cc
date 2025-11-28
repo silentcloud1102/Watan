@@ -31,6 +31,8 @@ export class Tile {
     std::vector<std::string> adjacent_criteria_ids() const;
     void add_criteria(Criteria *v);
     void add_goal(Goal *e);
+    void set_dicenum(int dice);
+    void set_resource_type(std::string resource);
 
     // send resources to Criteria
     void distribute_resources() const;

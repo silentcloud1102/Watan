@@ -64,6 +64,13 @@ void Tile::add_goal(Goal *e) {
     goals.emplace_back(e);
 }
 
+void Tile::set_dicenum(int change_dice) {
+    dice = change_dice;
+}
+void Tile::set_resource_type(std::string change_resource) {
+    resource_type = change_resource;
+}
+
 // Resource distribution via Criteria (Subject)
 void Tile::distribute_resources() const {
       for (int i = 0; i < 6; ++i) {
