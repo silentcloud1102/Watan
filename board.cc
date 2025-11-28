@@ -24,7 +24,7 @@ export class Board {
         std::string saveData();
         void update_tiles(int roll_num) const;
         Criteria* getCriteria(int criteria_num) const;
-        Goal* getGoals(int goal_num) const;
+        Goal* getGoal(int goal_num) const;
         void updateGoose(int new_goosetile);
         int getGooseTile() const;
         friend std::ostream &operator<<(std::ostream &out, const Board &b);

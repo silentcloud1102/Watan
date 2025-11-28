@@ -305,7 +305,7 @@ Criteria* Board::getCriteria(int criteria_num) const {
 }
 
 // returns the goal at that location
-Goal* Board::getGoals(int goal_num) const {
+Goal* Board::getGoal(int goal_num) const {
     return goals[goal_num].get();
 }
 

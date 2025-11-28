@@ -17,7 +17,6 @@ export class Student : public IObserver {
     std::vector<int> criteria;
     std::vector<int> goals;
     bool isfair = true;
-    Board * board;
     public:
         explicit Student(const std::string & colour, Board * board);
         std::string get_name() override;

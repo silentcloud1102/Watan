@@ -22,11 +22,11 @@ std::string Student::get_name() {
 
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
-    const Criteria & target = board->getCriteria(id);
-    Resource & cost = target->upgradeCost();
+    Criteria * target = board->getCriteria(id);
+    const Resource & cost = target->upgradeCost();
 
     bool affordable = can_afford(cost);
-    bool adjacent = target->adjacent(criteria, goals);
+    bool adjacent = target->adjacent_check(criteria, goals);
     bool owned = target->owned();
 
     if(!set_up){
@@ -49,10 +49,10 @@ void Student::buy_criteria(int id, bool set_up){
 
 void Student::buy_goal(int id, bool set_up){
     Goal * target = board->getGoal(id);
-    Resource & cost = target->cost();
+    const Resource & cost = target->cost();
 
     bool affordable = can_afford(cost);
-    bool adjacent = target->adjacent(criteria, goals);
+    bool adjacent = target->adjacent_check(criteria, goals);
     bool owned = target->owned();
 
     if(!set_up){
@@ -87,7 +87,7 @@ void Student::upgrade_criteria(int id) {
     }
 
     Criteria * target = board->getCriteria(id);
-    Resource & cost = target->upgradeCost();
+    const Resource & cost = target->upgradeCost();
 
     if(can_afford(cost) && !target->max_level()){
         held_resources -= cost;
@@ -110,7 +110,7 @@ void Student::resource_notify(Resource rchange) {
 }
 
 // trades
-void Student::trade(Student * colour, string give_r, string take_r){
+void Student::trade(Student * colour, std::string give_r, std::string take_r){
     // by default we trade 1 of each resource
     Resource r1 = Resource(give_r, 1);
     Resource r2 = Resource(take_r, 1);
@@ -146,7 +146,7 @@ std::string Student::get_save_string() const {
 // set student values based on save string
 void Student::read_save_string(std::string save_data) {
     // placeholder for now: add for construction from save strings
-    istringstream iss {save_data};
+    std::istringstream iss {save_data};
     int read;
     int resources[5];
     for (int i = 0; i < 5; ++i){
@@ -168,24 +168,9 @@ void Student::read_save_string(std::string save_data) {
     
 }
 
-<<<<<<< HEAD
 // output operator for student
 std::ostream &operator<<(std::ostream& os, Student &student){
     os << student.name << " has " << student.criteria.size() << " course criteria, ";
     os << student.held_resources;
     return os;
-=======
-void Student::print_status(){
-    std::cout << this->name << " has ";
-    std::cout << this->criteria.size() << " course criteria,";
-    std::cout << this->held_resources.print_resource_status() << std::endl;
-}
-
-void Student::trade(Student * colour, std::string give_r, std::string take_r){
-    Resource r1 = Resource(give_r, 1);
-    Resource r2 = Resource(take_r, 1);
-
-    colour->held_resources += r2;
-    this->held_resources -= r1;
->>>>>>> a17ecacc1ff0199a8e1438caac9a526a9abfb241
 }
