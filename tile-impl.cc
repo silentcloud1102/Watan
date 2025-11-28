@@ -38,6 +38,9 @@ std::string Tile::get_resource(bool normalize) const {
 
 std::string Tile::get_dice(bool normalize) const {
     // again, we want the result to be two characters long, normalize by adding space to front
+    if (dice == 7 && normalize) {
+        return "  ";
+    }
     if (normalize && dice < 10) {
         return " " + std::to_string(dice);
     }

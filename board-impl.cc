@@ -208,6 +208,12 @@ Board::Board(unsigned seed): goose_tile{-1} {
 
         // x % 11 results has range of 0 - 10, then add 2 to get 2 - 12 as desired
         int dice_val = (rng() % 11) + 2;
+        while (dice_val == 7) {
+            dice_val = (rng() % 11) + 2;
+        }
+        if (resource_type == 5) {
+            dice_val == 7;
+        }
         //tiles.emplace_back(resource_names[resource_type], dice_val, i);
         tiles.emplace_back(std::make_unique<Tile>(resource_names[resource_type], dice_val, i));
     }
@@ -293,7 +299,7 @@ std::string Board::get_save_string() {
             }
         }
 
-        oss << ' ' << tiles[i]->get_tilenum(false) << ' ';
+        oss << ' ' << tiles[i]->get_dice(false) << ' ';
     }
     return oss.str();
 }
