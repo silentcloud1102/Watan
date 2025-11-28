@@ -17,7 +17,11 @@ export class Student : public IObserver {
     std::vector<int> criteria;
     std::vector<int> goals;
     bool isfair = true;
+    static std::vector<int> all_adjacent_goals;
+    static std::vector<int> all_adjacent_criteria;
     public:
+        static void add_adjacent_criteria(int criteria);
+        static void add_adjacent_goal(int goal);
         Student(const std::string & colour, Board * board);
         std::string get_name() override;
         

@@ -16,6 +16,12 @@ import Board;
 
 Student::Student(const std::string & colour, Board * board): name{colour}, board{board} {}
 
+// static method to add adjacent criteria 
+static void add_adjacent_criteria(int criteria) {all_adjacent_criteria.push_back(criteria);}
+
+static void add_adjacent_goal(int goal) {all_adjacent_goals.push_back(goal);}
+
+
 // Board interaction methods: includes logic override
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
@@ -33,7 +39,9 @@ void Student::buy_criteria(int id, bool set_up){
         // if from save file, no need to catch: error in save file...
         // if from setup of game, must be caught.
         throw std::runtime_error("This criteria is already owned, cannot have two owners!");
-    } else if (!adjacent_criteria){
+    } 
+    
+    if (!adjacent_criteria){
         throw std::runtime_error("This criteria is too close to another owned criteria.");
     }
 
@@ -49,6 +57,11 @@ void Student::buy_criteria(int id, bool set_up){
 
     // if no exceptions were thrown or set_up is true, then add to list.
     criteria.push_back(id);
+    add_adjacent_criteria(id);
+    std::vector<int> add_adjacents = target->get_adjacent_criteria();
+    for (int j = 0; j < add_adjacents.size(); j++) {
+        add_adjacent_criteria(add_adjacents[j]);
+    }
     target->acquire(this);
 }
 
@@ -78,6 +91,7 @@ void Student::buy_goal(int id, bool set_up) {
         }
     }
     target->acquire(this);
+    add_adjacent_goal(id);
     goals.push_back(id);
 }
 

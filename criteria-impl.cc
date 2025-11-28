@@ -137,6 +137,16 @@ void Criteria::set_adjacent_goals(const std::vector<int> &goals) {
     adjacent_goals = goals;
 }
 
+// returns the adjacent goals
+std::vector<int> get_adjacent_goals() const {
+    return adjacent_goals;
+}
+
+// returns the adjacent criteria
+std::vector<int> get_adjacent_criteria() const {
+    return adjacent_criteria;
+}
+
 // Notify Observer
 void Criteria::new_resource(std::string r) const {
     Resource rchange{r, upgradeLevel};

@@ -249,6 +249,11 @@ void Game::setup(){
         std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
         int idx;
         std::cin >> idx;
+
+        if (std::cin.eof()) {
+            std::exit(1);
+        }
+
         try{
             players[i]->buy_criteria(idx, true);
         } catch (const std::runtime_error &e) {
@@ -264,6 +269,9 @@ void Game::setup(){
         std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
         int idx;
         std::cin >> idx;
+        if (std::cin.eof()) {
+            std::exit(1);
+        }
         try{
             players[i]->buy_criteria(idx, true);
         } catch (const std::runtime_error &e) {
