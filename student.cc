@@ -15,7 +15,6 @@ export class Student : public IObserver {
     Resource held_resources;
     std::vector<int> criteria;
     std::vector<int> goals;
-    int criteria_count;
     bool isfair = true;
     public:
         explicit Student(const std::string colour);
@@ -38,5 +37,5 @@ export class Student : public IObserver {
         std::string get_save_string() const;
         void read_save_string(std::string save_data);
 
-        void print_status();
+        friend std::ostream &operator<<(ostream& os, Student &student);
 };

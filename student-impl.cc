@@ -40,7 +40,6 @@ void Student::buy_criteria(int id, bool set_up){
 
     // if no exceptions were thrown or set_up is true, then add to list.
     criteria.push_back(id);
-    ++criteria_count;
     target->acquire(this);
     return;
 }
@@ -107,6 +106,18 @@ void Student::resource_notify(Resource rchange) {
     held_resources += rchange;
 }
 
+// trades
+void Student::trade(Student * colour, string give_r, string take_r){
+    // by default we trade 1 of each resource
+    Resource r1 = Resource(give_r, 1);
+    Resource r2 = Resource(take_r, 1);
+
+    colour->held_resources += r1;
+    this->held_resources += r2;
+    this->held_resources -= r1;
+    colour->held_resources -= r2;
+}
+
 // save logic
 std::string Student::get_save_string() const {
     std::ostringstream oss;
@@ -154,16 +165,9 @@ void Student::read_save_string(std::string save_data) {
     
 }
 
-void Student::print_status(){
-    cout << this->name << " has ";
-    cout << this->criteria.size() << " course criteria,";
-    cout << this->held_resources.print_resource_status() << endl;
-}
-
-void Student::trade(Student * colour, string give_r, string take_r){
-    Resource r1 = Resource(give_r, 1);
-    Resource r2 = Resource(take_r, 1);
-
-    colour->held_resources += r2;
-    this->held_resources -= r1;
+// output operator for student
+std::ostream &operator<<(ostream& os, Student &student){
+    os << student.name << " has " << student.criteria.size() << " course criteria, ";
+    os << student.held_resources;
+    return os;
 }
