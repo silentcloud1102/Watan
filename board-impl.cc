@@ -13,20 +13,15 @@ import Tile;
 import Resource;
 
 
-// CONSTANTS
+// CONSTANTS:
 
-// =========================================================================================
 // Creating our vectors of data below (board will be hardcoded)
-//
-//
 // Each index will represent the goal/criterion number 
 // i.e. GoalsAdjCriterion[5] is the vector containing the ids of the criterion adjacent to goal 5 
 // (the 6th goal since we start counting from 0)
-// ========================================================================================
 
-// ============================================================
+
 //  Adjacent course criterion for each goal
-// ============================================================
 const std::vector<std::vector<int>> Board::GoalsAdjCriterion = {
     {0, 1}, {0, 3}, {1, 4}, {2, 3}, {4, 5}, {2, 7}, {3, 8}, {4, 9}, {5, 10}, {6, 7}, {8, 9}, {10, 11},
     {6, 12}, {7, 13}, {8, 14}, {9, 15}, {10, 16}, {11, 17}, {13, 14}, {15, 16}, {12, 18}, {13, 19},
@@ -36,9 +31,8 @@ const std::vector<std::vector<int>> Board::GoalsAdjCriterion = {
     {37, 38}, {39, 40}, {36, 42}, {37, 43}, {38, 44}, {39, 45}, {40, 46}, {41, 47}, {42, 43}, {44, 45},
     {46, 47}, {43, 48}, {44, 49}, {45, 50}, {46, 51}, {47, 52}, {49, 50}, {48, 49}, {50, 53}, {52, 53}
 };
-// ============================================================
+
 //  Adjacent goals for each goal
-// ============================================================
 const std::vector<std::vector<int>> Board::GoalsAdjGoals = {
     {1,2}, {0,3,6}, {0,4,7}, {1,5,6}, {2,7,8}, {3,9,13}, {1,3,10,14},
     {2,4,10,15}, {4,11,16}, {5,12,13}, {6,7,14,15}, {8,16,17}, {9,20},
@@ -54,9 +48,8 @@ const std::vector<std::vector<int>> Board::GoalsAdjGoals = {
     {50,53,62,66}, {51,62}, {54,55,63}, {56,57,64,65}, {58,59,66}, {55,60,67},
     {56,61,67,69}, {57,61,68,70}, {58,62,68}, {63,64,69}, {65,66,70}, {64,67,71}, {65,68,71}, {69, 70}
 };
-// ============================================================
+
 // Adjacent course criterion for each course criterion
-// ============================================================
 const std::vector<std::vector<int>> Board::CriterionAdjCriterion = {
     {1,3},{0,4},{3,7},{0,2,8},{1,5,9},{4,10},{7,12},{2,6,13},
     {3,9,14},{4,8,15},{5,11,16},{10,17},{6,18},{7,14,19},{8,13,20},
@@ -67,9 +60,8 @@ const std::vector<std::vector<int>> Board::CriterionAdjCriterion = {
     {33,40,45},{34,39,46},{35,47},{36,43},{37,42,48},{38,45,49},{39,44,50},
     {40,47,51},{41,46},{43,49},{44,48,50},{45,51,53},{46,50},{49,53},{50,52}
 };
-// ============================================================
+
 // Adjacent goals for each course criterion
-// ============================================================
 const std::vector<std::vector<int>> Board::CriterionAdjGoals = {
     {0,1},{0,2},{3,5},{1,3,6},{2,4,7},{4,8},{9,12},{5,9,13},
     {6,10,14},{7,10,15},{8,11,16},{11,17},{12,20},{13,18,21},{14,18,22},
@@ -79,9 +71,8 @@ const std::vector<std::vector<int>> Board::CriterionAdjGoals = {
     {48,52,56},{49,53,57},{50,53,58},{51,59},{54,60},{55,60,63},{56,61,64},{57,61,65},
     {58,62,66},{59,62},{63,67},{64,67,69},{65,68,70},{66,68},{69,71},{70,71}
 };
-// ============================================================
-// goal indices for each tile (local array)
-// ============================================================
+
+// goal indices for each tile stored as vectors
 const std::vector<std::vector<int>> Board::tilegoals = {
     {0, 1, 2, 6, 7, 10},
     {3, 5, 6, 13, 14, 18},
@@ -114,6 +105,39 @@ const std::vector<std::string> Board::resource_names = {
     "NETFLIX"
 };
 
+
+// Printing constants used by << overload
+
+// Leading blanks for the board;
+const std::string leadblank1 = "                                   |";
+const std::string leadblank2 = "                                   /            \\";
+const std::string leadblank3 = "                                 ";
+const std::string leadblank4 = "                                 /     ";
+const std::string leadblank5 = "                    |";
+const std::string leadblank6 = "                    /            ";
+const std::string leadblank7 = "                  ";
+const std::string leadblank8 = "                  /     ";
+const std::string leadblank9 = "     |";
+const std::string leadblank10 = "     /            ";
+const std::string leadblank11 = "   ";
+const std::string leadblank12 = "   /     ";
+const std::string leadblank13 = "                                   \\            /";
+const std::string leadblank14 = "     \\            /     ";
+const std::string leadblank15 = "                    \\            /     ";
+
+
+// Commonly used strings
+const std::string blank1 = "      ";
+const std::string blank2 = "             ";
+const std::string blank3 = "            ";
+const std::string blank4 = "     ";
+const std::string top1 = "|--";
+const std::string top2 = "--|";
+const std::string middle1 = "\\            /     ";
+const std::string middle2 = "\\            /";
+const std::string middle3 = "            \\";
+const std::string middle4 = "       |";
+const std::string middle5 = "|       ";
 
 // Useful methods for calculating ids of criteria based on a given id
 // gives the coordinate of the vertex below the provided coordinate
@@ -308,48 +332,21 @@ void Board::update_tiles(int roll_num) const {
 
 // returns the criteria at that location
 Criteria* Board::getCriteria(int criteria_num) const {
+    // returns a raw pointer, no worries that Player will outlive Board
+    // they will both die alongside Game
     return course_criteria[criteria_num].get();
 }
 
 // returns the goal at that location
 Goal* Board::getGoal(int goal_num) const {
+    // returns raw pointer, again no worries that Player will be able to access
+    // post deletion as both will die alongside Game
     return goals[goal_num].get();
 }
 
-ostream &operator<<(ostream &out, const Board &b) {
-    // ============================================================
-    // Leading blanks for the board;
-    // ============================================================
-    std::string leadblank1 = "                                   |";
-    std::string leadblank2 = "                                   /            \\";
-    std::string leadblank3 = "                                 ";
-    std::string leadblank4 = "                                 /     ";
-    std::string leadblank5 = "                    |";
-    std::string leadblank6 = "                    /            ";
-    std::string leadblank7 = "                  ";
-    std::string leadblank8 = "                  /     ";
-    std::string leadblank9 = "     |";
-    std::string leadblank10 = "     /            ";
-    std::string leadblank11 = "   ";
-    std::string leadblank12 = "   /     ";
-    std::string leadblank13 = "                                   \\            /";
-    std::string leadblank14 = "     \\            /     ";
-    std::string leadblank15 = "                    \\            /     ";
 
-    // ============================================================
-    // Commonly used strings
-    // ============================================================
-    std::string blank1 = "      ";
-    std::string blank2 = "             ";
-    std::string blank3 = "            ";
-    std::string blank4 = "     ";
-    std::string top1 = "|--";
-    std::string top2 = "--|";
-    std::string middle1 = "\\            /     ";
-    std::string middle2 = "\\            /";
-    std::string middle3 = "            \\";
-    std::string middle4 = "       |";
-    std::string middle5 = "|       ";
+ostream &operator<<(ostream &out, const Board &b) {
+
 
 
     // ============================================================
