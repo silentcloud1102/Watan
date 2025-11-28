@@ -214,14 +214,35 @@ void Game::roll_dice(bool isfair){
     }
 }
 
+void Game::setup(){
+    for (int i = 0; i < numofPlayers; ++i){
+            std::cout << "Student " << players[i]->get_name(); 
+            std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
+            int idx;
+            std::cin >> idx;
+            players[i]->buy_criteria(idx, true);
+        }
+
+        //backwards
+        for (int i = (numofPlayers - 1); i >= 0; --i){
+            cout << "Student " << players[i]->get_name();
+            cout << ", where do you want to complete an Assignment?" << std::endl << ">";
+            int idx;
+            std::cin >> idx;
+            default_game.players[i].buy_criteria(idx);
+        }
+
+    cur_turn++;
+    return;
+}
+
 // next turn (new active player)
 void Game::next_turn(){
     if(cur_turn == 0){
         // game set-up round
         // insert special logic here...
-
-        cur_turn++;
-        return;
+        setup();
+        
     }
 
     active_id++;
@@ -230,6 +251,9 @@ void Game::next_turn(){
         active_id = 0;
         cur_turn++;
     }
+}
+
+void Game::begin_turn(){
 
     std::cout << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     
