@@ -3,7 +3,7 @@
 CXX =  g++-14 -std=c++20 -fmodules-ts
 CXXFLAGS = -Wall -g -c
 HEADERFLAGS = -c -x c++-system-header
-SOURCES = resource*.cc ISubject.cc IObserver.cc criteria*.cc goal*.cc tile*.cc board*.cc student*.cc # game*.cc main.cc
+SOURCES = resource.cc resource-impl.cc IObserver.cc ISubject.cc criteria.cc criteria-impl.cc goal.cc goal-impl.cc tile.cc tile-impl.cc board.cc board-impl.cc student.cc student-impl.cc # game*.cc main.cc
 OFILES = *.o
 HEADERS = memory vector sstream iostream string algorithm random stdexcept
 EXEC = watan.exe
