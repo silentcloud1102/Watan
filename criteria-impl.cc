@@ -22,7 +22,7 @@ Criteria::Criteria(int location, int level):
 
 // returns a string representing the correct representation for printing
 // on the board. Different representation when owned.
-std::string Criteria::get_num() const {
+std::string Criteria::getnum() const {
     // note: we will not use stringstream here because it is a simple concatenation
     // stringstream will be used when there are multiple fields to loop through
 

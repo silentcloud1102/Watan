@@ -25,7 +25,7 @@ export class Criteria : public ISubject {
       void newResource(std::string r) const;
       
       // Printing methods
-      std::string get_num() const;
+      std::string getnum() const;
       int get_level() const;
 
       // Checks for buying
@@ -39,7 +39,7 @@ export class Criteria : public ISubject {
 
       // save method
       std::string get_save_string() const;
-      
+
       void addAdjacentgoal(const std::vector<int> &e);
       void addAdjacentcourse_criterion(ISubject* criteria);
       bool adjacent_criteria_check(int location);

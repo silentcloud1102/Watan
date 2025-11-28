@@ -37,9 +37,9 @@ std::string Tile::getDice() const {
     }
     return std::to_string(dice);
 }
-void Tile::addcourse_criterion(ISubject &v) {
+void Tile::addcourse_criterion(Criteria *v) {
     course_criteria.emplace_back(v);
 }
-void Tile::addgoal(ISubject &e) {
+void Tile::addgoal(Goal *e) {
     goals.emplace_back(e);
 }

@@ -7,14 +7,13 @@ import <stdexcept>;
 import <algorithm>;
 import <random>;
 import Criteria;
-import Goals;
+import Goal;
 import Tile;
 import Resource;
-import Student
 using namespace std;
 
 // gives the coordinate of the vertex below the provided coordinate
-int down_vertex_coord(int n) {
+int down_course_criterion_coord(int n) {
     if (n < 2 || n > 48) {
         return n + 3;
     } else if (n < 6 || n > 42) {
@@ -38,7 +37,7 @@ int row_number(int tilenum) {
 }
 
 // provides the top-left vertex of the provided tile coordinate
-int first_vertex(int tilenum) {
+int first_course_criterion(int tilenum) {
     if (tilenum < 6) {
         return tilenum * 2;
     } else if (tilenum == 18) {
@@ -167,7 +166,7 @@ Board::Board(unsigned seed) {
 
     // constants for the desired sizes, to initialize and improve readability
     int num_of_goals = 72;
-    int num_of_course_criteria = 54
+    int num_of_course_criteria = 54;
     int num_of_tiles = 19;
 
     for (int i = 0; i < num_of_course_criteria; ++i) {
@@ -185,8 +184,8 @@ Board::Board(unsigned seed) {
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
     for (int e = 0; e < num_of_goals; ++e) {
-        goals[e].addAdjacentcourse_criterion(GoalsAdjCriterion.at(e));
-        goals[e].addAdjacentgoal(GoalsAdjGoals.at(e));
+        goals[e].set_adjacent_criteria(GoalsAdjCriterion.at(e));
+        goals[e].set_adjacent_goals(GoalsAdjGoals.at(e));
     }
     for (int i = 0; i < num_of_course_criteria; ++i) {
         for (int idx : CriterionAdjCriterion[i]) {
@@ -205,7 +204,7 @@ Board::Board(unsigned seed) {
     for (int t = 0; t < num_of_tiles; ++t) {
         for (int e_idx : tilegoals[t]) {
             if (e_idx < goals.size()) {
-                tiles[t].addgoal(goals[e_idx]);
+                tiles[t].addgoal(&goals[e_idx]);
             }
         }
     }
@@ -219,12 +218,12 @@ Board::Board(unsigned seed) {
         int course_criterion4 = course_criterion3 + 1; 
         int course_criterion5 = down_course_criterion_coord(course_criterion3);
         int course_criterion6 = course_criterion5 + 1;
-        tiles[t].addcourse_criterion(course_criteria[course_criterion1]);
-        tiles[t].addcourse_criterion(course_criteria[course_criterion2]);
-        tiles[t].addcourse_criterion(course_criteria[course_criterion3]);
-        tiles[t].addcourse_criterion(course_criteria[course_criterion4]);
-        tiles[t].addcourse_criterion(course_criteria[course_criterion5]);
-        tiles[t].addcourse_criterion(course_criteria[course_criterion6]);
+        tiles[t].addcourse_criterion(&course_criteria[course_criterion1]);
+        tiles[t].addcourse_criterion(&course_criteria[course_criterion2]);
+        tiles[t].addcourse_criterion(&course_criteria[course_criterion3]);
+        tiles[t].addcourse_criterion(&course_criteria[course_criterion4]);
+        tiles[t].addcourse_criterion(&course_criteria[course_criterion5]);
+        tiles[t].addcourse_criterion(&course_criteria[course_criterion6]);
     }
 }
 
@@ -267,14 +266,16 @@ string Board::saveData() {
         int resource_type = 0;
         for (int j = 0; j < resource_names_with_spaces.size(); j++) {
             if (resource_names_with_spaces[j] == tiles[i].getResource()) {
-                resource_type = to_string(j) + " ";
+                resource_type = j;
             }
         }
-        saved_data + resource_type;
-        if (i != 18) {
-            saved_data += tiles[i].getTileNum() + " ";
+        saved_data += to_string(resource_type); 
+        saved_data += " ";
+        if (i != 18) { // adds a space if it is not the last item
+            saved_data += tiles[i].getTilenum();
+            saved_data += " ";
         } else {
-            saved_data += tiles[i].getTileNum();
+            saved_data += tiles[i].getTilenum();
         }
     }
     return saved_data;
@@ -284,18 +285,18 @@ string Board::saveData() {
 void Board::update_tiles(int roll_num) const {
     for (int i = 0; i < tiles.size(); ++i) {
         if (i != goose_tile) {
-            tiles[i].distributeResources();
+            tiles[i].distribute_resources();
         }
     }
 }
 
 // returns the criteria at that location
-Criteria& Board::getCriteria(int criteria_num) const {
-    return course_criterion[criteria_num];
+const Criteria& Board::getCriteria(int criteria_num) const {
+    return course_criteria[criteria_num];
 }
 
 // returns the goal at that location
-Goal& Board::getGoals(int goal_num) const {
+const Goal& Board::getGoals(int goal_num) const {
     return goals[goal_num];
 }
 
@@ -385,12 +386,12 @@ ostream &operator<<(ostream &out, const Board &b) {
 // updating where the goose position is, assuming that out of bounds values
 // indicates that they wish to take the goose off the board 
 // (also assumes main will ensure the values are correct, so it will accept any value)
-void updateGoose(int new_goosetile) {
+void Board::updateGoose(int new_goosetile) {
     // assumes that we are given a valid tilenum -> Game can check whether or not it is valid
     goose_tile = new_goosetile;
 }
 
 // provides the tile where the goose is located
-int getGooseTile() const {
+int Board::getGooseTile() const {
     return goose_tile;
 }
