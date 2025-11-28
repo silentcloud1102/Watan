@@ -246,7 +246,6 @@ void Student::read_save_string(std::string save_data) {
     // string stream using given data (one line of save file)
     // we assume that the given save string is properly formatted
     std::istringstream iss {save_data};
-
     // read in integers
     int read;
     std::string garbage;
@@ -265,6 +264,7 @@ void Student::read_save_string(std::string save_data) {
         this->buy_goal(read, true);
     }
     iss.clear();
+    iss >> garbage;
     while (iss >> read){
         this->buy_criteria(read, true);
     }
