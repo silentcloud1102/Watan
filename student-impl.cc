@@ -14,9 +14,7 @@ import IObserver;
 import ISubject;
 import Board;
 
-Student::Student(const std::string & colour, Board * board): 
-    name{colour}, board{board} {}
-
+Student::Student(const std::string & colour, Board * board): name{colour}, board{board} {}
 
 // Board interaction methods: includes logic override
 // set_up boolean to override checks: useful for setting up from saves
@@ -25,7 +23,7 @@ void Student::buy_criteria(int id, bool set_up){
     const Resource & cost = target->upgrade_cost();
 
     // save results for less repetition
-    bool affordable = can_afford(cost);
+    bool affordable = this->can_afford(cost);
     bool adjacent = target->adjacent_check(criteria, goals);
     bool owned = target->owned();
     
@@ -49,11 +47,10 @@ void Student::buy_criteria(int id, bool set_up){
     // if no exceptions were thrown or set_up is true, then add to list.
     criteria.push_back(id);
     target->acquire(this);
-    return;
 }
 
 // buy method for goal, again providing a set_up switch
-void Student::buy_goal(int id, bool set_up){
+void Student::buy_goal(int id, bool set_up) {
     Goal * target = board->get_goal(id);
     const Resource & cost = target->cost();
 
@@ -67,7 +64,7 @@ void Student::buy_goal(int id, bool set_up){
     }
 
     if(!set_up){
-        if(affordable && adjacent &&){
+        if(affordable && adjacent)
             
             held_resources -= cost;
             
