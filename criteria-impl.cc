@@ -49,7 +49,9 @@ int Criteria::get_level() const{
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
+
+// adjacent_criteria check
+bool Criteria::criteria_check(std::vector<int> &criteria) const{
     // check that there is no adjacent Criteria already owned
     for (auto adj = adjacent_criteria.begin(); adj != adjacent_criteria.end(); ++adj) {
         for(auto other = criteria.begin(); other != criteria.end(); ++other){
@@ -60,6 +62,13 @@ bool Criteria::adjacent_check(std::vector<int> &criteria, std::vector<int> &goal
         }
     }
 
+    // no adjacencies.
+    return true;
+}
+
+// adjacent_goal check
+bool Criteria::goal_check(std::vector<int> &goals) const{
+    // check for an adjacent goal owned; required to complete this criteria
     for (auto adj = adjacent_goals.begin(); adj != adjacent_goals.end(); ++adj) {
         for(auto other = goals.begin(); other != goals.end(); ++other){
             if(*other == *adj){

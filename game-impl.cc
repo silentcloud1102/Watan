@@ -19,7 +19,7 @@ const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
 Game::Game(int seed): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)) {
         // construct board
-        std::unique_ptr<Board> gameBoard = std::make_unique<Board>(seed);
+        gameBoard = std::make_unique<Board>(seed);
 
         // construct players vector
         for (int i = 0; i < numofPlayers; ++i){
@@ -461,6 +461,6 @@ void Game::load_game(std::ifstream &file){
 
 
 std::ostream& operator<<(std::ostream& os, Game& game){
-    os << game.gameBoard;
+    os << *(game.gameBoard);
     return os;
 }

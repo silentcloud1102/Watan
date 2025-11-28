@@ -50,4 +50,3 @@ export class Board {
         void load_save_data(std::vector<int> save_data);
         std::string get_save_string();
 };
-

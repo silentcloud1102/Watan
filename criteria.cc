@@ -30,7 +30,8 @@ export class Criteria : public ISubject {
 
       // Checks for buying
       bool max_level() const;
-      bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const;
+      bool criteria_check(std::vector<int> &criteria) const;
+      bool goal_check(std::vector<int> &goals) const;
       bool owned() const;
 
       // Upgrade logic

@@ -100,6 +100,7 @@ int main(int argc, char** argv){
 
         // start game 
         if(!load){
+            cout << 1;
             // starting at cur_turn 0.
             game.setup();
         }

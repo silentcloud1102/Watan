@@ -24,7 +24,8 @@ void Student::buy_criteria(int id, bool set_up){
 
     // save results for less repetition
     bool affordable = this->can_afford(cost);
-    bool adjacent = target->adjacent_check(criteria, goals);
+    bool adjacent_goal = target->goal_check(goals);
+    bool adjacent_criteria = target->criteria_check(criteria);
     bool owned = target->owned();
     
     // problematic regardless of if setup or not...
@@ -32,16 +33,18 @@ void Student::buy_criteria(int id, bool set_up){
         // if from save file, no need to catch: error in save file...
         // if from setup of game, must be caught.
         throw std::runtime_error("This criteria is already owned, cannot have two owners!");
-    } else if (!adjacent){
-        throw std::runtime_error("This criteria is not elligible to be bought.");
+    } else if (adjacent_criteria){
+        throw std::runtime_error("This criteria is too close to another owned criteria.");
     }
 
     if(!set_up){
-        if (affordable) {
+        if (affordable && adjacent_goal) {
             held_resources -= cost;
+        } else if (!adjacent_goal) {
+            throw std::runtime_error("You do not have any adjacent goals.");
         } else if (!affordable){
             throw std::runtime_error("You do not have enough resources.");
-        }
+        } 
     } 
 
     // if no exceptions were thrown or set_up is true, then add to list.
