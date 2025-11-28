@@ -11,7 +11,7 @@ export class Criteria : public ISubject {
     static const Resource level_costs[3];
   
     int upgradeLevel;
-    vector<ISubject *> adjacent_criteria;
+    vector<int> adjacent_criteria;
     vector<int> adjacent_goals;
 
     public:
