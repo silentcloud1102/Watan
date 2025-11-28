@@ -18,7 +18,7 @@ export class Goal : public ISubject {
     void acquire(IObserver* student) override;
    
     // Printing method
-    std::string get_num() const;
+    std::string get_num(bool format = true) const;
 
     // Buy logic methods:
     const Resource & cost() const;

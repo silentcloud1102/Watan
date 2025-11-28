@@ -22,13 +22,20 @@ Criteria::Criteria(int location, int level):
 
 // returns a string representing the correct representation for printing
 // on the board. Different representation when owned.
-std::string Criteria::get_num() const {
+std::string Criteria::get_num(bool format) const {
     // note: we will not use stringstream here because it is a simple concatenation
     // stringstream will be used when there are multiple fields to loop through
-
+    
     // if owner is not nullptr, owned. Return with owner char and current level
+    
     if (owner) {
-        return owner->get_name()[0] + std::to_string(upgradeLevel - 1);
+        std::string format_str;
+        std::string end_str;
+        if (format){
+            format_str = owner->colour();
+            end_str = "\033[0m";
+        }
+        return format_str + owner->get_name()[0] + std::to_string(upgradeLevel) + end_str;
     }
 
     // else, not owned. if the location is not two digits, add a space in front

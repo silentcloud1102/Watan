@@ -20,7 +20,8 @@ export class Student : public IObserver {
     public:
         Student(const std::string & colour, Board * board);
         std::string get_name() override;
-        
+        std::string colour() override;
+
         // win condition
         int get_criteria_count() const;
 
