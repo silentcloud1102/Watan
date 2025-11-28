@@ -184,39 +184,34 @@ void Game::roll_dice(bool isfair){
 
         // changes resource for players
         gameBoard->update_tiles(roll);
+        bool changed = false;
 
         for (int i = 0; i < 4; ++i){
             diff[i] = players[i]->get_resource() - diff[i];
+            if(diff[i].count()){
+                change = true;
+            }
             // measures the change
         }
 
-        bool changed = false;
-        
-        for (int i = 0; i < 4; ++i){
-            std::cout << "Student " << players[i] << " gained:";
+        if(change){
+            for (int i = 0; i < 4; ++i){
+                if(diff[i].count() == 0){
+                    continue;
+                }
 
-            if (diff[i].caffeine != 0){
-                 std::cout << -diff[i].caffeine << " CAFFEINE" << std::endl;
-                changed = true;
-            } else if (diff[i].lab != 0){
-                 std::cout << -diff[i].lab << " LAB" << std::endl;
-                changed = true;
-            } else if (diff[i].lecture != 0){
-                 std::cout << -diff[i].lecture << " LECTURE" << std::endl;
-                changed = true;
-            } else if (diff[i].study != 0){
-                 std::cout << -diff[i].study << " STUDY" << std::endl;
-                changed = true;
-            } else if (diff[i].tutorial != 0){
-                 std::cout << -diff[i].tutorial << " TUTORIAL" << std::endl;
-                changed = true;
+                std::cout << "Student " << players[i]->get_name() << " gained:";
+
+                vector<int> gains = diff[i].to_vector(false);
+                for(int i = 0; i < gains.size(); i++){
+                    std::cout << Resource::print_output(i, gains[i]) << std::endl;
+                }
             }
-        }
-
-        if (!changed){
-             std::cout << "No students gained resources." << std::endl;
+        } else {
+            std::cout << "No students gained resources." << std::endl;
         }
     }
+    // Dice roll done.
 }
 
 void Game::setup(){
