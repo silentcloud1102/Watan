@@ -265,8 +265,6 @@ void Student::read_save_string(std::string save_data) {
         this->buy_goal(read, true);
     }
     iss.clear();
-    // read in c
-    iss >> garbage;
     while (iss >> read){
         this->buy_criteria(read, true);
     }
