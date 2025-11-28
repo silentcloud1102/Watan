@@ -85,10 +85,51 @@ void Game::dice_rolls(bool isfair){
     // using the implications of the dice roll
     // =========================================================
     if (roll == 7) {
-        // lose resources
-        // let them move the goose somewhere, then check for stealing 
-        gameBoard.update_goose()
+        // lose half of resources if more than 10 randomly, print out
+        for (int i = 0; i < numofPlayers; ++i){
+            int amount = players[i].held_resources.count();
+            if (amount >= 10){
+                int generate = amount/2;
+
+                ///////// need to randomly generate half of what they have
+
+
+
+
+                Resource r;
+                players[i].held_resources -= r;
+                Resource * resources = players[i].held_resources;
+
+                cout << "Student " << players[i].name << "loses ";
+                cout << generate << "resources to the geese. They lose:" << endl;
+
+                cout << resources.caffeine << " caffeine" << endl;
+                cout << resources.lab << " lab" << endl;
+                cout << resources.lecture << " lecture" << endl;
+                cout << resources.study << " study" << endl;
+                cout << resources.tutorial << " tutorial" << endl;
+            }
+        }
+
+        while (true){
+            // let them move the goose somewhere, then check for stealing 
+            int goose;
+            cout << "Choose where to place the GEESE." << endl << ">";
+            cin >> goose;
+            if (goose < 0 || 18 < goose || (goose == gameBoard.goose_tile)){
+                // ask again;
+                continue;
+            } else {
+                gameBoard.updateGoose(goose);
+                break;
+            } 
+        }
         
+        // steal
+
+
+
+
     } else {
 
         Resource diff[4];
