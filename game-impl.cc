@@ -85,7 +85,7 @@ void Game::dice_rolls(bool isfair){
     // using the implications of the dice roll
     // =========================================================
     if (roll == 7) {
-        // loose resources
+        // lose resources
         // let them move the goose somewhere, then check for stealing 
         gameBoard.update_goose()
         
