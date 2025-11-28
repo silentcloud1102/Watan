@@ -103,7 +103,7 @@ void Game::roll_dice(bool isfair){
         // steal
         std::string steal_from;
         int steal_from_count = 0;
-        std::cout << "Student " << players[playerIndex]->get_name() << "can choose to steal from ";
+        std::cout << "Student " << players[active_id]->get_name() << "can choose to steal from ";
         for (int i = 0; i < numofPlayers; ++i){
             Resource zero = Resource{0,0,0,0,0};
             if (i == playerIndex){
