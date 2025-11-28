@@ -11,8 +11,111 @@ import Criteria;
 import Goal;
 import Tile;
 import Resource;
-using namespace std;
 
+
+// CONSTANTS
+
+// =========================================================================================
+// Creating our vectors of data below (board will be hardcoded)
+//
+//
+// Each index will represent the goal/criterion number 
+// i.e. GoalsAdjCriterion[5] is the vector containing the ids of the criterion adjacent to goal 5 
+// (the 6th goal since we start counting from 0)
+// ========================================================================================
+
+// ============================================================
+//  Adjacent course criterion for each goal
+// ============================================================
+const std::vector<std::vector<int>> Board::GoalsAdjCriterion = {
+    {0, 1}, {0, 3}, {1, 4}, {2, 3}, {4, 5}, {2, 7}, {3, 8}, {4, 9}, {5, 10}, {6, 7}, {8, 9}, {10, 11},
+    {6, 12}, {7, 13}, {8, 14}, {9, 15}, {10, 16}, {11, 17}, {13, 14}, {15, 16}, {12, 18}, {13, 19},
+    {14, 20}, {15, 21}, {16, 22}, {17, 23}, {18, 19}, {20, 21}, {22, 23}, {18, 24}, {19, 25}, {20, 26},
+    {21, 27}, {22, 28}, {23, 29}, {25, 26}, {27, 28}, {24, 30}, {25, 31}, {26, 32}, {27, 33}, {28, 34},
+    {29, 35}, {30, 31}, {32, 33}, {34, 35}, {30, 36}, {31, 37}, {32, 38}, {33, 39}, {34, 40}, {35, 41},
+    {37, 38}, {39, 40}, {36, 42}, {37, 43}, {38, 44}, {39, 45}, {40, 46}, {41, 47}, {42, 43}, {44, 45},
+    {46, 47}, {43, 48}, {44, 49}, {45, 50}, {46, 51}, {47, 52}, {49, 50}, {48, 49}, {50, 53}, {52, 53}
+};
+// ============================================================
+//  Adjacent goals for each goal
+// ============================================================
+const std::vector<std::vector<int>> Board::GoalsAdjGoals = {
+    {1,2}, {0,3,6}, {0,4,7}, {1,5,6}, {2,7,8}, {3,9,13}, {1,3,10,14},
+    {2,4,10,15}, {4,11,16}, {5,12,13}, {6,7,14,15}, {8,16,17}, {9,20},
+    {5,9,18,21}, {6,10,18,22}, {7,10,19,23}, {8,11,19,24}, {11,25},
+    {13,14,21,22}, {15,16,23,24}, {12,26,29}, {13,18,26,30}, {14,18,27,31},
+    {15,19,27,32}, {16,19,28,33}, {17,28,34}, {20,21,29,30}, {22,23,31,32},
+    {24,25,33,34}, {20,26,37}, {21,26,35,38}, {22,27,35,39}, {23,27,36,40},
+    {24,28,36,41}, {25,28,42}, {30,31,38,39}, {32,33,40,41}, {29,43,46},
+    {30,35,43,47}, {31,35,44,48}, {32,36,44,49}, {33,36,45,50}, {25,42,51},
+    {37,38,46,47}, {39,40,48,49}, {41,42,50,51}, {37,43,54}, {38,43,52,55},
+    {39,44,52,56}, {40,44,53,57}, {41,45,53,58}, {42,45,59}, {47,48,55,56},
+    {49,50,57,58}, {46,60}, {47,52,60,63}, {48,52,61,64}, {49,53,61,65},
+    {50,53,62,66}, {51,62}, {54,55,63}, {56,57,64,65}, {58,59,66}, {55,60,67},
+    {56,61,67,69}, {57,61,68,70}, {58,62,68}, {63,64,69}, {65,66,70}, {64,67,71}, {65,68,71}, {69, 70}
+};
+// ============================================================
+// Adjacent course criterion for each course criterion
+// ============================================================
+const std::vector<std::vector<int>> Board::CriterionAdjCriterion = {
+    {1,3},{0,4},{3,7},{0,2,8},{1,5,9},{4,10},{7,12},{2,6,13},
+    {3,9,14},{4,8,15},{5,11,16},{10,17},{6,18},{7,14,19},{8,13,20},
+    {9,16,21},{10,15,22},{11,23},{12,19,24},{13,18,25},{14,21,26},
+    {15,20,27},{16,23,28},{17,22,29},{18,30},{19,26,31},{20,25,32},
+    {21,28,33},{22,27,34},{23,35},{24,31,36},{25,30,37},{26,33,38},
+    {27,32,39},{28,35,40},{29,34,41},{30,42},{31,38,43},{32,37,44},
+    {33,40,45},{34,39,46},{35,47},{36,43},{37,42,48},{38,45,49},{39,44,50},
+    {40,47,51},{41,46},{43,49},{44,48,50},{45,51,53},{46,50},{49,53},{50,52}
+};
+// ============================================================
+// Adjacent goals for each course criterion
+// ============================================================
+const std::vector<std::vector<int>> Board::CriterionAdjGoals = {
+    {0,1},{0,2},{3,5},{1,3,6},{2,4,7},{4,8},{9,12},{5,9,13},
+    {6,10,14},{7,10,15},{8,11,16},{11,17},{12,20},{13,18,21},{14,18,22},
+    {15,19,23},{16,19,24},{17,25},{20,26,29},{21,26,30},{22,27,31},{23,27,32},
+    {24,28,33},{25,28,34},{29,37},{30,35,38},{31,35,39},{32,36,40},{33,36,41},{34,42},
+    {37,43,46},{38,43,47},{39,44,48},{40,44,49},{41,45,50},{42,45,51},{46,54},{47,52,55},
+    {48,52,56},{49,53,57},{50,53,58},{51,59},{54,60},{55,60,63},{56,61,64},{57,61,65},
+    {58,62,66},{59,62},{63,67},{64,67,69},{65,68,70},{66,68},{69,71},{70,71}
+};
+// ============================================================
+// goal indices for each tile (local array)
+// ============================================================
+const std::vector<std::vector<int>> Board::tilegoals = {
+    {0, 1, 2, 6, 7, 10},
+    {3, 5, 6, 13, 14, 18},
+    {4, 7, 8, 15, 16, 19},
+    {9, 12, 13, 20, 21, 26},
+    {10, 14, 15, 22, 23, 27},
+    {11, 16, 17, 24, 25, 28},
+    {18, 21, 22, 30, 31, 35},
+    {19, 23, 24, 32, 33, 36},
+    {26, 29, 30, 37, 38, 43},
+    {27, 31, 32, 39, 40, 44},
+    {28, 33, 34, 41, 42, 45},
+    {35, 38, 39, 47, 48, 52},
+    {36, 40, 41, 49, 50, 53},
+    {43, 46, 47, 54, 55, 60},
+    {44, 48, 49, 56, 57, 61},
+    {45, 50, 51, 58, 59, 62},
+    {52, 55, 56, 63, 64, 67},
+    {53, 57, 58, 65, 66, 68},
+    {61, 64, 65, 69, 70, 71}
+};
+
+// Resource names to be used for Tile
+const std::vector<std::string> Board::resource_names = {
+    "CAFFEINE",
+    "LAB",
+    "LECTURE",
+    "STUDY",
+    "TUTORIAL",
+    "NETFLIX"
+};
+
+
+// Useful methods for calculating ids of criteria based on a given id
 // gives the coordinate of the vertex below the provided coordinate
 int down_course_criterion_coord(int n) {
     if (n < 2 || n > 48) {
@@ -49,7 +152,7 @@ int first_course_criterion(int tilenum) {
 }
 
 // prints GEESE if the tile is a goosetile, blank otherwise
-string Board::goose_printer(string tile) const {
+std::string Board::goose_printer(std::string tile) const {
     int tile_num = stoi(tile);
     if (goose_tile == tile_num) {
         return "\\     GEESE      /";
@@ -59,129 +162,32 @@ string Board::goose_printer(string tile) const {
 }
 
 // Board constructor
-Board::Board(unsigned seed) {
-    goose_tile = -1;
+Board::Board(unsigned seed): goose_tile{-1} {
     //  Randomizing our tiles
     default_random_engine rng{seed};
 
-    // ========================================================================================
-    // Creating our vectors of data below (board will be hardcoded)
-    //
-    //
-    // Each index will represent the goal/criterion number 
-    // i.e. GoalsAdjCriterion[5] is the criterion adjacent to goal 5 
-    // (the 6th goal since we start counting from 0)
-    // ========================================================================================
-
-
-    // ============================================================
-    //  Adjacent course criterion for each goal
-    // ============================================================
-    const vector<vector<int>> GoalsAdjCriterion = {
-        {0, 1}, {0, 3}, {1, 4}, {2, 3}, {4, 5}, {2, 7}, {3, 8}, {4, 9}, {5, 10}, {6, 7}, {8, 9}, {10, 11},
-        {6, 12}, {7, 13}, {8, 14}, {9, 15}, {10, 16}, {11, 17}, {13, 14}, {15, 16}, {12, 18}, {13, 19},
-        {14, 20}, {15, 21}, {16, 22}, {17, 23}, {18, 19}, {20, 21}, {22, 23}, {18, 24}, {19, 25}, {20, 26},
-        {21, 27}, {22, 28}, {23, 29}, {25, 26}, {27, 28}, {24, 30}, {25, 31}, {26, 32}, {27, 33}, {28, 34},
-        {29, 35}, {30, 31}, {32, 33}, {34, 35}, {30, 36}, {31, 37}, {32, 38}, {33, 39}, {34, 40}, {35, 41},
-        {37, 38}, {39, 40}, {36, 42}, {37, 43}, {38, 44}, {39, 45}, {40, 46}, {41, 47}, {42, 43}, {44, 45},
-        {46, 47}, {43, 48}, {44, 49}, {45, 50}, {46, 51}, {47, 52}, {49, 50}, {48, 49}, {50, 53}, {52, 53}
-    };
-    // ============================================================
-    //  Adjacent goals for each goal
-    // ============================================================
-    const vector<vector<int>> GoalsAdjGoals = {
-        {1,2}, {0,3,6}, {0,4,7}, {1,5,6}, {2,7,8}, {3,9,13}, {1,3,10,14},
-        {2,4,10,15}, {4,11,16}, {5,12,13}, {6,7,14,15}, {8,16,17}, {9,20},
-        {5,9,18,21}, {6,10,18,22}, {7,10,19,23}, {8,11,19,24}, {11,25},
-        {13,14,21,22}, {15,16,23,24}, {12,26,29}, {13,18,26,30}, {14,18,27,31},
-        {15,19,27,32}, {16,19,28,33}, {17,28,34}, {20,21,29,30}, {22,23,31,32},
-        {24,25,33,34}, {20,26,37}, {21,26,35,38}, {22,27,35,39}, {23,27,36,40},
-        {24,28,36,41}, {25,28,42}, {30,31,38,39}, {32,33,40,41}, {29,43,46},
-        {30,35,43,47}, {31,35,44,48}, {32,36,44,49}, {33,36,45,50}, {25,42,51},
-        {37,38,46,47}, {39,40,48,49}, {41,42,50,51}, {37,43,54}, {38,43,52,55},
-        {39,44,52,56}, {40,44,53,57}, {41,45,53,58}, {42,45,59}, {47,48,55,56},
-        {49,50,57,58}, {46,60}, {47,52,60,63}, {48,52,61,64}, {49,53,61,65},
-        {50,53,62,66}, {51,62}, {54,55,63}, {56,57,64,65}, {58,59,66}, {55,60,67},
-        {56,61,67,69}, {57,61,68,70}, {58,62,68}, {63,64,69}, {65,66,70}, {64,67,71}, {65,68,71}, {69, 70}
-    };
-    // ============================================================
-    // Adjacent course criterion for each course criterion
-    // ============================================================
-    vector<vector<int>> CriterionAdjCriterion = {
-        {1,3},{0,4},{3,7},{0,2,8},{1,5,9},{4,10},{7,12},{2,6,13},
-        {3,9,14},{4,8,15},{5,11,16},{10,17},{6,18},{7,14,19},{8,13,20},
-        {9,16,21},{10,15,22},{11,23},{12,19,24},{13,18,25},{14,21,26},
-        {15,20,27},{16,23,28},{17,22,29},{18,30},{19,26,31},{20,25,32},
-        {21,28,33},{22,27,34},{23,35},{24,31,36},{25,30,37},{26,33,38},
-        {27,32,39},{28,35,40},{29,34,41},{30,42},{31,38,43},{32,37,44},
-        {33,40,45},{34,39,46},{35,47},{36,43},{37,42,48},{38,45,49},{39,44,50},
-        {40,47,51},{41,46},{43,49},{44,48,50},{45,51,53},{46,50},{49,53},{50,52}
-    };
-    // ============================================================
-    // Adjacent goals for each course criterion
-    // ============================================================
-    vector<vector<int>> CriterionAdjGoals = {
-        {0,1},{0,2},{3,5},{1,3,6},{2,4,7},{4,8},{9,12},{5,9,13},
-        {6,10,14},{7,10,15},{8,11,16},{11,17},{12,20},{13,18,21},{14,18,22},
-        {15,19,23},{16,19,24},{17,25},{20,26,29},{21,26,30},{22,27,31},{23,27,32},
-        {24,28,33},{25,28,34},{29,37},{30,35,38},{31,35,39},{32,36,40},{33,36,41},{34,42},
-        {37,43,46},{38,43,47},{39,44,48},{40,44,49},{41,45,50},{42,45,51},{46,54},{47,52,55},
-        {48,52,56},{49,53,57},{50,53,58},{51,59},{54,60},{55,60,63},{56,61,64},{57,61,65},
-        {58,62,66},{59,62},{63,67},{64,67,69},{65,68,70},{66,68},{69,71},{70,71}
-    };
-    // ============================================================
-    // goal indices for each tile (local array)
-    // ============================================================
-    const vector<vector<int>> tilegoals = {
-        {0, 1, 2, 6, 7, 10},
-        {3, 5, 6, 13, 14, 18},
-        {4, 7, 8, 15, 16, 19},
-        {9, 12, 13, 20, 21, 26},
-        {10, 14, 15, 22, 23, 27},
-        {11, 16, 17, 24, 25, 28},
-        {18, 21, 22, 30, 31, 35},
-        {19, 23, 24, 32, 33, 36},
-        {26, 29, 30, 37, 38, 43},
-        {27, 31, 32, 39, 40, 44},
-        {28, 33, 34, 41, 42, 45},
-        {35, 38, 39, 47, 48, 52},
-        {36, 40, 41, 49, 50, 53},
-        {43, 46, 47, 54, 55, 60},
-        {44, 48, 49, 56, 57, 61},
-        {45, 50, 51, 58, 59, 62},
-        {52, 55, 56, 63, 64, 67},
-        {53, 57, 58, 65, 66, 68},
-        {61, 64, 65, 69, 70, 71}
-    };
     // ============================================================
     //  Initialize all objects
     // ============================================================
-    vector<string> resource_names = {
-        "CAFFEINE",
-        "LAB",
-        "LECTURE",
-        "STUDY",
-        "TUTORIAL",
-        "NETFLIX"
-    };
-
-    // constants for the desired sizes, to initialize and improve readability
-    int num_of_goals = 72;
-    int num_of_course_criteria = 54;
-    int num_of_tiles = 19;
-
+    
+    // store unique pointers for safe access to members within a vector
     for (int i = 0; i < num_of_course_criteria; ++i) {
         course_criteria.emplace_back(std::make_unique<Criteria>(i));
     }
     for (int i = 0; i < num_of_goals; ++i) {
         goals.emplace_back(std::make_unique<Goal>(i));
     }
+
+    // construct tiles, using random generation for resource type.
     for (int i = 0; i < num_of_tiles; ++i) {
         int resource_type = rng() % 6;
+
+        // x % 11 results has range of 0 - 10, then add 2 to get 2 - 12 as desired
         int dice_val = (rng() % 11) + 2;
         //tiles.emplace_back(resource_names[resource_type], dice_val, i);
         tiles.emplace_back(std::make_unique<Tile>(resource_names[resource_type], dice_val, i));
     }
+
     // ============================================================
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
@@ -189,17 +195,16 @@ Board::Board(unsigned seed) {
         goals[e]->set_adjacent_criteria(GoalsAdjCriterion.at(e));
         goals[e]->set_adjacent_goals(GoalsAdjGoals.at(e));
     }
+
     for (int i = 0; i < num_of_course_criteria; ++i) {
-        
+        course_criteria[i]->set_adjacent_criteria(CriterionAdjCriterion.at(i));
+        course_criteria[i]->set_adjacent_goals(CriterionAdjGoals.at(i));
         
         /* Pointer solution: use ids instead for more uniform checks
         for (int idx : CriterionAdjCriterion[i]) {
             course_criteria[i].addAdjacentcourse_criterion(&course_criteria[idx]);
         }
         */
-
-        course_criteria[i]->set_adjacent_criteria(CriterionAdjCriterion.at(i));
-        course_criteria[i]->set_adjacent_goals(CriterionAdjGoals.at(i));
     }
 
     // ===================================================================
@@ -235,8 +240,9 @@ Board::Board(unsigned seed) {
     }
 }
 
-void Board::load_saveData(vector<int> save_data) {
-    vector<string> resource_names = {
+// Save methods
+void Board::load_saveData(std::vector<int> save_data) {
+    std::vector<std::string> resource_names = {
         "CAFFEINE",
         "LAB",
         "LECTURE",
@@ -259,10 +265,10 @@ void Board::load_saveData(vector<int> save_data) {
     }
 }
 
-string Board::saveData() {
+std::string Board::saveData() {
     // resource names have trailing spaces since->getResource() outputs the string with
     // trailing spaces to have the board print properly
-    vector<string> resource_names_with_spaces = {
+    std::vector<std::string> resource_names_with_spaces = {
         "CAFFEINE   ",
         "LAB        ",
         "LECTURE    ",
@@ -270,7 +276,7 @@ string Board::saveData() {
         "TUTORIAL   ",
         "NETFLIX    "
     };
-    string saved_data = "";
+    std::string saved_data = "";
     for (int i = 0; i < tiles.size(); i++) {
         int resource_type = 0;
         for (int j = 0; j < resource_names_with_spaces.size(); j++) {
@@ -293,9 +299,10 @@ string Board::saveData() {
 // notifies the tiles based on the roll number
 void Board::update_tiles(int roll_num) const {
     for (int i = 0; i < tiles.size(); ++i) {
-        if (i != goose_tile) {
+        if(tiles[i]->getDice().stoi() == roll_num && i != goose_tile){
             tiles[i]->distribute_resources();
         }
+        // else nothing
     }
 }
 
@@ -313,36 +320,36 @@ ostream &operator<<(ostream &out, const Board &b) {
     // ============================================================
     // Leading blanks for the board;
     // ============================================================
-    string leadblank1 = "                                   |";
-    string leadblank2 = "                                   /            \\";
-    string leadblank3 = "                                 ";
-    string leadblank4 = "                                 /     ";
-    string leadblank5 = "                    |";
-    string leadblank6 = "                    /            ";
-    string leadblank7 = "                  ";
-    string leadblank8 = "                  /     ";
-    string leadblank9 = "     |";
-    string leadblank10 = "     /            ";
-    string leadblank11 = "   ";
-    string leadblank12 = "   /     ";
-    string leadblank13 = "                                   \\            /";
-    string leadblank14 = "     \\            /     ";
-    string leadblank15 = "                    \\            /     ";
+    std::string leadblank1 = "                                   |";
+    std::string leadblank2 = "                                   /            \\";
+    std::string leadblank3 = "                                 ";
+    std::string leadblank4 = "                                 /     ";
+    std::string leadblank5 = "                    |";
+    std::string leadblank6 = "                    /            ";
+    std::string leadblank7 = "                  ";
+    std::string leadblank8 = "                  /     ";
+    std::string leadblank9 = "     |";
+    std::string leadblank10 = "     /            ";
+    std::string leadblank11 = "   ";
+    std::string leadblank12 = "   /     ";
+    std::string leadblank13 = "                                   \\            /";
+    std::string leadblank14 = "     \\            /     ";
+    std::string leadblank15 = "                    \\            /     ";
 
     // ============================================================
     // Commonly used strings
     // ============================================================
-    string blank1 = "      ";
-    string blank2 = "             ";
-    string blank3 = "            ";
-    string blank4 = "     ";
-    string top1 = "|--";
-    string top2 = "--|";
-    string middle1 = "\\            /     ";
-    string middle2 = "\\            /";
-    string middle3 = "            \\";
-    string middle4 = "       |";
-    string middle5 = "|       ";
+    std::string blank1 = "      ";
+    std::string blank2 = "             ";
+    std::string blank3 = "            ";
+    std::string blank4 = "     ";
+    std::string top1 = "|--";
+    std::string top2 = "--|";
+    std::string middle1 = "\\            /     ";
+    std::string middle2 = "\\            /";
+    std::string middle3 = "            \\";
+    std::string middle4 = "       |";
+    std::string middle5 = "|       ";
 
 
     // ============================================================
