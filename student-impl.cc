@@ -149,7 +149,7 @@ void read_save_string(std::string save_data) {
     iss.clear();
     iss.ignore();
     while (iss >> read){
-        this->buy_criteia(read, true);
+        this->buy_criteria(read, true);
     }
     
 }
