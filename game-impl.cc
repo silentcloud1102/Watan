@@ -6,12 +6,11 @@ import <string>;
 import <fstream>;
 import <vector>;
 
-using namespace std;
 
 const numofPlayers = 4;
 const string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
-Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn): 
+Game::Game(int seed, Board gameBoard, std::vector<Student> players, int cur_turn): 
     Board{gameBoard}, players{players}, cur_Turn{cur_turn}, seed{seed}{
         
         //Board board = Board(seed);
@@ -23,9 +22,9 @@ Game::Game(int seed, Board gameBoard, vector<Student> players, int cur_turn):
         }
 }
 
-void Game::board_from_file(ifstream &file){
+void Game::board_from_file(std::ifstream &file){
     // read from file
-    vector<int> givenBoard;
+    std::vector<int> givenBoard;
     int temp;
     for (int i = 0; i < 38; ++i){
         if (!(file >> temp)){
@@ -64,7 +63,7 @@ void Game::dice_rolls(bool isfair){
     if (isfair){
         // random generate
         unsigned seed_val = 69;
-        default_random_engine rng{seed_val};
+        std::default_random_engine rng{seed_val};
         int roll1 = (rng() % 6) + 1;
         int roll2 = (rng() % 6) + 1;
         roll = roll1 + roll2;
@@ -92,9 +91,6 @@ void Game::dice_rolls(bool isfair){
                 int generate = amount/2;
 
                 ///////// need to randomly generate half of what they have
-
-
-
 
                 Resource r;
                 players[i].held_resources -= r;
@@ -163,59 +159,60 @@ void Game::dice_rolls(bool isfair){
 
         bool changed = false;
         
+        // Okay to have cin/cout here since this is our main interface with the game
         for (int i = 0; i < 4; ++i){
             cout << "Student " << players[i] << " gained:";
 
             if (diff[i].caffeine != 0){
-                cout << -diff[i].caffeine << " CAFFEINE" << endl;
+                std::cout << -diff[i].caffeine << " CAFFEINE" << std::endl;
                 changed = true;
             } else if (diff[i].lab != 0){
-                cout << -diff[i].lab << " LAB" << endl;
+                std::cout << -diff[i].lab << " LAB" << std::endl;
                 changed = true;
             } else if (diff[i].lecture != 0){
-                cout << -diff[i].lecture << " LECTURE" << endl;
+                std::cout << -diff[i].lecture << " LECTURE" << std::endl;
                 changed = true;
             } else if (diff[i].study != 0){
-                cout << -diff[i].study << " STUDY" << endl;
+                std::cout << -diff[i].study << " STUDY" << std::endl;
                 changed = true;
             } else if (diff[i].tutorial != 0){
-                cout << -diff[i].tutorial << " TUTORIAL" << endl;
+                std::cout << -diff[i].tutorial << " TUTORIAL" << std::endl;
                 changed = true;
             }
         }
 
         if (!changed){
-            cout << "No students gained resources." << endl;
+            std::cout << "No students gained resources." << std::endl;
         }
     }
 }
 
 
-void Game::save(string filename){
+void Game::save(std::string filename){
     // build load file
-    ofstream out(filename);
+    std::ofstream out(filename);
     if (!out) {
         std::cerr << "open failed\n";
         return;
     }
 
     // cur_turn
-    out << this->cur_turn << endl;
+    out << this->cur_turn << std::endl;
 
     // players
     for (int i = 0; i < numofPlayers; ++i){
-        out << this->players[i].get_save_string() << endl;
+        out << this->players[i].get_save_string() << std::endl;
     }
 
     // board
-    out << this->gameBoard.save_data() << endl;
+    out << this->gameBoard.save_data() << std::endl;
 
     // goose
-    out << this->gameBoard.get_goose_tile() << endl;
+    out << this->gameBoard.get_goose_tile() << std::endl;
 }
 
 
-ostream& operator<<(ostream& os, Game& game){
+std::ostream& operator<<(std::ostream& os, Game& game){
     os << game.gameBoard;
     return os;
 }
