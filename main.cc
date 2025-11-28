@@ -94,7 +94,7 @@ int main(int argc, char** argv){
             default_game.players[i].buy_criteria(intersection);
         }
         //backwards
-        for (int i = 3; i > 0; --i){
+        for (int i = 3; i >= 0; --i){
             cout << "Student " << default_game.players[i].get_name();
             cout << ", where do you want to complete an Assignment?" << endl << ">";
             int intersection;
