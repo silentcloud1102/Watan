@@ -7,24 +7,24 @@ import ISubject;
 import Resource;
 
 
-void Tile::distribute_resources() const {
-      for (int i = 0; i < 6; ++i) {
-        course_criteria[i]->newResource(resource_type);
-      }
-}
 
 
 Tile::Tile(std::string res, int dc, int num) : resource_type(res), dice(dc), tilenum(num) {}
 
+// Printing methods:
 std::string Tile::getTilenum() const {
+    // we want tilenum to take the same amount of space regardless of value (1 or 2 digits)
+    // if single-digit, add a space in front as a buffer
     if (tilenum < 10) {
-    return " " + std::to_string(tilenum);
+        return " " + std::to_string(tilenum);
     }
     return std::to_string(tilenum);
 }
 
 std::string Tile::getResource() const {
     std::string result = resource_type;
+
+    // we want all resource strings to be of the same length, so we add the difference to end as empty spaces
     for(int i = 0; i < (11 - resource_type.length()); ++i) {
         result += " ";
     }
@@ -32,14 +32,25 @@ std::string Tile::getResource() const {
 }
 
 std::string Tile::getDice() const {
+    // again, we want the result to be two characters long, normalize by adding space to front
     if (dice < 10) {
-    return " " + std::to_string(dice);
+        return " " + std::to_string(dice);
     }
     return std::to_string(dice);
 }
-void Tile::addcourse_criterion(Criteria *v) {
+
+// Set-up methods:
+void Tile::add_criteria(Criteria *v) {
     course_criteria.emplace_back(v);
 }
-void Tile::addgoal(Goal *e) {
+
+void Tile::add_goal(Goal *e) {
     goals.emplace_back(e);
+}
+
+// Resource distribution via Criteria (Subject)
+void Tile::distribute_resources() const {
+      for (int i = 0; i < 6; ++i) {
+        course_criteria[i]->newResource(resource_type);
+      }
 }

@@ -15,11 +15,18 @@ export class Tile {
   std::vector<Goal*> goals;
   std::vector<Criteria*> course_criteria;
   public:
-    void distribute_resources() const;
+    // Constructor
     Tile(std::string res, int dc, int num);
+
+    // get methods for printing
     std::string getTilenum() const;
     std::string getResource() const;
     std::string getDice() const;
-    void addcourse_criterion(Criteria *v);
-    void addgoal(Goal *e);
+
+    // set-up methods used by board
+    void add_criteria(Criteria *v);
+    void add_goal(Goal *e);
+
+    // send resources to Criteria
+    void distribute_resources() const;
 };
