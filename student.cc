@@ -1,14 +1,14 @@
 export module Student;
 
+import <iostream>;
 import <vector>;
 import <string>;
 import <sstream>;
-import <iostream;
 
-import Board;
-import ISubject;
 import Resource;
-import IObserver
+import IObserver;
+import ISubject;
+import Board;
 
 export class Student : public IObserver {
     std::string name;
@@ -26,7 +26,7 @@ export class Student : public IObserver {
         void buy_goal(int id, bool set_up = false);
         void upgrade_criteria(int id);
 
-        void trade(Student * colour, string give_r, string take_r);
+        void trade(Student * colour, std::string give_r, std::string take_r);
 
         // TODO: what is goosed?
         // void goosed();
