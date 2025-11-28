@@ -10,7 +10,7 @@ import Game;
 using namespace std;
 
 int main(int argc, char** argv){
-    int numofPlayers;
+    int numofPlayers = 4;
 
     int seed = 0; // default seed
     bool load = false;
@@ -69,7 +69,7 @@ int main(int argc, char** argv){
 
         if (load){
             while (true){
-                cout << "Would like like to play on your loaded game or start a new game? [L/N]" << endl << ">";
+                cout << "Would you like to play on your loaded game or start a new game?[L/N]" << endl << ">";
                 char response;
                 cin >> response;
                 if (response == 'L'){
@@ -83,7 +83,7 @@ int main(int argc, char** argv){
             }
         } else if (board){
             while (true){
-                cout << "Would like like to play on your board or start a new game? [B/N]" << endl << ">";
+                cout << "Would you like to play on your board or start a new game?[B/N]" << endl << ">";
                 char response;
                 cin >> response;
                 if (response == 'B'){
