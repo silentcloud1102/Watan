@@ -3,12 +3,13 @@ export module Game;
 import <string>;
 import <fstream>;
 import <vector>;
+import <memory>;
 
 import Board;
 import Student;
 
 export class Game {
-    unique_ptr<Board> gameBoard;
+    std::unique_ptr<Board> gameBoard;
 
     // get methods for turn should be made available.
     int seed;
@@ -17,13 +18,13 @@ export class Game {
     std::default_random_engine rng;
 
     // a vector of players. could be replaced with array, but vectors offer more convenience and potential for expansion
-    std::vector<unique_ptr<Student>> players;
+    std::vector<std::unique_ptr<Student>> players;
     int active_id = 0;
   
   public:
     Game(int seed);
     
-    void turn_num() const;
+    int turn_num() const;
     bool has_won() const;
     Resource generate_goosed(std::vector<int> resources, int amount);
 

@@ -5,9 +5,11 @@ import <string>;
 import <fstream>;
 import <vector>;
 import <stdexcept>;
+import <memory>;
 import <algorithm>;
 import <random>;
 
+import Resource
 import Board;
 import Student;
 
@@ -15,15 +17,14 @@ import Student;
 const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
-Game::Game(int seed): cur_Turn{0}, seed{seed}{
+Game::Game(int seed): cur_turn{0}, seed{seed}{
         std::default_random_engine rng{seed};
-
         // construct board
-        unique_ptr<Board> gameBoard = make_unique<Board>(Board(seed));
+        std::unique_ptr<Board> gameBoard = std::make_unique<Board>(Board(seed));
 
         // construct players vector
         for (int i = 0; i < numofPlayers; ++i){
-            players.emplace_back(make_unique<Student>(names[i], gameBoard.get()));
+            players.emplace_back(std::make_unique<Student>(names[i], gameBoard.get()));
         }
 }
 
@@ -40,7 +41,7 @@ Resource Game::generate_goosed(std::vector<int> resources, int amount){
 
 
 // Interface methods:
-void Game::roll_dice(){
+void Game::roll_dice(bool isfair){
 
     // Generating the dicerolls
     int roll;
@@ -106,18 +107,18 @@ void Game::roll_dice(){
             Resource zero = Resource{0,0,0,0,0};
             if (i == playerIndex){
                 continue;
-            } else if (players[i].held_resources <= zero){
+            } else if (players[i]->held_resources <= zero){
                 continue;
             }
 
-            for (int j = 0; j < players[i].criteria.size(); ++j){
+            for (int j = 0; j < players[i]->criteria.size(); ++j){
                 for (int x = 0; x < gameBoard.tiles[goose].course_criteria.size(); ++x){
-                    if (players[i].criteria[j] == gameBoard.tiles[goose].course_criteria[x]){
+                    if (players[i]->criteria[j] == gameBoard.tiles[goose].course_criteria[x]){
                         ++steal_from_count;
                         if (i == (numofPlayers - 1)){
-                            std::cout << players[i].name << "." << std::endl;
+                            std::cout << players[i]->name << "." << std::endl;
                         } else {
-                            std::cout << players[i].name << ", ";
+                            std::cout << players[i]->name << ", ";
                         }
                     }
                 }
@@ -133,7 +134,7 @@ void Game::roll_dice(){
             
             int steal_from_index = -1;
             for (int i = 0; i < numofPlayers){
-                if (steal_from == players[i].name){
+                if (steal_from == players[i]->name){
                     steal_from_index = i;
                     break;
                 }
@@ -145,8 +146,8 @@ void Game::roll_dice(){
             // randomly generate which 1 resource to steal? but have to make sure the student has it
 
             Resource r;
-            players[playerIndex].held_resources += r;
-            players[steal_from_index].held_resources -= r;
+            players[playerIndex]->held_resources += r;
+            players[steal_from_index]->held_resources -= r;
             std::cout << "Student " << players[playerIndex] << " steals " 
             std::cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << std::endl;
         }
@@ -214,7 +215,7 @@ void Game::roll_dice(){
 }
 
 // next turn (new active player)
-void next_turn(){
+void Game::next_turn(){
     if(cur_turn == 0){
         // game set-up round
         // insert special logic here...
@@ -230,7 +231,7 @@ void next_turn(){
         cur_turn++;
     }
 
-    std::cout << "Student " << players[active_id]->get_name() << "'s turn." << endl;
+    std::cout << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     
     // outputs status of Student
     std::cout << *players[active_id];
@@ -239,12 +240,12 @@ void next_turn(){
 }
 
 // info methods:
-void turn_num() const{
+int Game::turn_num() const{
     return cur_turn;
 }
 
-bool has_won() const{
-    for(auto it = players.begin(); it != player.end(); it++){
+bool Game::has_won() const{
+    for(auto it = players.begin(); it != players.end(); it++){
         if ((*it)->get_criteria_count() >= 10) {
             std::cout << "Student " << (*it)->get_name() << " has won!";
             return true;
@@ -268,14 +269,14 @@ void Game::save(std::string filename){
 
     // players
     for (int i = 0; i < numofPlayers; ++i){
-        out << this->players[i].get_save_string() << std::endl;
+        out << this->players[i]->get_save_string() << std::endl;
     }
 
     // board
-    out << this->gameBoard.get_save_string() << std::endl;
+    out << this->gameBoard->get_save_string() << std::endl;
 
     // goose
-    out << this->gameBoard.get_goose_tile() << std::endl;
+    out << this->gameBoard->get_goose_tile() << std::endl;
 }
 
 // Read board line from save (used by -board and -load)
@@ -308,7 +309,7 @@ void Game::load_game(std::ifstream &file){
     for (int i = 0; i < numofPlayers; ++i){
         std::getline(file, line);
         //playerColor pc = static_cast<playerColor>(i);
-        players[i].read_save_string(line);
+        players[i]->read_save_string(line);
     }
 
     // reads board line
