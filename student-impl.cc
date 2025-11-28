@@ -4,13 +4,14 @@ import <iostream>;
 import <sstream>;
 import <vector>;
 import <string>;
+import <iostream>;
 
 import Resource;
 import IObserver;
 import ISubject;
 import Board;
 
-Student(const std::string colour, Board * board): 
+Student::Student(const std::string & colour, Board * board): 
     name{colour}, board{board} {}
 
 std::string Student::get_name() {
@@ -166,7 +167,7 @@ void Student::read_save_string(std::string save_data) {
 }
 
 // output operator for student
-std::ostream &operator<<(ostream& os, Student &student){
+std::ostream &operator<<(std::ostream& os, Student &student){
     os << student.name << " has " << student.criteria.size() << " course criteria, ";
     os << student.held_resources;
     return os;

@@ -16,8 +16,9 @@ export class Student : public IObserver {
     std::vector<int> criteria;
     std::vector<int> goals;
     bool isfair = true;
+    Board * board;
     public:
-        explicit Student(const std::string colour);
+        explicit Student(const std::string & colour, Board * board);
         std::string get_name() override;
         bool can_afford(const Resource & query) const;
 
@@ -37,5 +38,5 @@ export class Student : public IObserver {
         std::string get_save_string() const;
         void read_save_string(std::string save_data);
 
-        friend std::ostream &operator<<(ostream& os, Student &student);
+        friend std::ostream &operator<<(std::ostream& os, Student &student);
 };
