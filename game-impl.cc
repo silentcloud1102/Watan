@@ -100,8 +100,8 @@ void Game::roll_dice(bool isfair){
         }
         
         // stealing:
-        std::vector<std::string>> victim_ids = gameBoard->goose_victims();
-        std::vector<Student *>> victims;
+        std::vector<std::string> victim_ids = gameBoard->goose_victims();
+        std::vector<Student *>victims;
         for (int i = 0; i < numofPlayers; ++i){
             // if self or broke, don't steal :)
             if (i == active_id){
@@ -159,7 +159,7 @@ void Game::roll_dice(bool isfair){
                     players[i]->goosed(loss);
 
                     // use stringstream to read in.. a little inconvenient but it will do
-                    std::istringstream iss {print_output(loss.to_vector()[0], 1)};
+                    std::istringstream iss {Resource::print_output(loss.to_vector()[0], 1)};
                     std::string resource;
                     iss >> resource >> resource;
 
@@ -184,55 +184,34 @@ void Game::roll_dice(bool isfair){
 
         // changes resource for players
         gameBoard->update_tiles(roll);
-
-        for (int i = 0; i < 4; ++i){
-            diff[i] -= players[i]->get_resource();
-        }
-
-
-        // Resource old0 = players[0];
-        // Resource old1 = players[1];
-        // Resource old2 = players[2];
-        // Resource old3 = players[3];
-        
-        // // changes resource for players
-        // update_tiles(roll);
-
-        // Resource diff[4];
-
-        // diff[0] = players[0].held_resources - old0;
-        // diff[1] = players[1].held_resources - old1;
-        // diff[2] = players[2].held_resources - old2;
-        // diff[3] = players[3].held_resources - old3;
-
         bool changed = false;
-        
-        // Okay to have cin/cout here since this is our main interface with the game
-        for (int i = 0; i < 4; ++i){
-            std::cout << "Student " << players[i] << " gained:";
 
-            if (diff[i].caffeine != 0){
-                 std::cout << -diff[i].caffeine << " CAFFEINE" << std::endl;
-                changed = true;
-            } else if (diff[i].lab != 0){
-                 std::cout << -diff[i].lab << " LAB" << std::endl;
-                changed = true;
-            } else if (diff[i].lecture != 0){
-                 std::cout << -diff[i].lecture << " LECTURE" << std::endl;
-                changed = true;
-            } else if (diff[i].study != 0){
-                 std::cout << -diff[i].study << " STUDY" << std::endl;
-                changed = true;
-            } else if (diff[i].tutorial != 0){
-                 std::cout << -diff[i].tutorial << " TUTORIAL" << std::endl;
-                changed = true;
+        for (int i = 0; i < 4; ++i){
+            diff[i] = players[i]->get_resource() - diff[i];
+            if(diff[i].count()){
+                change = true;
             }
+            // measures the change
         }
 
-        if (!changed){
-             std::cout << "No students gained resources." << std::endl;
+        if(change){
+            for (int i = 0; i < 4; ++i){
+                if(diff[i].count() == 0){
+                    continue;
+                }
+
+                std::cout << "Student " << players[i]->get_name() << " gained:";
+
+                vector<int> gains = diff[i].to_vector(false);
+                for(int i = 0; i < gains.size(); i++){
+                    std::cout << Resource::print_output(i, gains[i]) << std::endl;
+                }
+            }
+        } else {
+            std::cout << "No students gained resources." << std::endl;
         }
     }
+    // Dice roll done.
 }
 
 void Game::setup(){
@@ -304,6 +283,7 @@ bool Game::has_won() const{
     }
     return false;
 }
+
 // Save methods:
 
 // Generate save
@@ -341,6 +321,7 @@ void Game::board_from_file(std::ifstream &file){
     int temp;
     for (int i = 0; i < 38; ++i){
         if (!(iss >> temp)){
+            // don't expect to be catched since this is an error with arguments
             throw std::runtime_error("Invalid save file format, expected 38 integers");
         }
         givenBoard.emplace_back(temp);
@@ -372,6 +353,6 @@ void Game::load_game(std::ifstream &file){
 
 
 std::ostream& operator<<(std::ostream& os, Game& game){
-    os << game.gameBoard;
+    os << game->gameBoard;
     return os;
 }

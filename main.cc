@@ -65,7 +65,6 @@ int main(int argc, char** argv){
 
     bool play_again = true;
     while (play_again){
-    
         Game default_game = Game(seed);
 
         if (load){
@@ -99,23 +98,10 @@ int main(int argc, char** argv){
         }
 
         // start game 
-
-        for (int i = 0; i < numofPlayers; ++i){
-            cout << "Student " << default_game.players[i].get_name(); 
-            cout << ", where do you want to complete an Assignment?" << endl << ">";
-            int intersection;
-            cin >> intersection;
-            default_game.players[i].buy_criteria(intersection);
+        if(!load){
+            game.setup()
         }
-        //backwards
-        for (int i = (numofPlayers - 1); i >= 0; --i){
-            cout << "Student " << default_game.players[i].get_name();
-            cout << ", where do you want to complete an Assignment?" << endl << ">";
-            int intersection;
-            cin >> intersection;
-            default_game.players[i].buy_criteria(intersection);
-        }
-
+        
         cout << game;
 
         bool playing_game = true;
@@ -125,7 +111,6 @@ int main(int argc, char** argv){
 
                 while (true){
                     cout << "Student " << default_game.players[i].get_name() << "'s turn.";
-                    player->print_status();
 
                     string turn_command;
                     cout << ">";
@@ -144,6 +129,7 @@ int main(int argc, char** argv){
                 }
 
                 string command;
+
                 while (true){
                     cout << ">";
                     cin >> command;
@@ -151,18 +137,18 @@ int main(int argc, char** argv){
                         cout << game;
                     } else if (command == "status"){
                         for (int i = 0; i < 4; ++i){
-                            player->print_status();
+                            // ..
                         }
                     } else if (command == "criteria"){
                         cout << ">";
                         int criteria;
                         cin >> criteria;
-                        player->buy_criteria(criteria);
+                        default_game.buy_criteria(criteria);
                     } else if (command == "achieve"){
                         cout << ">";
                         int goal;
                         cin >> goal;
-                        player->buy_goal(goal);
+                        game->buy_goal(goal);
                     } else if (command == "complete"){
                         int c;
                         cin >> c;
