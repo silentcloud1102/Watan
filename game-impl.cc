@@ -330,7 +330,33 @@ void Game::improve(int criteria){
 }
 
 void Game::trade(std::string colour, std::string give, std::string take){
+    if(!players[active_id]->can_afford(Resource{give, 1})){
+        std::cerr << "You cannot afford this trade." << std::endl;
+        break;
+    }
 
+    for(auto it = players.begin(); it != players.end(); it++){
+        if(colour == it) {
+            if((*it)->can_afford(Resource{take, 1})) {
+                std::cerr << colour << " cannot afford this trade." << std::endl;
+                break;
+            }
+            // else:
+            std::cout << players[active_id]->get_name() << " offers " << colour << " one " << give << " for one " << take << "."  << std::endl;
+            std::cout << "Does " << colour << " accept this offer?" << std::endl << ">";
+            std::string ans;
+            std::cin >> ans;
+
+            if(ans == "yes"){
+                players[active_id]->trade((*it).get(), give, take);
+            } else {
+                std::cout << colour << "declined the trade." << std::endl;
+            }
+            return;
+        }
+    }
+
+    std::cout << "Student not found, try again." << std::endl;
 }
 
 void Game::help() const{
