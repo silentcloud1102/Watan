@@ -30,7 +30,7 @@ Game::Game(int seed): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)) 
 Resource Game::generate_goosed(std::vector<int> resources, int amount){
     std::shuffle(resources.begin(), resources.end(), rng);
 
-    int vals[5]{};
+    int vals[5] = {0};
     for(int i = 0;  i < amount; i++){
         vals[resources[i]]++;
     }
@@ -156,7 +156,7 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
         }
 
         if (victims.size() == 0){
-            out << "Student " << players[active_id] << " has no students to steal from." << std::endl;
+            out << "Student " << players[active_id]->get_name() << " has no students to steal from." << std::endl;
         } else {
             out << "Student " << players[active_id]->get_name() << "can choose to steal from ";
             for(auto it = victims.begin(); it != victims.end(); it++){
