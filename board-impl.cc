@@ -5,6 +5,7 @@ import <string>;
 import <vector>;
 import <stdexcept>;
 import <algorithm>;
+import <memory>;
 import <random>;
 import Criteria;
 import Goal;
@@ -170,22 +171,23 @@ Board::Board(unsigned seed) {
     int num_of_tiles = 19;
 
     for (int i = 0; i < num_of_course_criteria; ++i) {
-        course_criteria.emplace_back(i);
+        course_criteria.emplace_back(std::make_unique<Criteria>(i));
     }
     for (int i = 0; i < num_of_goals; ++i) {
-        goals.emplace_back(i);
+        goals.emplace_back(std::make_unique<Goal>(i));
     }
     for (int i = 0; i < num_of_tiles; ++i) {
         int resource_type = rng() % 6;
         int dice_val = (rng() % 11) + 2;
-        tiles.emplace_back(resource_names[resource_type], dice_val, i);
+        //tiles.emplace_back(resource_names[resource_type], dice_val, i);
+        tiles.emplace_back(std::make_unique<Tile>(resource_names[resource_type], dice_val, i));
     }
     // ============================================================
     //  Assign each goal its adjacent course_criteria and goals
     // ============================================================
     for (int e = 0; e < num_of_goals; ++e) {
-        goals[e].set_adjacent_criteria(GoalsAdjCriterion.at(e));
-        goals[e].set_adjacent_goals(GoalsAdjGoals.at(e));
+        goals[e]->set_adjacent_criteria(GoalsAdjCriterion.at(e));
+        goals[e]->set_adjacent_goals(GoalsAdjGoals.at(e));
     }
     for (int i = 0; i < num_of_course_criteria; ++i) {
         
@@ -196,8 +198,8 @@ Board::Board(unsigned seed) {
         }
         */
 
-        course_criteria[i].set_adjacent_criteria(CriterionAdjCriterion.at(i));
-        course_criteria[i].set_adjacent_goals(CriterionAdjGoals.at(i));
+        course_criteria[i]->set_adjacent_criteria(CriterionAdjCriterion.at(i));
+        course_criteria[i]->set_adjacent_goals(CriterionAdjGoals.at(i));
     }
 
     // ===================================================================
@@ -210,7 +212,7 @@ Board::Board(unsigned seed) {
     for (int t = 0; t < num_of_tiles; ++t) {
         for (int e_idx : tilegoals[t]) {
             if (e_idx < goals.size()) {
-                tiles[t].addgoal(&goals[e_idx]);
+                tiles[t]->addgoal(goals[e_idx].get());
             }
         }
     }
@@ -218,18 +220,18 @@ Board::Board(unsigned seed) {
     // Created algorithm for course_criteria based on tile numbers
     // ============================================================
     for (int t = 0; t < num_of_tiles; ++t) {
-        int course_criterion1 = first_course_criterion(stoi(tiles[t].getTilenum()));
+        int course_criterion1 = first_course_criterion(stoi(tiles[t]->getTilenum()));
         int course_criterion2 = course_criterion1 + 1;
         int course_criterion3 = down_course_criterion_coord(course_criterion1);
         int course_criterion4 = course_criterion3 + 1; 
         int course_criterion5 = down_course_criterion_coord(course_criterion3);
         int course_criterion6 = course_criterion5 + 1;
-        tiles[t].addcourse_criterion(&course_criteria[course_criterion1]);
-        tiles[t].addcourse_criterion(&course_criteria[course_criterion2]);
-        tiles[t].addcourse_criterion(&course_criteria[course_criterion3]);
-        tiles[t].addcourse_criterion(&course_criteria[course_criterion4]);
-        tiles[t].addcourse_criterion(&course_criteria[course_criterion5]);
-        tiles[t].addcourse_criterion(&course_criteria[course_criterion6]);
+        tiles[t]->addcourse_criterion(course_criteria[course_criterion1].get());
+        tiles[t]->addcourse_criterion(course_criteria[course_criterion2].get());
+        tiles[t]->addcourse_criterion(course_criteria[course_criterion3].get());
+        tiles[t]->addcourse_criterion(course_criteria[course_criterion4].get());
+        tiles[t]->addcourse_criterion(course_criteria[course_criterion5].get());
+        tiles[t]->addcourse_criterion(course_criteria[course_criterion6].get());
     }
 }
 
@@ -251,13 +253,14 @@ void Board::load_saveData(vector<int> save_data) {
         if (resource_type == 5){
             continue;
         } else {
-            tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
+            //tiles.emplace_back(resource_names[resource_type], dice_val, i/2);
+            tiles.emplace_back(std::make_unique<Tile>(resource_names[resource_type], dice_val, i/2));
         }
     }
 }
 
 string Board::saveData() {
-    // resource names have trailing spaces since getResource() outputs the string with
+    // resource names have trailing spaces since->getResource() outputs the string with
     // trailing spaces to have the board print properly
     vector<string> resource_names_with_spaces = {
         "CAFFEINE   ",
@@ -271,17 +274,17 @@ string Board::saveData() {
     for (int i = 0; i < tiles.size(); i++) {
         int resource_type = 0;
         for (int j = 0; j < resource_names_with_spaces.size(); j++) {
-            if (resource_names_with_spaces[j] == tiles[i].getResource()) {
+            if (resource_names_with_spaces[j] == tiles[i]->getResource()) {
                 resource_type = j;
             }
         }
         saved_data += to_string(resource_type); 
         saved_data += " ";
         if (i != 18) { // adds a space if it is not the last item
-            saved_data += tiles[i].getTilenum();
+            saved_data += tiles[i]->getTilenum();
             saved_data += " ";
         } else {
-            saved_data += tiles[i].getTilenum();
+            saved_data += tiles[i]->getTilenum();
         }
     }
     return saved_data;
@@ -291,19 +294,19 @@ string Board::saveData() {
 void Board::update_tiles(int roll_num) const {
     for (int i = 0; i < tiles.size(); ++i) {
         if (i != goose_tile) {
-            tiles[i].distribute_resources();
+            tiles[i]->distribute_resources();
         }
     }
 }
 
 // returns the criteria at that location
-const Criteria& Board::getCriteria(int criteria_num) const {
-    return course_criteria[criteria_num];
+Criteria* Board::getCriteria(int criteria_num) const {
+    return course_criteria[criteria_num].get();
 }
 
 // returns the goal at that location
-const Goal& Board::getGoals(int goal_num) const {
-    return goals[goal_num];
+Goal* Board::getGoals(int goal_num) const {
+    return goals[goal_num].get();
 }
 
 ostream &operator<<(ostream &out, const Board &b) {
@@ -345,47 +348,47 @@ ostream &operator<<(ostream &out, const Board &b) {
     // ============================================================
     // Printing the board using our constants
     // ============================================================
-    out << leadblank1 << b.course_criteria[0].getnum() << top1 << b.goals[0].getnum() << top2 << b.course_criteria[1].getnum() << "|" << endl;
+    out << leadblank1 << b.course_criteria[0]->getnum() << top1 << b.goals[0]->getnum() << top2 << b.course_criteria[1]->getnum() << "|" << endl;
     out << leadblank2 << endl;
-    out << leadblank3 << b.goals[1].getnum() << blank1 << b.tiles[0].getTilenum() << blank4 << b.goals[2].getnum() << endl;
-    out << leadblank4 << b.tiles[0].getResource() << "\\" << endl;
-    out << leadblank5 << b.course_criteria[2].getnum() << top1 << b.goals[3].getnum() << top2 << b.course_criteria[3].getnum() << middle5 << b.tiles[0].getDice() << middle4 << b.course_criteria[4].getnum() << top1 << b.goals[4].getnum() << top2 << b.course_criteria[5].getnum() << "|" << endl;
-    out << leadblank6 << b.goose_printer(b.tiles[0].getTilenum()) << middle3 << endl;
-    out << leadblank7 << b.goals[5].getnum() << blank1 << b.tiles[1].getTilenum() << blank4 << b.goals[6].getnum() << blank2 << b.goals[7].getnum() << blank1 << b.tiles[2].getTilenum() << blank4 << b.goals[8].getnum() << endl;
-    out << leadblank8 << b.tiles[1].getResource() << middle1 << b.tiles[2].getResource() << "\\" << endl;
-    out << leadblank9 << b.course_criteria[6].getnum() << top1 << b.goals[9].getnum() << top2 << b.course_criteria[7].getnum() << middle5 << b.tiles[1].getDice() << middle4 << b.course_criteria[8].getnum() << top1 << b.goals[10].getnum() << top2 << b.course_criteria[9].getnum() << middle5 << b.tiles[2].getDice() << middle4 << b.course_criteria[10].getnum() << top1 << b.goals[11].getnum() << top2 << b.course_criteria[11].getnum() << "|" << endl;
-    out << leadblank10 << b.goose_printer(b.tiles[1].getTilenum()) << blank3 << b.goose_printer(b.tiles[2].getTilenum()) << middle3 << endl;
-    out << leadblank11 << b.goals[12].getnum() << blank1 << b.tiles[3].getTilenum() << blank4 << b.goals[13].getnum() << blank2 << b.goals[14].getnum() << blank1 << b.tiles[4].getTilenum() << blank4 << b.goals[15].getnum() << blank2 << b.goals[16].getnum() << blank1 << b.tiles[5].getTilenum() << blank4 << b.goals[17].getnum() << endl;
-    out << leadblank12 << b.tiles[3].getResource() << middle1 << b.tiles[4].getResource() << middle1 << b.tiles[5].getResource() << "\\" << endl;
-    out << "|" << b.course_criteria[12].getnum() << middle5 << b.tiles[3].getDice() << middle4 << b.course_criteria[13].getnum() << top1 << b.goals[18].getnum() << top2 << b.course_criteria[14].getnum() << middle5 << b.tiles[4].getDice() << middle4 << b.course_criteria[15].getnum() << top1 << b.goals[19].getnum() << top2 << b.course_criteria[16].getnum() << middle5 << b.tiles[5].getDice() << middle4 << b.course_criteria[17].getnum() << "|" << endl;
-    out << leadblank11 << b.goose_printer(b.tiles[3].getTilenum()) << blank3 << b.goose_printer(b.tiles[4].getTilenum()) << blank3 << b.goose_printer(b.tiles[5].getTilenum()) << endl;
-    out << leadblank11 << b.goals[20].getnum() << blank2 << b.goals[21].getnum() << blank1 << b.tiles[6].getTilenum() << blank4 << b.goals[22].getnum() << blank2 << b.goals[23].getnum() << blank1 << b.tiles[7].getTilenum() << blank4 << b.goals[24].getnum() << blank2 << b.goals[25].getnum() << endl;
-    out << leadblank14 << b.tiles[6].getResource() << middle1 << b.tiles[7].getResource() << middle2 << endl;
-    out << leadblank9 << b.course_criteria[18].getnum() << top1 << b.goals[26].getnum() << top2 << b.course_criteria[19].getnum() << middle5 << b.tiles[6].getDice() << middle4 << b.course_criteria[20].getnum() << top1 << b.goals[27].getnum() << top2 << b.course_criteria[21].getnum() << middle5 << b.tiles[7].getDice() << middle4 << b.course_criteria[22].getnum() << top1 << b.goals[28].getnum() << top2 << b.course_criteria[23].getnum() << "|" << endl;
-    out << leadblank10 << b.goose_printer(b.tiles[6].getTilenum()) << blank3 << b.goose_printer(b.tiles[7].getTilenum()) << middle3 << endl;
-    out << leadblank11 << b.goals[29].getnum() << blank1 << b.tiles[8].getTilenum() << blank4 << b.goals[30].getnum() << blank2 << b.goals[31].getnum() << blank1 << b.tiles[9].getTilenum() << blank4 << b.goals[32].getnum() << blank2 << b.goals[33].getnum() << blank1 << b.tiles[10].getTilenum() << blank4 << b.goals[34].getnum() << endl;
-    out << leadblank12 << b.tiles[8].getResource() << middle1 << b.tiles[9].getResource() << middle1 << b.tiles[10].getResource() << "\\" << endl;
-    out << "|" << b.course_criteria[24].getnum() << middle5 << b.tiles[8].getDice() << middle4 << b.course_criteria[25].getnum() << top1 << b.goals[35].getnum() << top2 << b.course_criteria[26].getnum() << middle5 << b.tiles[9].getDice() << middle4 << b.course_criteria[27].getnum() << top1 << b.goals[36].getnum() << top2 << b.course_criteria[28].getnum() << middle5 << b.tiles[10].getDice() << middle4 << b.course_criteria[29].getnum() << "|" << endl;
-    out << leadblank11 << b.goose_printer(b.tiles[8].getTilenum()) << blank3 << b.goose_printer(b.tiles[9].getTilenum()) << blank3 << b.goose_printer(b.tiles[10].getTilenum()) << endl;
-    out << leadblank11 << b.goals[37].getnum() << blank2 << b.goals[38].getnum() << blank1 << b.tiles[11].getTilenum() << blank4 << b.goals[39].getnum() << blank2 << b.goals[40].getnum() << blank1 << b.tiles[12].getTilenum() << blank4 << b.goals[41].getnum() << blank2 << b.goals[42].getnum() << endl;
-    out << leadblank14 << b.tiles[11].getResource() << middle1 << b.tiles[12].getResource() << middle2 << endl;
-    out << leadblank9 << b.course_criteria[30].getnum() << top1 << b.goals[43].getnum() << top2 << b.course_criteria[31].getnum() << middle5 << b.tiles[11].getDice() << middle4 << b.course_criteria[32].getnum() << top1 << b.goals[44].getnum() << top2 << b.course_criteria[33].getnum() << middle5 << b.tiles[12].getDice() << middle4 << b.course_criteria[34].getnum() << top1 << b.goals[45].getnum() << top2 << b.course_criteria[35].getnum() << "|" << endl;
-    out << leadblank10 << b.goose_printer(b.tiles[11].getTilenum()) << blank3 << b.goose_printer(b.tiles[12].getTilenum()) << middle3 << endl;
-    out << leadblank11 << b.goals[46].getnum() << blank1 << b.tiles[13].getTilenum() << blank4 << b.goals[47].getnum() << blank2 << b.goals[48].getnum() << blank1 << b.tiles[14].getTilenum() << blank4 << b.goals[49].getnum() << blank2 << b.goals[50].getnum() << blank1 << b.tiles[15].getTilenum() << blank4 << b.goals[51].getnum() << endl;
-    out << leadblank12 << b.tiles[13].getResource() << middle1 << b.tiles[14].getResource() << middle1 << b.tiles[15].getResource() << "\\" << endl;
-    out << "|" << b.course_criteria[36].getnum() << middle5 << b.tiles[13].getDice() << middle4 << b.course_criteria[37].getnum() << top1 << b.goals[52].getnum() << top2 << b.course_criteria[38].getnum() << middle5 << b.tiles[14].getDice() << middle4 << b.course_criteria[39].getnum() << top1 << b.goals[53].getnum() << top2 << b.course_criteria[40].getnum() << middle5 << b.tiles[15].getDice() << middle4 << b.course_criteria[41].getnum() << "|" << endl;
-    out << leadblank11 << b.goose_printer(b.tiles[13].getTilenum()) << blank3 << b.goose_printer(b.tiles[14].getTilenum()) << blank3 << b.goose_printer(b.tiles[15].getTilenum()) << endl;
-    out << leadblank11 << b.goals[54].getnum() << blank2 << b.goals[55].getnum() << blank1 << b.tiles[16].getTilenum() << blank4 << b.goals[56].getnum() << blank2 << b.goals[57].getnum() << blank1 << b.tiles[17].getTilenum() << blank4 << b.goals[58].getnum() << blank2 << b.goals[59].getnum() << endl;
-    out << leadblank14 << b.tiles[16].getResource() << middle1 << b.tiles[17].getResource() << middle2 << endl;
-    out << leadblank9 << b.course_criteria[42].getnum() << top1 << b.goals[60].getnum() << top2 << b.course_criteria[43].getnum() << middle5 << b.tiles[16].getDice() << middle4 << b.course_criteria[44].getnum() << top1 << b.goals[61].getnum() << top2 << b.course_criteria[45].getnum() << middle5 << b.tiles[17].getDice() << middle4 << b.course_criteria[46].getnum() << top1 << b.goals[62].getnum() << top2 << b.course_criteria[47].getnum() << "|" << endl;
-    out << leadblank7 << b.goose_printer(b.tiles[16].getTilenum()) << blank3 << b.goose_printer(b.tiles[17].getTilenum()) << endl;
-    out << leadblank7 << b.goals[63].getnum() << blank2 << b.goals[64].getnum() << blank1 << b.tiles[18].getTilenum() << blank4 << b.goals[65].getnum() << blank2 << b.goals[66].getnum() << endl;
-    out << leadblank15 << b.tiles[18].getResource() << middle2 << endl;
-    out << leadblank5 << b.course_criteria[48].getnum() << top1 << b.goals[67].getnum() << top2 << b.course_criteria[49].getnum() << middle5 << b.tiles[18].getDice() << middle4 << b.course_criteria[50].getnum() << top1 << b.goals[68].getnum() << top2 << b.course_criteria[51].getnum() << "|" << endl;
-    out << leadblank3 << b.goose_printer(b.tiles[18].getTilenum()) << endl;
-    out << leadblank3 << b.goals[69].getnum() << blank2 << b.goals[70].getnum() << endl;
+    out << leadblank3 << b.goals[1]->getnum() << blank1 << b.tiles[0]->getTilenum() << blank4 << b.goals[2]->getnum() << endl;
+    out << leadblank4 << b.tiles[0]->getResource() << "\\" << endl;
+    out << leadblank5 << b.course_criteria[2]->getnum() << top1 << b.goals[3]->getnum() << top2 << b.course_criteria[3]->getnum() << middle5 << b.tiles[0]->getDice() << middle4 << b.course_criteria[4]->getnum() << top1 << b.goals[4]->getnum() << top2 << b.course_criteria[5]->getnum() << "|" << endl;
+    out << leadblank6 << b.goose_printer(b.tiles[0]->getTilenum()) << middle3 << endl;
+    out << leadblank7 << b.goals[5]->getnum() << blank1 << b.tiles[1]->getTilenum() << blank4 << b.goals[6]->getnum() << blank2 << b.goals[7]->getnum() << blank1 << b.tiles[2]->getTilenum() << blank4 << b.goals[8]->getnum() << endl;
+    out << leadblank8 << b.tiles[1]->getResource() << middle1 << b.tiles[2]->getResource() << "\\" << endl;
+    out << leadblank9 << b.course_criteria[6]->getnum() << top1 << b.goals[9]->getnum() << top2 << b.course_criteria[7]->getnum() << middle5 << b.tiles[1]->getDice() << middle4 << b.course_criteria[8]->getnum() << top1 << b.goals[10]->getnum() << top2 << b.course_criteria[9]->getnum() << middle5 << b.tiles[2]->getDice() << middle4 << b.course_criteria[10]->getnum() << top1 << b.goals[11]->getnum() << top2 << b.course_criteria[11]->getnum() << "|" << endl;
+    out << leadblank10 << b.goose_printer(b.tiles[1]->getTilenum()) << blank3 << b.goose_printer(b.tiles[2]->getTilenum()) << middle3 << endl;
+    out << leadblank11 << b.goals[12]->getnum() << blank1 << b.tiles[3]->getTilenum() << blank4 << b.goals[13]->getnum() << blank2 << b.goals[14]->getnum() << blank1 << b.tiles[4]->getTilenum() << blank4 << b.goals[15]->getnum() << blank2 << b.goals[16]->getnum() << blank1 << b.tiles[5]->getTilenum() << blank4 << b.goals[17]->getnum() << endl;
+    out << leadblank12 << b.tiles[3]->getResource() << middle1 << b.tiles[4]->getResource() << middle1 << b.tiles[5]->getResource() << "\\" << endl;
+    out << "|" << b.course_criteria[12]->getnum() << middle5 << b.tiles[3]->getDice() << middle4 << b.course_criteria[13]->getnum() << top1 << b.goals[18]->getnum() << top2 << b.course_criteria[14]->getnum() << middle5 << b.tiles[4]->getDice() << middle4 << b.course_criteria[15]->getnum() << top1 << b.goals[19]->getnum() << top2 << b.course_criteria[16]->getnum() << middle5 << b.tiles[5]->getDice() << middle4 << b.course_criteria[17]->getnum() << "|" << endl;
+    out << leadblank11 << b.goose_printer(b.tiles[3]->getTilenum()) << blank3 << b.goose_printer(b.tiles[4]->getTilenum()) << blank3 << b.goose_printer(b.tiles[5]->getTilenum()) << endl;
+    out << leadblank11 << b.goals[20]->getnum() << blank2 << b.goals[21]->getnum() << blank1 << b.tiles[6]->getTilenum() << blank4 << b.goals[22]->getnum() << blank2 << b.goals[23]->getnum() << blank1 << b.tiles[7]->getTilenum() << blank4 << b.goals[24]->getnum() << blank2 << b.goals[25]->getnum() << endl;
+    out << leadblank14 << b.tiles[6]->getResource() << middle1 << b.tiles[7]->getResource() << middle2 << endl;
+    out << leadblank9 << b.course_criteria[18]->getnum() << top1 << b.goals[26]->getnum() << top2 << b.course_criteria[19]->getnum() << middle5 << b.tiles[6]->getDice() << middle4 << b.course_criteria[20]->getnum() << top1 << b.goals[27]->getnum() << top2 << b.course_criteria[21]->getnum() << middle5 << b.tiles[7]->getDice() << middle4 << b.course_criteria[22]->getnum() << top1 << b.goals[28]->getnum() << top2 << b.course_criteria[23]->getnum() << "|" << endl;
+    out << leadblank10 << b.goose_printer(b.tiles[6]->getTilenum()) << blank3 << b.goose_printer(b.tiles[7]->getTilenum()) << middle3 << endl;
+    out << leadblank11 << b.goals[29]->getnum() << blank1 << b.tiles[8]->getTilenum() << blank4 << b.goals[30]->getnum() << blank2 << b.goals[31]->getnum() << blank1 << b.tiles[9]->getTilenum() << blank4 << b.goals[32]->getnum() << blank2 << b.goals[33]->getnum() << blank1 << b.tiles[10]->getTilenum() << blank4 << b.goals[34]->getnum() << endl;
+    out << leadblank12 << b.tiles[8]->getResource() << middle1 << b.tiles[9]->getResource() << middle1 << b.tiles[10]->getResource() << "\\" << endl;
+    out << "|" << b.course_criteria[24]->getnum() << middle5 << b.tiles[8]->getDice() << middle4 << b.course_criteria[25]->getnum() << top1 << b.goals[35]->getnum() << top2 << b.course_criteria[26]->getnum() << middle5 << b.tiles[9]->getDice() << middle4 << b.course_criteria[27]->getnum() << top1 << b.goals[36]->getnum() << top2 << b.course_criteria[28]->getnum() << middle5 << b.tiles[10]->getDice() << middle4 << b.course_criteria[29]->getnum() << "|" << endl;
+    out << leadblank11 << b.goose_printer(b.tiles[8]->getTilenum()) << blank3 << b.goose_printer(b.tiles[9]->getTilenum()) << blank3 << b.goose_printer(b.tiles[10]->getTilenum()) << endl;
+    out << leadblank11 << b.goals[37]->getnum() << blank2 << b.goals[38]->getnum() << blank1 << b.tiles[11]->getTilenum() << blank4 << b.goals[39]->getnum() << blank2 << b.goals[40]->getnum() << blank1 << b.tiles[12]->getTilenum() << blank4 << b.goals[41]->getnum() << blank2 << b.goals[42]->getnum() << endl;
+    out << leadblank14 << b.tiles[11]->getResource() << middle1 << b.tiles[12]->getResource() << middle2 << endl;
+    out << leadblank9 << b.course_criteria[30]->getnum() << top1 << b.goals[43]->getnum() << top2 << b.course_criteria[31]->getnum() << middle5 << b.tiles[11]->getDice() << middle4 << b.course_criteria[32]->getnum() << top1 << b.goals[44]->getnum() << top2 << b.course_criteria[33]->getnum() << middle5 << b.tiles[12]->getDice() << middle4 << b.course_criteria[34]->getnum() << top1 << b.goals[45]->getnum() << top2 << b.course_criteria[35]->getnum() << "|" << endl;
+    out << leadblank10 << b.goose_printer(b.tiles[11]->getTilenum()) << blank3 << b.goose_printer(b.tiles[12]->getTilenum()) << middle3 << endl;
+    out << leadblank11 << b.goals[46]->getnum() << blank1 << b.tiles[13]->getTilenum() << blank4 << b.goals[47]->getnum() << blank2 << b.goals[48]->getnum() << blank1 << b.tiles[14]->getTilenum() << blank4 << b.goals[49]->getnum() << blank2 << b.goals[50]->getnum() << blank1 << b.tiles[15]->getTilenum() << blank4 << b.goals[51]->getnum() << endl;
+    out << leadblank12 << b.tiles[13]->getResource() << middle1 << b.tiles[14]->getResource() << middle1 << b.tiles[15]->getResource() << "\\" << endl;
+    out << "|" << b.course_criteria[36]->getnum() << middle5 << b.tiles[13]->getDice() << middle4 << b.course_criteria[37]->getnum() << top1 << b.goals[52]->getnum() << top2 << b.course_criteria[38]->getnum() << middle5 << b.tiles[14]->getDice() << middle4 << b.course_criteria[39]->getnum() << top1 << b.goals[53]->getnum() << top2 << b.course_criteria[40]->getnum() << middle5 << b.tiles[15]->getDice() << middle4 << b.course_criteria[41]->getnum() << "|" << endl;
+    out << leadblank11 << b.goose_printer(b.tiles[13]->getTilenum()) << blank3 << b.goose_printer(b.tiles[14]->getTilenum()) << blank3 << b.goose_printer(b.tiles[15]->getTilenum()) << endl;
+    out << leadblank11 << b.goals[54]->getnum() << blank2 << b.goals[55]->getnum() << blank1 << b.tiles[16]->getTilenum() << blank4 << b.goals[56]->getnum() << blank2 << b.goals[57]->getnum() << blank1 << b.tiles[17]->getTilenum() << blank4 << b.goals[58]->getnum() << blank2 << b.goals[59]->getnum() << endl;
+    out << leadblank14 << b.tiles[16]->getResource() << middle1 << b.tiles[17]->getResource() << middle2 << endl;
+    out << leadblank9 << b.course_criteria[42]->getnum() << top1 << b.goals[60]->getnum() << top2 << b.course_criteria[43]->getnum() << middle5 << b.tiles[16]->getDice() << middle4 << b.course_criteria[44]->getnum() << top1 << b.goals[61]->getnum() << top2 << b.course_criteria[45]->getnum() << middle5 << b.tiles[17]->getDice() << middle4 << b.course_criteria[46]->getnum() << top1 << b.goals[62]->getnum() << top2 << b.course_criteria[47]->getnum() << "|" << endl;
+    out << leadblank7 << b.goose_printer(b.tiles[16]->getTilenum()) << blank3 << b.goose_printer(b.tiles[17]->getTilenum()) << endl;
+    out << leadblank7 << b.goals[63]->getnum() << blank2 << b.goals[64]->getnum() << blank1 << b.tiles[18]->getTilenum() << blank4 << b.goals[65]->getnum() << blank2 << b.goals[66]->getnum() << endl;
+    out << leadblank15 << b.tiles[18]->getResource() << middle2 << endl;
+    out << leadblank5 << b.course_criteria[48]->getnum() << top1 << b.goals[67]->getnum() << top2 << b.course_criteria[49]->getnum() << middle5 << b.tiles[18]->getDice() << middle4 << b.course_criteria[50]->getnum() << top1 << b.goals[68]->getnum() << top2 << b.course_criteria[51]->getnum() << "|" << endl;
+    out << leadblank3 << b.goose_printer(b.tiles[18]->getTilenum()) << endl;
+    out << leadblank3 << b.goals[69]->getnum() << blank2 << b.goals[70]->getnum() << endl;
     out << leadblank13 << endl;
-    out << leadblank1 << b.course_criteria[52].getnum() << top1 << b.goals[71].getnum() << top2 << b.course_criteria[53].getnum() << "|" << endl;
+    out << leadblank1 << b.course_criteria[52]->getnum() << top1 << b.goals[71]->getnum() << top2 << b.course_criteria[53]->getnum() << "|" << endl;
     return out;
 }
 
