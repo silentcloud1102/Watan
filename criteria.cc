@@ -44,6 +44,5 @@ export class Criteria : public ISubject {
       // configuration methods to be used by Board
       void set_adjacent_goals(const std::vector<int> &goals);
       void set_adjacent_criteria(const std::vector<int> &criteria);
-      std::vector<int> get_adjacent_goals() const;
       std::vector<int> get_adjacent_criteria() const;
 };

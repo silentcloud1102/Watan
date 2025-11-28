@@ -143,7 +143,7 @@ void Criteria::set_adjacent_goals(const std::vector<int> &goals) {
 // }
 
 // returns the adjacent criteria
-std::vector<int> get_adjacent_criteria() const {
+std::vector<int> Criteria::get_adjacent_criteria() const {
     return adjacent_criteria;
 }
 
