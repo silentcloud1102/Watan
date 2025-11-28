@@ -233,8 +233,8 @@ void Game::setup(){
     //backwards
     for (int i = (numofPlayers - 1); i >= 0; --i){
         std::cout << *this;
-        cout << "Student " << players[i]->get_name();
-        cout << ", where do you want to complete an Assignment?" << std::endl << ">";
+        std::cout << "Student " << players[i]->get_name();
+        std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
         int idx;
         std::cin >> idx;
         try{
