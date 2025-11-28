@@ -64,7 +64,7 @@ void Student::buy_goal(int id, bool set_up) {
     }
 
     if(!set_up){
-        if(affordable && adjacent)
+        if(affordable && adjacent){
             
             held_resources -= cost;
             
