@@ -5,6 +5,7 @@ import Student
 import <string>;
 import <fstream>;
 import <vector>;
+import <stdexcept>;
 
 
 const numofPlayers = 4;
@@ -22,17 +23,22 @@ Game::Game(int seed, Board gameBoard, std::vector<Student> players, int cur_turn
         }
 }
 
-void Game::board_from_file(std::ifstream &file){
+std::ifstream & Game::board_from_file(std::ifstream &file){
     // read from file
     std::vector<int> givenBoard;
+    std::string line;
+    std::getline(file, line);
+
     int temp;
     for (int i = 0; i < 38; ++i){
-        if (!(file >> temp)){
-            break;
+        if (!(line >> temp)){
+            throw std::runtime_error("Invalid save file format, expected 38 integers");
         }
         givenBoard.emplace_back(temp);
     }
     gameBoard->load_save_data(givenBoard);
+
+    return file;
 }
 
 void Game::load_game(std::ifstream &file){
@@ -56,9 +62,8 @@ void Game::load_game(std::ifstream &file){
 }
 
 void Game::dice_rolls(bool isfair, int playerIndex){
-    // =========================================================
+
     // Generating the dicerolls
-    // =========================================================
     int roll;
     if (isfair){
         // random generate
@@ -167,10 +172,6 @@ void Game::dice_rolls(bool isfair, int playerIndex){
 
             // randomly generate which 1 resource to steal? but have to make sure the student has it
 
-
-
-
-            
             Resource r;
             players[playerIndex].held_resources += r;
             players[steal_from_index].held_resources -= r;
