@@ -126,6 +126,11 @@ std::string Student::get_name() {
     return name;
 }
 
+// get number of criteria for use in checking for win conditions
+int Student::get_criteria_count(){
+    return criteria.size();
+}
+
 // save methods
 std::string Student::get_save_string() const {
     std::ostringstream oss;
@@ -180,7 +185,7 @@ void Student::read_save_string(std::string save_data) {
 
 // output operator for student
 std::ostream &operator<<(std::ostream& os, Student &student){
-    os << student.name << " has " << student.criteria.size() << " course criteria, ";
+    os << student.name << " has " << student.get_criteria_count() << " course criteria, ";
     os << student.held_resources;
     return os;
 }
