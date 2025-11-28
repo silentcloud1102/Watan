@@ -33,6 +33,7 @@ void Goal::acquire(IObserver* student){
     owner = student;
 }
 
+// ADJACENCY LOGIC METHODS: subject to change
 
 void Goal::set_adjacent_criteria(const std::vector<int> & criteria) { 
     adjacent_criteria = criteria; 
