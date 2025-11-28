@@ -17,9 +17,9 @@ import Student;
 const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
-Game::Game(int seed): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)){
+Game::Game(int seed): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)) {
         // construct board
-        std::unique_ptr<Board> gameBoard = std::make_unique<Board>(Board(seed));
+        std::unique_ptr<Board> gameBoard = std::make_unique<Board>(seed);
 
         // construct players vector
         for (int i = 0; i < numofPlayers; ++i){
@@ -101,7 +101,7 @@ void Game::roll_dice(bool isfair){
         
         // stealing:
         std::vector<std::string> victim_ids = gameBoard->goose_victims();
-        std::vector<Student *>victims;
+        std::vector<Student *> victims;
         for (int i = 0; i < numofPlayers; ++i){
             // if self or broke, don't steal :)
             if (i == active_id){
@@ -113,7 +113,7 @@ void Game::roll_dice(bool isfair){
             // otherwise:
             for(auto it = victim_ids.begin(); it != victim_ids.end(); it++){
                 if((*it)[0] == players[i]->get_name()[0]) {
-                    victims.emplace_back(players[i]);
+                    victims.emplace_back(players[i].get());
                 }
             }
         }
