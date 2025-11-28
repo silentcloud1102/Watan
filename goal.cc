@@ -28,8 +28,6 @@ export class Goal : public ISubject {
     // Adjacency Methods
     void set_adjacent_criteria(const std::vector<int> & criteria);
     void set_adjacent_goals(const std::vector<int> & goals);
-    std::vector<int> get_adjacent_goals() const;
-    std::vector<int> get_adjacent_criteria() const;
 
     // Saving methods
     std::string get_save_string() const;

@@ -138,9 +138,9 @@ void Criteria::set_adjacent_goals(const std::vector<int> &goals) {
 }
 
 // returns the adjacent goals
-std::vector<int> get_adjacent_goals() const {
-    return adjacent_goals;
-}
+// std::vector<int> get_adjacent_goals() const {
+//     return adjacent_goals;
+// }
 
 // returns the adjacent criteria
 std::vector<int> get_adjacent_criteria() const {

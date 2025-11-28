@@ -75,17 +75,6 @@ bool Goal::adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) c
     return false;
 }
 
-// returns the adjacent goals
-std::vector<int> get_adjacent_goals() const {
-    return adjacent_goals;
-}
-
-// returns the adjacent criteria
-std::vector<int> get_adjacent_criteria() const {
-    return adjacent_criteria;
-}
-
-
 // returns the cost in Resource
 const Resource & Goal::cost() const {
     return resource_cost;
