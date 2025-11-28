@@ -11,7 +11,7 @@ export class Criteria : public ISubject {
     static const Resource level_costs[3];
   
     int upgradeLevel;
-    vector<ISubject *> adjacent_course_criterion;
+    vector<ISubject *> adjacent_criteria;
     vector<int> adjacent_goals;
 
     public:
@@ -29,7 +29,7 @@ export class Criteria : public ISubject {
 
       // Checks for buying
       bool max_level() const;
-      bool adjacent(vector<int> &criteria, vector<int> &goals) const;
+      bool adjacent_check(vector<int> &criteria, vector<int> &goals) const;
       bool owned() const;
 
       // Upgrade logic
