@@ -89,8 +89,9 @@ void Game::roll_dice(bool isfair){
         while (true){
             std::cout << "Choose where to place the GEESE." << std::endl << ">";
             std::cin >> goose;
-            if (goose < 0 || 18 < goose || (goose == gameBoard->get_goose_tile())){
+            if (goose < 0 || goose > 18 || (goose == gameBoard->get_goose_tile())){
                 // ask again;
+                std::cerr << "Goose cannot be placed it this tile.";
                 continue;
             } else {
                 gameBoard->update_goose(goose);
@@ -98,58 +99,80 @@ void Game::roll_dice(bool isfair){
             } 
         }
         
-        // steal
-        std::string steal_from;
-        int steal_from_count = 0;
-        std::cout << "Student " << players[active_id]->get_name() << "can choose to steal from ";
+        // stealing:
+        std::vector<std::string>> victim_ids = gameBoard->goose_victims();
+        std::vector<Student *>> victims;
         for (int i = 0; i < numofPlayers; ++i){
-            Resource zero = Resource{0,0,0,0,0};
+            // if self or broke, don't steal :)
             if (i == active_id){
                 continue;
-            } else if (players[i]->get_resource() <= zero){
+            } else if (players[i]->resource_count() <= 0){
                 continue;
             }
 
-            for (int j = 0; j < players[i]->criteria.size(); ++j){
-                for (int x = 0; x < gameBoard->tiles[goose].course_criteria.size(); ++x){
-                    if (players[i]->criteria[j] == gameBoard->tiles[goose].course_criteria[x]){
-                        ++steal_from_count;
-                        if (i == (numofPlayers - 1)){
-                            std::cout << players[i]->get_name() << "." << std::endl;
-                        } else {
-                            std::cout << players[i]->get_name() << ", ";
-                        }
-                    }
+            // otherwise:
+            for(auto it = victim_ids.begin(); it != victim_ids.end(); it++){
+                if((*it)[0] == players[i]->get_name()[0]) {
+                    victims.emplace_back(players[i]);
                 }
             }
         }
 
-        if (steal_from_count == 0){
+        if (victims.size() == 0){
             std::cout << "Student " << players[active_id] << " has no students to steal from." << std::endl;
         } else {
-            std::cout << "Choose a student to steal from." << std::endl << ">";
-            std::cin >> steal_from;
-            
-            int steal_from_index = -1;
-            for (int i = 0; i < numofPlayers){
-                if (steal_from == players[i].get_name()){
-                    steal_from_index = i;
-                    break;
+            std::cout << "Student " << players[active_id]->get_name() << "can choose to steal from ";
+            for(auto it = victims.begin(); it != victims.end(); it++){
+                std::cout << (*it)->get_name();
+                if(it + 1 != victims.end()){
+                    std::cout << ", ";
+                } else {
+                    std::cout << '.';
                 }
             }
 
+            std::string steal_from;
+            bool valid_choice = false;
+            while(!valid_choice){
+                std::cout << "Choose a student to steal from." << std::endl << ">";
+                std::cin >> steal_from;
+            
+                for (auto v : victims){
+                    valid_choice = (steal_from == *v)
+                    if(valid_choice){
+                        break;
+                    }
+                }
 
+                if(!valid_choice){
+                    std::cout << "Invalid selection, try again." << std::endl;
+                }
+            }
 
+            for (int i = 0; i < players.size(); i++){
+                if(*players[i] == steal_from){
+                    // randomly generate 1 resource to steal
+                    Resource loss = generate_goosed(players[i]->resource_vector(), 1);
+                    
+                    // active gains loss, i (victim) gets goosed for loss
+                    players[active_id]->resource_notify(loss);
+                    players[i]->goosed(loss);
 
-            // randomly generate which 1 resource to steal? but have to make sure the student has it
+                    // use stringstream to read in.. a little inconvenient but it will do
+                    std::istringstream iss {print_output(loss.to_vector()[0], 1)};
+                    std::string resource;
+                    iss >> resource >> resource;
 
-            Resource r;
-            players[active_id]->get_resource() += r;
-            players[steal_from_index]->get_resource() -= r;
-            std::cout << "Student " << players[active_id] << " steals " 
-            std::cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << std::endl;
+                    // output to stdout
+                    std::cout << "Student " << players[active_id]->get_name() << " steals ";
+                    std::cout << resource << " from student " << players[i]->get_name() << '.';
+                    std::cout << std::endl;
+                }
+            }
         }
 
+        // end of geese.
+        return;
     // Non Geese:
     } else {
        // Track resource distribution

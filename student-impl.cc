@@ -224,6 +224,12 @@ void Student::read_save_string(std::string save_data) {
     }
 }
 
+
+// equality operator
+bool Student::operator==(std::string other) const{
+    return other == name;
+}
+
 // output operator for student
 std::ostream &operator<<(std::ostream& os, Student &student){
     os << student.name << " has " << student.get_criteria_count() << " course criteria, ";
