@@ -200,17 +200,7 @@ int main(int argc, char** argv){
                         cin >> filename;
                         default_game.save(filename);
                     } else if (command == "help"){
-                        cout << "Valid commands:" << endl;
-                        cout << "board" << endl;
-                        cout << "status" << endl;
-                        cout << "criteria" << endl;
-                        cout << "achieve <goal>" << endl;
-                        cout << "complete <criterion>" << endl;
-                        cout << "improve <criterion>" << endl;
-                        cout << "trade <colour> <give> <take>" << endl;
-                        cout << "next" << endl;
-                        cout << "save <file>" << endl;
-                        cout << "help" << endl;
+                        game.help();
                     } else {
                         cout << "Invalid command." << endl;
                     }

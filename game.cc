@@ -36,10 +36,18 @@ export class Game {
     void save(std::string filename);
 
     // interface methods: tied to player actions
+    void setup();
     void next_turn();
     void begin_turn() const;
-    void setup();
     
+    void criteria();
+    void achieve(int goal);
+    void complete(int criteria);
+    void improve(int criteria);
+    void trade(std::string colour, std::string give, std::string take);
+    void help() const;
+
+
     void roll_dice(bool isfair);
     
 

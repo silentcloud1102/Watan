@@ -227,9 +227,21 @@ bool Student::operator==(std::string other) const{
     return other == name;
 }
 
-// output operator for student
+// output operator for student status
 std::ostream &operator<<(std::ostream& os, Student &student){
     os << student.name << " has " << student.get_criteria_count() << " course criteria, ";
     os << student.held_resources;
     return os;
+}
+
+// output method for student completions
+std::string Student::completions() const {
+    std::ostreamstring oss;
+    oss << name << " has completed:" << std::endl;
+    for(auto it = criteria.begin(); it != criteria.end(); it++){
+        Criteria * target = board->get_criteria(*it);
+        oss << target->get_save_string() << std::endl;
+    }
+
+    return oss.str();
 }
