@@ -57,7 +57,7 @@ int main(int argc, char** argv){
                 cin >> response;
                 if (response == 'L'){
                     ifstream ifsl{loadfile};
-                    default_game.loadGame(ifsl);
+                    default_game.load_game(ifsl);
                     break;
                 } else if (response == 'N'){
                     // new game
@@ -154,7 +154,7 @@ int main(int argc, char** argv){
                     } else if (command == "improve"){
                         int c;
                         cin >> c;
-                        player->upgrade_critiera(c);
+                        player->upgrade_criteria(c);
                     } else if (command == "trade"){
                         string color;
                         string give_r;

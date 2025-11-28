@@ -22,7 +22,7 @@ export class Criteria : public ISubject {
       void acquire(IObserver* student) override;
 
       // Notification method
-      void newResource(std::string r) const;
+      void new_resource(std::string r) const;
       
       // Printing methods
       std::string getnum() const;
@@ -34,7 +34,7 @@ export class Criteria : public ISubject {
       bool owned() const;
 
       // Upgrade logic
-      const Resource & upgradeCost() const;
+      const Resource & upgrade_cost() const;
       void upgrade();
 
       // save method

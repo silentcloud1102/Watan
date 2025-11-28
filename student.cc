@@ -20,6 +20,11 @@ export class Student : public IObserver {
     public:
         Student(const std::string & colour, Board * board);
         std::string get_name() override;
+        
+        // win condition
+        int get_criteria_count();
+
+        // boolean check
         bool can_afford(const Resource & query) const;
 
         void buy_criteria(int id, bool set_up = false);
@@ -27,9 +32,6 @@ export class Student : public IObserver {
         void upgrade_criteria(int id);
 
         void trade(Student * colour, std::string give_r, std::string take_r);
-
-        // TODO: what is goosed?
-        // void goosed();
 
         // main method to modify resources, inherited from IObserver
         void resource_notify(Resource rchange) override;

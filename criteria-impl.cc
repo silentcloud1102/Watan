@@ -22,7 +22,7 @@ Criteria::Criteria(int location, int level):
 
 // returns a string representing the correct representation for printing
 // on the board. Different representation when owned.
-std::string Criteria::getnum() const {
+std::string Criteria::get_num() const {
     // note: we will not use stringstream here because it is a simple concatenation
     // stringstream will be used when there are multiple fields to loop through
 
@@ -83,7 +83,7 @@ bool Criteria::owned() const{
 // UPGRADE LOGIC METHODS:
 
 // returns the upgrade cost of the current level as a resource
-const Resource & Criteria::upgradeCost() const{
+const Resource & Criteria::upgrade_cost() const{
     if(!owned()){
         return level_costs[0]; // cost to "upgrade" to level 1
     } else if(max_level()){
@@ -129,7 +129,7 @@ void Criteria::set_adjacent_goals(const std::vector<int> &goals) {
 }
 
 // Notify Observer
-void Criteria::newResource(std::string r) const {
+void Criteria::new_resource(std::string r) const {
     Resource rchange{r, upgradeLevel};
     if (owned()) {
         owner->resource_notify(rchange);

@@ -13,7 +13,7 @@ const Resource Goal::resource_cost{0, 0, 0, 1, 1};
 Goal::Goal(int location): ISubject(location) {}
 
 // GET METHODS
-std::string Goal::getnum() const {
+std::string Goal::get_num() const {
     if (owner) {
         return owner->get_name()[0] + "A";
     }
