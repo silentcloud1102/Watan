@@ -102,59 +102,61 @@ int main(int argc, char** argv){
         if(!load){
             cout << 1;
             // starting at cur_turn 0.
-            game.setup();
+            game.setup(cout, cin);
         }
         
         cout << game;
 
         bool playing_game = true;
 
-        while (!game.has_won()){
+        while (!game.has_won(cout)){
             string command;
 
-            game.begin_turn();
+            game.begin_turn(cout);
+            // Then proceed to dice roll logic...
+            game.roll_dice(cout, cin);
+
+            if (cin.eof()){
+                game.save("backup.sv", cout);
+                cerr << "Program ended via EOF. backup.sv created." << endl;
+                return 1;
+            }
 
             while (cout << ">", cin >> command){
-                if (cin.eof()){
-                    game.save("backup.sv");
-                    cerr << "Program ended via EOF. backup.sv created." << endl;
-                    return 1;
-                }
-
                 if (command == "board"){
-                    game.board();
+                    game.board(cout);
                 } else if (command == "status"){
-                    game.status();
+                    game.status(cout);
                 } else if (command == "criteria"){
-                    game.criteria();
+                    game.criteria(cout);
                 } else if (command == "achieve"){
                     int goal;
                     cin >> goal;
-                    game.achieve(goal);
+                    game.achieve(goal, cout);
                 } else if (command == "complete"){
                     int criteria;
                     cin >> criteria;
-                    game.complete(criteria);
+                    game.complete(criteria, cout);
                 } else if (command == "improve"){
                     int criteria;
                     cin >> criteria;
-                    game.improve(criteria);
+                    game.improve(criteria, cout);
                 } else if (command == "trade"){
                     string colour;
                     string give_r;
                     string take_r;
                     cin >> colour >> give_r >> take_r;
-                    game.trade(colour, give_r, take_r);
+                    game.trade(colour, give_r, take_r, cout, cin);
                     
                 } else if (command == "next"){
-                    game.next_turn();
+                    game.next_turn(cout);
                     break;
                 } else if (command == "save"){
                     string filename;
                     cin >> filename;
-                    game.save(filename);
+                    game.save(filename, cout);
                 } else if (command == "help"){
-                    game.help();
+                    game.help(cout);
                 } else {
                     cout << "Invalid command." << endl;
                 }

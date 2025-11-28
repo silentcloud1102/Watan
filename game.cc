@@ -1,5 +1,6 @@
 export module Game;
 
+import <iostream>;
 import <string>;
 import <fstream>;
 import <vector>;
@@ -27,28 +28,28 @@ export class Game {
     Game(int seed);
     
     int turn_num() const;
-    bool has_won() const;
+    bool has_won(std::ostream & out) const;
     Resource generate_goosed(std::vector<int> resources, int amount);
 
     // save methods from file and to file
     void board_from_file(std::ifstream &file);
     void load_game(std::ifstream &file);
-    void save(std::string filename);
+    void save(std::string filename, std::ostream & out);
 
     // interface methods: tied to player actions
-    void roll_dice();
-    void setup();
-    void next_turn();
-    void begin_turn() ;
+    void roll_dice(std::ostream & out, std::istream & in);
+    void setup(std::ostream & out, std::istream & in);
+    void next_turn(std::ostream & out);
+    void begin_turn(std::ostream & out) ;
     
-    void board() const;
-    void status() const;
-    void criteria() const;
-    void achieve(int goal);
-    void complete(int criteria);
-    void improve(int criteria);
-    void trade(std::string colour, std::string give, std::string take);
-    void help() const;
+    void board(std::ostream & out) const;
+    void status(std::ostream & out) const;
+    void criteria(std::ostream & out) const;
+    void achieve(int goal, std::ostream & out);
+    void complete(int criteria, std::ostream & out);
+    void improve(int criteria, std::ostream & out);
+    void trade(std::string colour, std::string give, std::string take, std::ostream & out, std::istream & in);
+    void help(std::ostream & out) const;
     
 
 
