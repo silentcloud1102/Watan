@@ -10,6 +10,7 @@ export class Resource {
     int study = 0;
     int tutorial = 0;
     public:
+        Resource() = default;
         explicit Resource(int caffeine, int lab,  int lecture, int study, int tutorial);
 
         explicit Resource(std::string resource, int amount = 1);
