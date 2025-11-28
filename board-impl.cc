@@ -189,9 +189,15 @@ Board::Board(unsigned seed) {
         goals[e].addAdjacentgoal(GoalsAdjGoals.at(e));
     }
     for (int i = 0; i < num_of_course_criteria; ++i) {
+        
+        
+        /* Pointer solution: use ids instead for more uniform checks
         for (int idx : CriterionAdjCriterion[i]) {
             course_criteria[i].addAdjacentcourse_criterion(&course_criteria[idx]);
         }
+        */
+       
+        course_criteria[i].addAdjacentcourse_criterion(CriterionAdjCriterion.at(i));
         course_criteria[i].addAdjacentgoal(CriterionAdjGoals.at(i));
     }
 
