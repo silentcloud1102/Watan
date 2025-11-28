@@ -269,6 +269,56 @@ void Game::begin_turn() const {
     // Then proceed to dice roll logic...
 }
 
+
+void criteria(){
+    std::cout << players[active_id]->completions();
+}
+
+void achieve(int goal){
+    try{
+        players[active_id]->buy_goal(goal);
+    } catch (const std::runtime_error &e){
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+void complete(int criteria){
+    try{
+        players[active_id]->buy_criteria(criteria);
+    } catch (const std::runtime_error &e){
+        std::cerr << e.what() << std::endl;
+    }
+    return;
+}
+
+void improve(int criteria){
+    try{
+        players[active_id]->upgrade_criteria(criteria);
+    } catch (const std::runtime_error &e){
+        std:cerr << e.what() << std::endl;
+    }
+    return;
+}
+
+void trade(std::string colour, std::string give, std::string take){
+
+}
+
+void help() const{
+    cout << "Valid Commands:" << endl;
+    cout << "board" << endl;
+    cout << "status" << endl;
+    cout << "criteria" << endl;
+    cout << "achieve <goal>" << endl;
+    cout << "complete <criterion>" << endl;
+    cout << "improve <criterion>" << endl;
+    cout << "trade <colour> <give> <take>" << endl;
+    cout << "next" << endl;
+    cout << "save <file>" << endl;
+    cout << "help" << endl;
+    return;
+}
+
 // info methods:
 int Game::turn_num() const{
     return cur_turn;
