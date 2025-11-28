@@ -132,7 +132,7 @@ void Game::roll_dice(bool isfair){
             
             int steal_from_index = -1;
             for (int i = 0; i < numofPlayers){
-                if (steal_from == players[i]->name){
+                if (steal_from == players[i].get_name()){
                     steal_from_index = i;
                     break;
                 }
@@ -160,7 +160,7 @@ void Game::roll_dice(bool isfair){
         }
 
         // changes resource for players
-        update_tiles(roll);
+        gameBoard->update_tiles(roll);
 
         for (int i = 0; i < 4; ++i){
             diff[i] -= players[i]->get_resource();
@@ -223,8 +223,8 @@ void Game::setup(){
 
         //backwards
         for (int i = (numofPlayers - 1); i >= 0; --i){
-            cout << "Student " << players[i]->get_name();
-            cout << ", where do you want to complete an Assignment?" << std::endl << ">";
+            std::cout << "Student " << players[i]->get_name();
+            std::cout << ", where do you want to complete an Assignment?" << std::endl << ">";
             int idx;
             std::cin >> idx;
             default_game.players[i].buy_criteria(idx);
@@ -251,7 +251,7 @@ void Game::next_turn(){
     }
 }
 
-void Game::begin_turn(){
+void Game::begin_turn() const {
 
     std::cout << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     
