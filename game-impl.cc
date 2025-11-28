@@ -258,11 +258,17 @@ void Game::setup(std::ostream & out, std::istream & in){
     // setup = true so buy_criteria does not deduct from held_resources.
     for (int i = 0; i < numofPlayers; ++i){
         int idx;
-        out << *this;
+        out << std::endl << *this;
         out << "Student " << players[i]->get_name(); 
         out << ", where do you want to complete an Assignment?" << std::endl << ">";
-        in >> idx;
+        
         // we only back-up after setup.
+        if(!(in >> idx)){
+            in.clear();
+            in.ignore();
+            out << "Bad input, try again.";
+            i--;
+        }
 
         try{
             players[i]->buy_criteria(idx, true);
@@ -275,10 +281,17 @@ void Game::setup(std::ostream & out, std::istream & in){
     //backwards
     for (int i = (numofPlayers - 1); i >= 0; --i){
         int idx;
-        out << *this;
+        out << std::endl << *this;
         out << "Student " << players[i]->get_name(); 
         out << ", where do you want to complete an Assignment?" << std::endl << ">";
-        in >> idx;
+
+        if(!(in >> idx)){
+            in.clear();
+            in.ignore();
+            out << "Bad input, try again.";
+            i--;
+        }
+
         try{
             players[i]->buy_criteria(idx, true);
         } catch (const std::runtime_error &e) {
