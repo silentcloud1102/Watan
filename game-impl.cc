@@ -138,7 +138,7 @@ void Game::roll_dice(bool isfair){
                 std::cin >> steal_from;
             
                 for (auto v : victims){
-                    valid_choice = (steal_from == *v)
+                    valid_choice = (steal_from == *v);
                     if(valid_choice){
                         break;
                     }
