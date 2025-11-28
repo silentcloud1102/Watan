@@ -109,10 +109,10 @@ int main(int argc, char** argv){
 
         bool playing_game = true;
 
-        while (game.has_won()){
+        while (!game.has_won()){
             string command;
 
-            game.next_turn();
+            game.begin_turn();
 
             while (cout << ">", cin >> command){
                 if (cin.eof()){

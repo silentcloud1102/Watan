@@ -60,7 +60,6 @@ void Game::roll_dice(){
             isfair = true;
         } else if (cmd == "roll") {
             std::cout << "Rolling...";
-            std::cin >> cmd;
             break;
         } else {
             std::cerr << "Unknown command. Try again." << std::endl;
@@ -225,10 +224,13 @@ void Game::roll_dice(){
                     continue;
                 }
 
-                std::cout << "Student " << players[i]->get_name() << " gained:";
+                std::cout << "Student " << players[i]->get_name() << " gained:" << std::endl;
 
                 std::vector<int> gains = diff[i].to_vector(false);
                 for(int i = 0; i < gains.size(); i++){
+                    if(gains[i] == 0) {
+                        continue;
+                    }
                     std::cout << Resource::print_output(i, gains[i]) << std::endl;
                 }
             }
@@ -298,11 +300,11 @@ void Game::begin_turn() {
 
 
 void Game::board() const {
-    std::cout << gameBoard;
+    std::cout << *gameBoard;
 }
 
 void Game::status() const {
-    std::cout << *players[active_id];
+    std::cout << *players[active_id] << std::endl;
 }
 
 void Game::criteria() const {
@@ -341,7 +343,7 @@ void Game::trade(std::string colour, std::string give, std::string take){
 
     for(auto it = players.begin(); it != players.end(); it++){
         if(*(*it) == colour) {
-            if((*it)->can_afford(Resource{take, 1})) {
+            if(!(*it)->can_afford(Resource{take, 1})) {
                 std::cerr << colour << " cannot afford this trade." << std::endl;
                 return;
             }

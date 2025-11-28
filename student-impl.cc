@@ -33,7 +33,7 @@ void Student::buy_criteria(int id, bool set_up){
         // if from save file, no need to catch: error in save file...
         // if from setup of game, must be caught.
         throw std::runtime_error("This criteria is already owned, cannot have two owners!");
-    } else if (adjacent_criteria){
+    } else if (!adjacent_criteria){
         throw std::runtime_error("This criteria is too close to another owned criteria.");
     }
 
