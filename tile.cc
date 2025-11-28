@@ -20,9 +20,10 @@ export class Tile {
     Tile(std::string res, int dc, int num);
 
     // get methods for printing
-    std::string get_tilenum() const;
-    std::string get_resource() const;
-    std::string get_dice() const;
+    std::string get_tilenum(bool normalize = true) const;
+    // add a buffer parameter so the method can be used without always having whitespace added
+    std::string get_resource(bool normalize = true) const;
+    std::string get_dice(bool normalize = true) const;
 
     // set-up methods used by board
     void add_criteria(Criteria *v);

@@ -11,19 +11,25 @@ import Resource;
 
 Tile::Tile(std::string res, int dc, int num) : resource_type(res), dice(dc), tilenum(num) {}
 
-// Printing methods:
-std::string Tile::get_tilenum() const {
+// Printing methods: normalize switch for easy use outside of Board << operator
+std::string Tile::get_tilenum(bool normalize) const {
+
+    // if normalize (default):
     // we want tilenum to take the same amount of space regardless of value (1 or 2 digits)
     // if single-digit, add a space in front as a buffer
-    if (tilenum < 10) {
+    if (normalize && tilenum < 10) {
         return " " + std::to_string(tilenum);
     }
     return std::to_string(tilenum);
 }
 
-std::string Tile::get_resource() const {
+std::string Tile::get_resource(bool normalize) const {
     std::string result = resource_type;
 
+    if(!normalize){
+        return result;
+    }
+    // if normalize (default):
     // we want all resource strings to be of the same length, so we add the difference to end as empty spaces
     for(int i = 0; i < (11 - resource_type.length()); ++i) {
         result += " ";
@@ -31,9 +37,9 @@ std::string Tile::get_resource() const {
     return result;
 }
 
-std::string Tile::get_dice() const {
+std::string Tile::get_dice(bool normalize) const {
     // again, we want the result to be two characters long, normalize by adding space to front
-    if (dice < 10) {
+    if (normalize && dice < 10) {
         return " " + std::to_string(dice);
     }
     return std::to_string(dice);
