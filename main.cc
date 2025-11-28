@@ -99,8 +99,6 @@ int main(int argc, char** argv){
         }
 
         // start game 
-        
-        // Student * turnOrder[4] = {Blue, Red, Orange, Yellow};
 
         for (int i = 0; i < numofPlayers; ++i){
             cout << "Student " << default_game.players[i].get_name(); 

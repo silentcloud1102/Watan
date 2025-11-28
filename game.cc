@@ -37,6 +37,9 @@ export class Game {
 
     // interface methods: tied to player actions
     void next_turn();
+    void begin_turn() const;
+    void setup();
+    
     void roll_dice(bool isfair);
     
 
