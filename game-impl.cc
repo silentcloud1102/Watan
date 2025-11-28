@@ -290,7 +290,7 @@ void Game::begin_turn() const {
     std::cout << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     
     // outputs status of Student
-    std::cout << *players[active_id];
+    status();
 
     // Then proceed to dice roll logic...
     roll_dice();
@@ -299,6 +299,10 @@ void Game::begin_turn() const {
 
 void Game::board() const {
     std::cout << gameBoard;
+}
+
+void Game::status() const {
+    std::cout << *players[active_id];
 }
 
 void Game::criteria() const {

@@ -42,6 +42,7 @@ export class Game {
     void begin_turn() const;
     
     void board() const;
+    void status() const;
     void criteria() const;
     void achieve(int goal);
     void complete(int criteria);
