@@ -51,7 +51,7 @@ bool Goal::owned() const{
 }
 
 // returns the eligibility of the goal based on adjacent goals/criteria
-bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
+bool Goal::adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
     // check that there is adjacent Criteria already completed
     for (auto adj = adjacent_criteria.begin(); adj != adjacent_criteria.end(); ++adj) {
         for(auto other = criteria.begin(); other != criteria.end(); ++other){
