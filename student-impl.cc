@@ -131,6 +131,11 @@ int Student::get_criteria_count(){
     return criteria.size();
 }
 
+// get number of resources, used for geese tax collection
+int Student::resource_count(){
+    return held_resources.count();
+}
+
 // save methods
 std::string Student::get_save_string() const {
     std::ostringstream oss;
@@ -168,7 +173,7 @@ void Student::read_save_string(std::string save_data) {
         resources[i] = read;
     }
 
-    held_resources = Resource{resources[0], resources[1], resources[2], resources[4]};
+    held_resources = Resource{resources[0], resources[1], resources[2], resources[3], resources[4]};
 
     // read in g
     iss >> garbage;

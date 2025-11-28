@@ -23,7 +23,9 @@ export class Student : public IObserver {
         
         // win condition
         int get_criteria_count();
-
+        // geese condition
+        int resource_count();
+        
         // boolean check
         bool can_afford(const Resource & query) const;
 
