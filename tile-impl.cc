@@ -50,7 +50,7 @@ std::string Tile::get_dice(bool normalize) const {
 std::vector<std::string> Tile::criteria_ids() const{
     std::vector<std::string> ids;
     for(auto it : course_criteria){
-        ids.emplace_back(it->get_num());
+        ids.emplace_back(it->get_num(false));
     }
     return ids;
 }

@@ -158,6 +158,21 @@ std::string Student::get_name() {
     return name;
 }
 
+std::string Student::colour() {
+    if (name == "Blue"){
+        return "\033[34m";
+    } else if (name == "Red") {
+        return "\033[31m";
+    } else if (name == "Yellow"){
+        return "\033[33m";
+    } else if (name == "Orange"){
+        return "\033[38;5;208m";
+    } else {
+        return "\033[0m";
+    }
+}
+
+
 // get number of criteria for use in checking for win conditions
 int Student::get_criteria_count() const {
     return criteria.size();
