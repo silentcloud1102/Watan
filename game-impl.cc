@@ -163,7 +163,7 @@ void Game::save(string filename){
 
     // players
     for (int i = 0; i < numofPlayers; ++i){
-        this->players[i].get_save_string() << endl;
+        out << this->players[i].get_save_string() << endl;
     }
 
     // board
