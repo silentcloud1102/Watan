@@ -117,29 +117,15 @@ std::string Criteria::get_save_string() const{
 
 // ADJACENCY LOGIC METHODS: utilized by Criteria::adjacent()
 
-// checking if the provided goal location is adjacent to this course criterion
-bool Criteria::adjacent_goal_check(int location) {
-    for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
-        if (*it == location) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// checking if the provided course criterion location is adjacent to this course criterion
-bool Criteria::adjacent_criteria_check(int location) {
-    return false;
-}
 
 // adding the adjacent course criterion
-void Criteria::addAdjacentcourse_criterion(ISubject* criteria) {
-    adjacent_course_criterion.push_back(criteria);
+void Criteria::set_adjacent_criteria(const std::vector<int> &criteria) {
+    adjacent_criteria = criteria;
 }
 
 // adding the adjacent goals
-void Criteria::addAdjacentgoal(const std::vector<int> &e) { 
-    adjacent_goals = e; 
+void Criteria::set_adjacent_goals(const std::vector<int> &goals) { 
+    adjacent_goals = goals;
 }
 
 // Notify Observer

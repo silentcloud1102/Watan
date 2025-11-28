@@ -30,11 +30,7 @@ export class Criteria : public ISubject {
 
       // Checks for buying
       bool max_level() const;
-<<<<<<< HEAD
       bool adjacent_check(vector<int> &criteria, vector<int> &goals) const;
-=======
-      bool adjacent(std::vector<int> &criteria, std::vector<int> &goals) const;
->>>>>>> eccd77ef972c37fecc7f920b8890402968f56dc4
       bool owned() const;
 
       // Upgrade logic
@@ -44,8 +40,8 @@ export class Criteria : public ISubject {
       // save method
       std::string get_save_string() const;
       
-      void addAdjacentgoal(const std::vector<int> &e);
-      void addAdjacentcourse_criterion(ISubject* criteria);
-      bool adjacent_criteria_check(int location);
-      bool adjacent_goal_check(int location);
+      // configuration methods to be used by Board
+      void set_adjacent_goals(const std::vector<int> &goals);
+      void set_adjacent_criteria(const std::vector<int> &criteria);
+
 };
