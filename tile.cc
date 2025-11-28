@@ -25,10 +25,14 @@ export class Tile {
     std::string get_resource(bool normalize = true) const;
     std::string get_dice(bool normalize = true) const;
 
+    std::vector<std::string> criteria_ids() const;
+
     // set-up methods used by board
     void add_criteria(Criteria *v);
     void add_goal(Goal *e);
 
     // send resources to Criteria
     void distribute_resources() const;
+
+
 };

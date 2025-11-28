@@ -22,7 +22,7 @@ import Resource;
 // (the 6th goal since we start counting from 0)
 
 //  Adjacent course criterion for each goal
-const std::vector<std::vector<int>> Board::GoalsAdjCriterion = {
+const std::vector<std::vector<int>> GoalsAdjCriterion = {
     {0, 1}, {0, 3}, {1, 4}, {2, 3}, {4, 5}, {2, 7}, {3, 8}, {4, 9}, {5, 10}, {6, 7}, {8, 9}, {10, 11},
     {6, 12}, {7, 13}, {8, 14}, {9, 15}, {10, 16}, {11, 17}, {13, 14}, {15, 16}, {12, 18}, {13, 19},
     {14, 20}, {15, 21}, {16, 22}, {17, 23}, {18, 19}, {20, 21}, {22, 23}, {18, 24}, {19, 25}, {20, 26},
@@ -33,7 +33,7 @@ const std::vector<std::vector<int>> Board::GoalsAdjCriterion = {
 };
 
 //  Adjacent goals for each goal
-const std::vector<std::vector<int>> Board::GoalsAdjGoals = {
+const std::vector<std::vector<int>> GoalsAdjGoals = {
     {1,2}, {0,3,6}, {0,4,7}, {1,5,6}, {2,7,8}, {3,9,13}, {1,3,10,14},
     {2,4,10,15}, {4,11,16}, {5,12,13}, {6,7,14,15}, {8,16,17}, {9,20},
     {5,9,18,21}, {6,10,18,22}, {7,10,19,23}, {8,11,19,24}, {11,25},
@@ -50,7 +50,7 @@ const std::vector<std::vector<int>> Board::GoalsAdjGoals = {
 };
 
 // Adjacent course criterion for each course criterion
-const std::vector<std::vector<int>> Board::CriterionAdjCriterion = {
+const std::vector<std::vector<int>> CriterionAdjCriterion = {
     {1,3},{0,4},{3,7},{0,2,8},{1,5,9},{4,10},{7,12},{2,6,13},
     {3,9,14},{4,8,15},{5,11,16},{10,17},{6,18},{7,14,19},{8,13,20},
     {9,16,21},{10,15,22},{11,23},{12,19,24},{13,18,25},{14,21,26},
@@ -62,7 +62,7 @@ const std::vector<std::vector<int>> Board::CriterionAdjCriterion = {
 };
 
 // Adjacent goals for each course criterion
-const std::vector<std::vector<int>> Board::CriterionAdjGoals = {
+const std::vector<std::vector<int>> CriterionAdjGoals = {
     {0,1},{0,2},{3,5},{1,3,6},{2,4,7},{4,8},{9,12},{5,9,13},
     {6,10,14},{7,10,15},{8,11,16},{11,17},{12,20},{13,18,21},{14,18,22},
     {15,19,23},{16,19,24},{17,25},{20,26,29},{21,26,30},{22,27,31},{23,27,32},
@@ -73,7 +73,7 @@ const std::vector<std::vector<int>> Board::CriterionAdjGoals = {
 };
 
 // goal indices for each tile stored as vectors
-const std::vector<std::vector<int>> Board::tilegoals = {
+const std::vector<std::vector<int>> tilegoals = {
     {0, 1, 2, 6, 7, 10},
     {3, 5, 6, 13, 14, 18},
     {4, 7, 8, 15, 16, 19},
@@ -383,4 +383,13 @@ void Board::update_goose(int new_goose_tile) {
 // provides the tile where the goose is located
 int Board::get_goose_tile() const {
     return goose_tile;
+}
+
+std::vector<std::string> Board::goose_victims() const {
+    int goose_tile = get_goose_tile();
+    if(goose_tile != -1){
+        return tiles[goose_tile].criteria_ids();
+    } else {
+        return {};
+    }
 }

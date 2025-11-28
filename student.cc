@@ -49,5 +49,6 @@ export class Student : public IObserver {
         std::string get_save_string() const;
         void read_save_string(std::string save_data);
 
+        bool operator==(std::string other) const;
         friend std::ostream &operator<<(std::ostream& os, Student &student);
 };

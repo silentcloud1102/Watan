@@ -9,14 +9,6 @@ import Goal;
 import Tile;
 
 export class Board {
-
-    // static constant config values for board initialization
-    static const std::vector<std::vector<int>> GoalsAdjCriterion;
-    static const std::vector<std::vector<int>> GoalsAdjGoals;
-    static const std::vector<std::vector<int>> CriterionAdjCriterion;
-    static const std::vector<std::vector<int>> CriterionAdjGoals;
-    static const std::vector<std::vector<int>> tilegoals;
-
     // resource names to pass to Tiles
     static const std::vector<std::string> resource_names;
 
@@ -50,7 +42,7 @@ export class Board {
         // goose handling
         void update_goose(int new_goose_tile);
         int get_goose_tile() const;
-
+        std::vector<std::string> goose_victims() const;
         // output
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 
