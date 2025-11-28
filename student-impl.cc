@@ -129,6 +129,7 @@ std::string get_save_string() const {
     // consider just passing oss instead of returning string
 }
 
+// set student values based on save string
 void read_save_string(std::string save_data) {
     // placeholder for now: add for construction from save strings
     istringstream iss {save_data};
@@ -155,7 +156,7 @@ void read_save_string(std::string save_data) {
 
 void print_status(){
     cout << this->name << " has ";
-    cout << this->critiera.size() << " course criteria,";
+    cout << this->criteria.size() << " course criteria,";
     cout << this->held_resources.print_resource_status() << endl;
 }
 
