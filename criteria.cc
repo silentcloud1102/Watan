@@ -34,9 +34,14 @@ export class Criteria : public ISubject {
       bool owned() const;
 
       // Upgrade logic
-      Resource & upgradeCost() const;
+      const Resource & upgradeCost() const;
       void upgrade();
 
       // save method
       std::string get_save_string() const;
+      
+      void addAdjacentgoal(const std::vector<int> &e);
+      void addAdjacentcourse_criterion(ISubject* criteria);
+      bool adjacent_criteria_check(int location);
+      bool adjacent_goal_check(int location);
 };

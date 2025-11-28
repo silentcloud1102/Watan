@@ -28,7 +28,7 @@ std::string Criteria::get_num() const {
 
     // if owner is not nullptr, owned. Return with owner char and current level
     if (owner) {
-        return owner->get_name[0] + std::to_str(upgradeLevel - 1);
+        return owner->get_name()[0] + std::to_string(upgradeLevel - 1);
     }
 
     // else, not owned. if the location is not two digits, add a space in front
@@ -74,7 +74,7 @@ bool Criteria::owned() const{
 // UPGRADE LOGIC METHODS:
 
 // returns the upgrade cost of the current level as a resource
-Resource & Criteria::upgradeCost() const{
+const Resource & Criteria::upgradeCost() const{
     if(!owned()){
         return level_costs[0]; // cost to "upgrade" to level 1
     } else if(max_level()){
@@ -120,11 +120,6 @@ bool Criteria::adjacent_goal_check(int location) {
 
 // checking if the provided course criterion location is adjacent to this course criterion
 bool Criteria::adjacent_criteria_check(int location) {
-    for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
-        if (*it == location) {
-            return true;
-        }
-    }
     return false;
 }
 
@@ -139,10 +134,10 @@ void Criteria::addAdjacentgoal(const std::vector<int> &e) {
 }
 
 // Notify Observer
-void Criteria::newResource(string r) const {
+void Criteria::newResource(std::string r) const {
     Resource rchange{r, upgradeLevel};
     if (owned()) {
-        owner->resourceNotify(rchange);
+        owner->resource_notify(rchange);
     }
 }
 
