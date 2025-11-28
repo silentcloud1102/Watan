@@ -104,7 +104,7 @@ std::vector<int> Resource::to_vector() const {
 
 
 std::string print_output(int type, int amount) const{
-
+    return std::to_string(amount) + " " + resource_names[type];
 }
 
 std::string Resource::get_save_string() const {

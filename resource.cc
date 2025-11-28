@@ -23,8 +23,12 @@ export class Resource {
         bool operator<=(const Resource &other) const;
         bool operator>=(const Resource &other) const;
         int count() const;
+        
+        // output helper methods
         std::vector<int> to_vector() const;
+        static std::string print_output(int type, int amount) const;
 
+        // save method
         std::string get_save_string() const;
 
         friend std::ostream &operator<<(std::ostream &os, const Resource & resource);
