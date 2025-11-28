@@ -31,16 +31,16 @@ void Student::buy_criteria(int id, bool set_up){
     
     // problematic regardless of if setup or not...
     if (owned){
-        // if from save file, no need to catch: error in save file
-        // if from setup of game, must be caught
+        // if from save file, no need to catch: error in save file...
+        // if from setup of game, must be caught.
         throw std::runtime_error("This criteria is already owned, cannot have two owners!");
+    } else if (!adjacent){
+        throw std::runtime_error("This criteria is not elligible to be bought.");
     }
 
     if(!set_up){
-        if (affordable && adjacent) {
+        if (affordable) {
             held_resources -= cost;
-        } else if (!adjacent){
-            throw std::runtime_error("This criteria is not ellegible to be bought.");
         } else if (!affordable){
             throw std::runtime_error("You do not have enough resources.");
         }
