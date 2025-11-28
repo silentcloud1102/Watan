@@ -25,7 +25,7 @@ export class Criteria : public ISubject {
       void new_resource(std::string r) const;
       
       // Printing methods
-      std::string getnum() const;
+      std::string get_num() const;
       int get_level() const;
 
       // Checks for buying
