@@ -23,6 +23,7 @@ export class Resource {
         bool operator<=(const Resource &other) const;
         bool operator>=(const Resource &other) const;
         int count() const;
+        std::vector<int> to_vector() const;
 
         std::string get_save_string() const;
 

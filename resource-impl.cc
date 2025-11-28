@@ -79,6 +79,19 @@ int Resource::count() const {
     return caffeine + lab + lecture + study + tutorial;
 }
 
+std::vector<int> Resource::to_vector() const {
+    int types[5] = {caffeine, lab, lecture, study, tutorial};
+    std::vector<int> ret_val;
+    for(int type_ind = 0; i < 5; i++){
+        for(int i = 0; i < types[type_ind]; i++){
+            // construct a vector containing <resource_amount> of <resource_int>
+            ret_val.emplace_back(type_ind);
+        }
+    }
+    // return by value
+    return ret_val;
+}
+
 
 std::string Resource::get_save_string() const {
     std::ostringstream oss;
