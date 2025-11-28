@@ -38,6 +38,9 @@ std::string Tile::get_resource(bool normalize) const {
 
 std::string Tile::get_dice(bool normalize) const {
     // again, we want the result to be two characters long, normalize by adding space to front
+    if (dice == 7 && normalize) {
+        return "  ";
+    }
     if (normalize && dice < 10) {
         return " " + std::to_string(dice);
     }
@@ -59,6 +62,13 @@ void Tile::add_criteria(Criteria *v) {
 
 void Tile::add_goal(Goal *e) {
     goals.emplace_back(e);
+}
+
+void Tile::set_dicenum(int change_dice) {
+    dice = change_dice;
+}
+void Tile::set_resource_type(std::string change_resource) {
+    resource_type = change_resource;
 }
 
 // Resource distribution via Criteria (Subject)
