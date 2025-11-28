@@ -24,14 +24,18 @@ export class Student : public IObserver {
         // win condition
         int get_criteria_count();
         // geese condition
-        int resource_count();
-        
+        std::vector<int> resource_count();
+
         // boolean check
         bool can_afford(const Resource & query) const;
 
+        // student actions
         void buy_criteria(int id, bool set_up = false);
         void buy_goal(int id, bool set_up = false);
         void upgrade_criteria(int id);
+
+        // method for 
+        void goosed();
 
         void trade(Student * colour, std::string give_r, std::string take_r);
 

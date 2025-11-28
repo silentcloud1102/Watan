@@ -132,8 +132,8 @@ int Student::get_criteria_count(){
 }
 
 // get number of resources, used for geese tax collection
-int Student::resource_count(){
-    return held_resources.count();
+std::vector<int> Student::resource_count(){
+    return held_resources.to_vector();
 }
 
 // save methods
@@ -142,12 +142,16 @@ std::string Student::get_save_string() const {
     oss << held_resources.get_save_string();
 
     oss << " g";
+
+    // list all owned goals
     for(auto it = goals.begin(); it != goals.end(); it++){
         Goal * target = board->get_goal(*it);
         oss << ' ' << target->get_save_string();
     }
 
     oss << " c";
+
+    // list all owned criteria, note we need to get_criteria because we need their level
     for(auto it = criteria.begin(); it != criteria.end(); it++){
         Criteria * target = board->get_criteria(*it);
         oss << ' ' << target->get_save_string();
@@ -173,6 +177,7 @@ void Student::read_save_string(std::string save_data) {
         resources[i] = read;
     }
 
+    // move assignment works by default since all fields are primitives, (yay)
     held_resources = Resource{resources[0], resources[1], resources[2], resources[3], resources[4]};
 
     // read in g
