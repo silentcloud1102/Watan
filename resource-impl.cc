@@ -3,6 +3,7 @@ module Resource;
 import <string>;
 import <sstream>;
 import <iostream>;
+import <vector>;
 
 // Constant for use by methods
 const std::vector<std::string> resource_names = {
@@ -92,8 +93,8 @@ int Resource::count() const {
 std::vector<int> Resource::to_vector() const {
     int types[5] = {caffeine, lab, lecture, study, tutorial};
     std::vector<int> ret_val;
-    for(int type_ind = 0; i < 5; i++){
-        for(int i = 0; i < types[type_ind]; i++){
+    for(int type_ind = 0; type_ind < 5; type_ind++){
+        for(int j = 0; j < types[type_ind]; j++){
             // construct a vector containing <resource_amount> of <resource_int>
             ret_val.emplace_back(type_ind);
         }
@@ -103,7 +104,7 @@ std::vector<int> Resource::to_vector() const {
 }
 
 
-std::string print_output(int type, int amount) const{
+std::string Resource::print_output(int type, int amount) const{
     return std::to_string(amount) + " " + resource_names[type];
 }
 
