@@ -24,10 +24,11 @@ void Student::buy_criteria(int id, bool set_up){
     Criteria * target = board->get_criteria(id);
     const Resource & cost = target->upgrade_cost();
 
+    // save results for less repetition
     bool affordable = can_afford(cost);
     bool adjacent = target->adjacent_check(criteria, goals);
     bool owned = target->owned();
-
+    
     if(!set_up){
         if (affordable && adjacent && !owned) {
             held_resources -= cost;
@@ -46,10 +47,12 @@ void Student::buy_criteria(int id, bool set_up){
     return;
 }
 
+// buy method for goal, again providing a set_up switch
 void Student::buy_goal(int id, bool set_up){
     Goal * target = board->get_goal(id);
     const Resource & cost = target->cost();
 
+    // save results for less repetition
     bool affordable = can_afford(cost);
     bool adjacent = target->adjacent_check(criteria, goals);
     bool owned = target->owned();
@@ -88,12 +91,16 @@ void Student::upgrade_criteria(int id) {
     Criteria * target = board->get_criteria(id);
     const Resource & cost = target->upgrade_cost();
 
-    if(can_afford(cost) && !target->max_level()){
+    // save results 
+    bool affordable = can_afford(cost);
+    bool maxed = target->max_level();
+
+    if(affordable && !maxed){
         held_resources -= cost;
         target->upgrade();
-    } else if (target->max_level()){
+    } else if (maxed){
         throw std::runtime_error("This criteria is already max level.");
-    } else if (!can_afford(cost)){
+    } else if (!affordable){
         throw std::runtime_error("The student does not have enough resources.");
     } 
 
@@ -131,12 +138,25 @@ int Student::get_criteria_count(){
     return criteria.size();
 }
 
-// get number of resources, used for geese tax collection
-std::vector<int> Student::resource_count(){
+// Geese methods: beware
+// gets a vector of resources, to be used for geese operations
+std::vector<int> Student::resource_vector(){
     return held_resources.to_vector();
 }
 
-// save methods
+// number of resources to know when to tax collect.
+int Student::resource_count(){
+    return held_resources.count();
+}
+
+// it's like resource_notify but in reverse!
+void Student::goosed(Resource rchange){
+    held_resources -= rchange;
+}
+
+// save methods:
+
+// produces a string for calling method to use
 std::string Student::get_save_string() const {
     std::ostringstream oss;
     oss << held_resources.get_save_string();
