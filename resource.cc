@@ -5,6 +5,7 @@ import <iostream>;
 import <vector>;
 
 export class Resource {
+    static const std::vector<std::string> Resource::resource_names;
     int caffeine = 0;
     int lab = 0;
     int lecture = 0;
@@ -26,8 +27,8 @@ export class Resource {
         int count() const;
         
         // output helper methods
-        std::vector<int> to_vector() const;
-        std::string print_output(int type, int amount) const;
+        std::vector<int> to_vector(bool classify = true) const;
+        static std::string print_output(int type, int amount) const;
 
         // save method
         std::string get_save_string() const;

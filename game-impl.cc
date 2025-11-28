@@ -70,23 +70,23 @@ void Game::roll_dice(bool isfair){
         for (auto it = players.begin(); it != players.end(); it++){
             int amount = (*it)->resource_count();
             if (amount >= 10){
+                greedy = true;
                 Resource loss = generate_goosed((*it)->resource_vector(), amount/2);
 
                 (*it)->goosed(loss);
 
+                
                 std::cout << "Student " << (*it)->get_name() << " loses ";
-                std::cout << std::generate << "resources to the geese. They lose:" << std::endl;
-
-                std::cout << resources.caffeine << " CAFFIENE" << std::endl;
-                std::cout << resources.lab << " LAB" << std::endl;
-                std::cout << resources.lecture << " LECTURE" << std::endl;
-                std::cout << resources.study << " STUDY" << std::endl;
-                std::cout << resources.tutorial << " TUTORIAL" << std::endl;
+                std::cout << amount/2 << " resources to the geese. They lose:" << std::endl;
+                std::vector<int> values = loss.to_vector(false);
+                
+                for(int i = 0; i < values.size(); i++){
+                    std::cout << Resource::print_output(i, values[i]) << std::endl;
+                }
             }
         }
-
-
-        // let them move the goose somewhere
+        
+        // now let them move the goose somewhere
         int goose;
         while (true){
             std::cout << "Choose where to place the GEESE." << std::endl << ">";
