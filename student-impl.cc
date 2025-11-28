@@ -16,10 +16,8 @@ import Board;
 Student::Student(const std::string & colour, Board * board): 
     name{colour}, board{board} {}
 
-std::string Student::get_name() {
-    return name;
-}
 
+// Board interaction methods: includes logic override
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
     Criteria * target = board->getCriteria(id);
@@ -100,16 +98,12 @@ void Student::upgrade_criteria(int id) {
 
 }
 
+// boolean check against held_resources, used for trades and upgrades/purchases
 bool Student::can_afford(const Resource & query) const {
     return held_resources >= query;
 }
 
-// main method to modify resources, inherited from IObserver
-void Student::resource_notify(Resource rchange) {
-    held_resources += rchange;
-}
-
-// trades
+// trades method, no logic to check whether trade is valid: assumed
 void Student::trade(Student * colour, std::string give_r, std::string take_r){
     // by default we trade 1 of each resource
     Resource r1 = Resource(give_r, 1);
@@ -121,7 +115,17 @@ void Student::trade(Student * colour, std::string give_r, std::string take_r){
     colour->held_resources -= r2;
 }
 
-// save logic
+// main method to modify resources, inherited from IObserver (Notify)
+void Student::resource_notify(Resource rchange) {
+    held_resources += rchange;
+}
+
+// get name for use by owned objects
+std::string Student::get_name() {
+    return name;
+}
+
+// save methods
 std::string Student::get_save_string() const {
     std::ostringstream oss;
     oss << held_resources.get_save_string();
@@ -145,27 +149,32 @@ std::string Student::get_save_string() const {
 
 // set student values based on save string
 void Student::read_save_string(std::string save_data) {
-    // placeholder for now: add for construction from save strings
+    // string stream using given data (one line of save file)
+    // we assume that the given save string is properly formatted
     std::istringstream iss {save_data};
+
+    // read in integers
     int read;
+    std::string garbage;
     int resources[5];
     for (int i = 0; i < 5; ++i){
         iss >> read;
         resources[i] = read;
     }
-    Resource r {resources[0], resources[1], resources[2], resources[3], resources[4]};
-    this->resource_notify(r);
 
-    iss.ignore();
+    held_resources = Resource{resources[0], resources[1], resources[2], resources[4]};
+
+    // read in g
+    iss >> garbage;
     while (iss >> read){
         this->buy_goal(read, true);
     }
     iss.clear();
-    iss.ignore();
+    // read in c
+    iss >> garbage;
     while (iss >> read){
         this->buy_criteria(read, true);
     }
-    
 }
 
 // output operator for student
