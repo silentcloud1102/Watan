@@ -281,6 +281,7 @@ void Game::next_turn(){
     if(active_id >= numofPlayers){
         active_id = 0;
         cur_turn++;
+        std::cout << "Turn " << cur_turn;
     }
 }
 
@@ -296,7 +297,11 @@ void Game::begin_turn() const {
 }
 
 
-void Game::criteria(){
+void Game::board() const {
+    std::cout << gameBoard;
+}
+
+void Game::criteria() const {
     std::cout << players[active_id]->completions();
 }
 
@@ -314,7 +319,6 @@ void Game::complete(int criteria){
     } catch (const std::runtime_error &e){
         std::cerr << e.what() << std::endl;
     }
-    return;
 }
 
 void Game::improve(int criteria){
@@ -323,7 +327,6 @@ void Game::improve(int criteria){
     } catch (const std::runtime_error &e){
         std:cerr << e.what() << std::endl;
     }
-    return;
 }
 
 void Game::trade(std::string colour, std::string give, std::string take){
@@ -342,7 +345,6 @@ void Game::help() const{
     cout << "next" << endl;
     cout << "save <file>" << endl;
     cout << "help" << endl;
-    return;
 }
 
 // info methods:
