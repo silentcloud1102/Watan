@@ -128,7 +128,7 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
             }
             if (goose < 0 || goose > 18 || (goose == gameBoard->get_goose_tile())){
                 // ask again;
-                std::cerr << "Goose cannot be placed it this tile.";
+                std::cerr << "Goose cannot be placed in this tile. ";
                 continue;
             } else {
                 gameBoard->update_goose(goose);

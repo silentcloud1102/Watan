@@ -72,6 +72,10 @@ int main(int argc, char** argv){
                 cout << "Would you like to play on your loaded game or start a new game?[L/N]" << endl << ">";
                 char response;
                 cin >> response;
+                if (cin.eof()){
+                    cerr << "Program ended via EOF." << endl;
+                    return 1;
+                }
                 if (response == 'L'){
                     ifstream ifsl{loadfile};
                     game.load_game(ifsl);
@@ -86,6 +90,10 @@ int main(int argc, char** argv){
                 cout << "Would you like to play on your board or start a new game?[B/N]" << endl << ">";
                 char response;
                 cin >> response;
+                if (cin.eof()){
+                    cerr << "Program ended via EOF." << endl;
+                    return 1;
+                }
                 if (response == 'B'){
                     ifstream ifsb{boardfile};
                     game.board_from_file(ifsb);
@@ -167,6 +175,10 @@ int main(int argc, char** argv){
             cout << "Would you like to play again?[yes/no]" << endl << ">";
             string ans;
             cin >> ans;
+            if (cin.eof()){
+                    cerr << "Program ended via EOF." << endl;
+                    return 1;
+            }
             if (ans == "yes"){
                 play_again = true;
                 break;
