@@ -18,7 +18,6 @@ int main(int argc, char** argv){
 
     string loadfile;
     string boardfile;
-    Game game = Game(seed);
 
     // Argument-line parsing;
     for (int i = 1; i < argc; i++){
@@ -66,16 +65,16 @@ int main(int argc, char** argv){
 
     bool play_again = true;
     while (play_again){
-        Game default_game = Game(seed);
+        Game game = Game(seed);
 
         if (load){
             while (true){
-                cout << "Would like like to play on your loaded game or start a new game?[L/N]" << endl << ">";
+                cout << "Would like like to play on your loaded game or start a new game? [L/N]" << endl << ">";
                 char response;
                 cin >> response;
                 if (response == 'L'){
                     ifstream ifsl{loadfile};
-                    default_game.load_game(ifsl);
+                    game.load_game(ifsl);
                     break;
                 } else if (response == 'N'){
                     // new game
@@ -84,12 +83,12 @@ int main(int argc, char** argv){
             }
         } else if (board){
             while (true){
-                cout << "Would like like to play on your board or start a new game?[B/N]" << endl << ">";
+                cout << "Would like like to play on your board or start a new game? [B/N]" << endl << ">";
                 char response;
                 cin >> response;
                 if (response == 'B'){
                     ifstream ifsb{boardfile};
-                    default_game.board_from_file(ifsb);
+                    game.board_from_file(ifsb);
                     break;
                 } else if (response == 'N'){
                     // new game
@@ -101,121 +100,66 @@ int main(int argc, char** argv){
 
         // start game 
         if(!load){
+            // starting at cur_turn 0.
             game.setup()
         }
         
         cout << game;
 
         bool playing_game = true;
-        while (playing_game){
-            for (int i = 0; i < numofPlayers; ++i){
-                Student * player = default_game.players[i];
 
-                while (true){
-                    cout << "Student " << default_game.players[i]->get_name() << "'s turn.";
+        while (game.has_won()){
+            string command;
 
-                    string turn_command;
-                    cout << ">";
-                    cin >> turn_command;
+            game.new_turn();
 
-                    if (turn_command == "load"){
-                        player->isfair = false;
-                    } else if (turn_command == "fair"){
-                        player->isfair = true;
-                    } 
+            while (cout << ">", cin >> command){
+                if (cin.eof()){
+                    game.save("backup.sv");
+                    cerr << "Program ended via EOF. backup.sv created." << endl;
+                    return 1;
+                }
+
+                if (command == "board"){
+                    game.board();
+                } else if (command == "status"){
+                    game.status();
+                } else if (command == "criteria"){
+                    game.criteria();
+                } else if (command == "achieve"){
+                    int goal;
+                    cin >> goal;
+                    game.achieve(goal);
+                } else if (command == "complete"){
+                    int criteria;
+                    cin >> criteria;
+                    game.complete(criteria);
+                } else if (command == "improve"){
+                    int criteria;
+                    cin >> criteria;
+                    game.improve(criteria);
+                } else if (command == "trade"){
+                    string colour;
+                    string give_r;
+                    string take_r;
+                    cin >> colour >> give_r >> take_r;
+                    game.trade(colour, give_r, take_r);
                     
-                    if (turn_command == "roll"){
-                        default_game.dice_rolls(player->isfair);
-                        break;
-                    } 
-                }
-
-                string command;
-
-                while (true){
-                    cout << ">";
-                    cin >> command;
-                    if (command == "board"){
-                        cout << game;
-                    } else if (command == "status"){
-                        for (int i = 0; i < 4; ++i){
-                            // ..
-                        }
-                    } else if (command == "criteria"){
-                        cout << ">";
-                        int criteria;
-                        cin >> criteria;
-                        default_game.buy_criteria(criteria);
-                    } else if (command == "achieve"){
-                        cout << ">";
-                        int goal;
-                        cin >> goal;
-                        game->buy_goal(goal);
-                    } else if (command == "complete"){
-                        int c;
-                        cin >> c;
-                        player->buy_criteria(c);
-                    } else if (command == "improve"){
-                        int c;
-                        cin >> c;
-                        player->upgrade_criteria(c);
-                    } else if (command == "trade"){
-                        string color;
-                        string give_r;
-                        string take_r;
-                        cin >> color >> give_r >> take_r;
-
-                        while (true){
-                            cout << player->name << " offers " << color << " one " 
-                            cout << give_r << " for one " << take_r << "." << endl;
-                            cout << "Does " << color << " accept this offer?[yes/no]" << endl << ">";
-
-                            string ans;
-                            cin >> ans;
-                            if (ans == "yes"){
-                                Student * color2; 
-                                if (color == "Blue"){
-                                    color2 = default_game.players[0];
-                                } else if (color == "Red"){
-                                    color2 = default_game.players[1];
-                                } else if (color == "Orange"){
-                                    color2 = default_game.players[2];
-                                } else if (color == "Yellow"){
-                                    color2 = default_game.players[3];
-                                }
-
-                                // assumes give_r and take_r are all upper case, resource constructor
-                                player->trade(color2, give_r, take_r);
-
-                                break;
-                            } else if (ans == "no"){
-                                break;
-                            }
-                        }
-                        
-                    } else if (command == "next"){
-                        break;
-                    } else if (command == "save"){
-                        string filename;
-                        cin >> filename;
-                        default_game.save(filename);
-                    } else if (command == "help"){
-                        game.help();
-                    } else {
-                        cout << "Invalid command." << endl;
-                    }
-                }
-
-                if (player->criteria_count >= 10){
-                    // extra, not in doc
-                    cout << player->name << " has 10 completed course criteria. Congratulations!";
-                    playing_game = false;
+                } else if (command == "next"){
+                    game.next_turn();
                     break;
+                } else if (command == "save"){
+                    string filename;
+                    cin >> filename;
+                    game.save(filename);
+                } else if (command == "help"){
+                    game.help();
+                } else {
+                    cout << "Invalid command." << endl;
                 }
+            }
+        } 
 
-            } // end of one player's turn (for loop)
-        }
-        
         while (true){
             cout << "Would you like to play again?[yes/no]" << endl << ">";
             string ans;
@@ -228,8 +172,5 @@ int main(int argc, char** argv){
                 break;
             }
         }
-
     }
-
-
 }
