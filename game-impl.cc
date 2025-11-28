@@ -176,7 +176,7 @@ void Game::roll_dice(bool isfair){
     // Non Geese:
     } else {
        // Track resource distribution
-        Resource diff[4];
+        Resource old[4];
         for (int i = 0; i < 4; ++i){
             // saving old
             diff[i] = players[i]->get_resource();
@@ -186,28 +186,12 @@ void Game::roll_dice(bool isfair){
         gameBoard->update_tiles(roll);
 
         for (int i = 0; i < 4; ++i){
-            diff[i] -= players[i]->get_resource();
+            diff[i] = players[i]->get_resource() - diff[i];
+            // measures the change
         }
-
-
-        // Resource old0 = players[0];
-        // Resource old1 = players[1];
-        // Resource old2 = players[2];
-        // Resource old3 = players[3];
-        
-        // // changes resource for players
-        // update_tiles(roll);
-
-        // Resource diff[4];
-
-        // diff[0] = players[0].held_resources - old0;
-        // diff[1] = players[1].held_resources - old1;
-        // diff[2] = players[2].held_resources - old2;
-        // diff[3] = players[3].held_resources - old3;
 
         bool changed = false;
         
-        // Okay to have cin/cout here since this is our main interface with the game
         for (int i = 0; i < 4; ++i){
             std::cout << "Student " << players[i] << " gained:";
 
@@ -304,6 +288,7 @@ bool Game::has_won() const{
     }
     return false;
 }
+
 // Save methods:
 
 // Generate save
@@ -341,6 +326,7 @@ void Game::board_from_file(std::ifstream &file){
     int temp;
     for (int i = 0; i < 38; ++i){
         if (!(iss >> temp)){
+            // don't expect to be catched since this is an error with arguments
             throw std::runtime_error("Invalid save file format, expected 38 integers");
         }
         givenBoard.emplace_back(temp);
