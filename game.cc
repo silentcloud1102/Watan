@@ -14,6 +14,8 @@ export class Game {
     int seed;
     int cur_turn;
 
+    std::default_random_engine rng;
+
     // a vector of players. could be replaced with array, but vectors offer more convenience and potential for expansion
     std::vector<unique_ptr<Student>> players;
     int active_id = 0;
@@ -23,6 +25,7 @@ export class Game {
     
     void turn_num() const;
     bool has_won() const;
+    Resource generate_goosed(std::vector<int> resources, int amount);
 
     // save methods from file and to file
     void board_from_file(std::ifstream &file);

@@ -5,6 +5,8 @@ import <string>;
 import <fstream>;
 import <vector>;
 import <stdexcept>;
+import <algorithm>;
+import <random>;
 
 import Board;
 import Student;
@@ -14,6 +16,8 @@ const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
 Game::Game(int seed): cur_Turn{0}, seed{seed}{
+        std::default_random_engine rng{seed};
+
         // construct board
         unique_ptr<Board> gameBoard = make_unique<Board>(Board(seed));
 
@@ -23,6 +27,18 @@ Game::Game(int seed): cur_Turn{0}, seed{seed}{
         }
 }
 
+Resource Game::generate_goosed(std::vector<int> resources, int amount){
+    std::shuffle(resources.begin(), resources.end(), rng);
+
+    int vals[5]{};
+    for(int i = 0;  i < amount; i++){
+        vals[resources[i]]++;
+    }
+
+    return Resource{vals[0], vals[1], vals[2], vals[3], vals[4]};
+}
+
+
 // Interface methods:
 void Game::roll_dice(){
 
@@ -30,8 +46,6 @@ void Game::roll_dice(){
     int roll;
     if (isfair){
         // random generation
-        unsigned seed_val = 69;
-        std::default_random_engine rng{seed_val};
         int roll1 = (rng() % 6) + 1;
         int roll2 = (rng() % 6) + 1;
         roll = roll1 + roll2;
