@@ -24,12 +24,12 @@ Game::Game(int seed): cur_Turn{0}, seed{seed}{
 }
 
 // Interface methods:
-void Game::roll_dice(bool isfair, int playerIndex){
+void Game::roll_dice(){
 
     // Generating the dicerolls
     int roll;
     if (isfair){
-        // random generate
+        // random generation
         unsigned seed_val = 69;
         std::default_random_engine rng{seed_val};
         int roll1 = (rng() % 6) + 1;
@@ -48,7 +48,7 @@ void Game::roll_dice(bool isfair, int playerIndex){
         }
     }
 
-    // using the implications of the dice roll
+    // if 7, GEESE!
     if (roll == 7) {
         // lose half of resources if more than 10 randomly, print out
         for (int i = 0; i < numofPlayers; ++i){
@@ -140,9 +140,9 @@ void Game::roll_dice(bool isfair, int playerIndex){
             std::cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << std::endl;
         }
 
-
+    // Non Geese:
     } else {
-
+       // Track resource distribution
         Resource diff[4];
         for (int i = 0; i < 4; ++i){
             // saving old
