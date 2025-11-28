@@ -56,7 +56,7 @@ void Game::loadGame(ifstream &file){
     gameBoard->updateGoose(goose);
 }
 
-void Game::dice_rolls(bool isfair){
+void Game::dice_rolls(bool isfair, int playerIndex){
     // =========================================================
     // Generating the dicerolls
     // =========================================================
@@ -103,17 +103,18 @@ void Game::dice_rolls(bool isfair){
                 cout << "Student " << players[i].name << "loses ";
                 cout << generate << "resources to the geese. They lose:" << endl;
 
-                cout << resources.caffeine << " caffeine" << endl;
-                cout << resources.lab << " lab" << endl;
-                cout << resources.lecture << " lecture" << endl;
-                cout << resources.study << " study" << endl;
-                cout << resources.tutorial << " tutorial" << endl;
+                cout << resources.caffeine << " CAFFIENE" << endl;
+                cout << resources.lab << " LAB" << endl;
+                cout << resources.lecture << " LECTURE" << endl;
+                cout << resources.study << " STUDY" << endl;
+                cout << resources.tutorial << " TUTORIAL" << endl;
             }
         }
 
+
+        // let them move the goose somewhere
+        int goose;
         while (true){
-            // let them move the goose somewhere, then check for stealing 
-            int goose;
             cout << "Choose where to place the GEESE." << endl << ">";
             cin >> goose;
             if (goose < 0 || 18 < goose || (goose == gameBoard.goose_tile)){
@@ -126,8 +127,60 @@ void Game::dice_rolls(bool isfair){
         }
         
         // steal
+        int steal_from_count = 0;
+        cout << "Student " << player[playerIndex].name << "can choose to steal from ";
+        for (int i = 0; i < numofPlayers; ++i){
+            Resource zero = Resource{0,0,0,0,0};
+            if (i == playerIndex){
+                continue;
+            } else if (players[i].held_resources <= zero){
+                continue;
+            }
+
+            for (int j = 0; j < players[i].criteria.size(); ++j){
+                for (int x = 0; x < gameBoard.tiles[goose].course_criteria.size(); ++x){
+                    if (players[i].criteria[j] == gameBoard.tiles[goose].course_criteria[x]){
+                        ++steal_from_count;
+                        if (i == (numofPlayers - 1)){
+                            cout << players[i].name << "." << endl;
+                        } else {
+                            cout << players[i].name << ", ";
+                        }
+                    }
+                }
+            }
+        }
+
+        if (steal_from_count == 0){
+            cout << "Student " << players[playerIndex] << " has no students to steal from." << endl;
+        } else {
+            cout << "Choose a student to steal from." << endl << ">";
+            string steal_from;
+            cin >> steal_from;
+            
+            int steal_from_index = -1;
+            for (int i = 0; i < numofPlayers){
+                if (steal_from == players[i].name){
+                    steal_from_index = i;
+                    break;
+                }
+            }
 
 
+
+
+            // randomly generate which 1 resource to steal? but have to make sure the student has it
+
+
+
+
+            
+            Resource r;
+            players[playerIndex].held_resources += r;
+            players[steal_from_index].held_resources -= r;
+            cout << "Student " << players[playerIndex] << " steals " 
+            cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << endl;
+        }
 
 
     } else {
