@@ -280,7 +280,7 @@ void Board::load_save_data(std::vector<int> save_data) {
     }
 }
 
-std::string Board::save_data() {
+std::string Board::get_save_string() {
     std::ostringstream oss;
     for (int i = 0; i < tiles.size(); i++) {
         std::string target_resource = tiles[i]->get_resource(false);

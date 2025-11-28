@@ -56,6 +56,6 @@ export class Board {
 
         // save methods
         void load_save_data(std::vector<int> save_data);
-        std::string save_data();
+        std::string get_save_string();
 };
 
