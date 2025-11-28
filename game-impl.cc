@@ -13,15 +13,13 @@ import Student;
 const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
-Game::Game(int seed, Board gameBoard, std::vector<Student> players, int cur_turn): 
-    Board{gameBoard}, players{players}, cur_Turn{cur_turn}, seed{seed}{
-        
-        //Board board = Board(seed);
-        // unique_ptr<Board> board = make_unique<Board>(Board(seed));
-        gameBoard = Board(seed);
+Game::Game(int seed): cur_Turn{0}, seed{seed}{
+        // construct board
+        unique_ptr<Board> gameBoard = make_unique<Board>(Board(seed));
+
+        // construct players vector
         for (int i = 0; i < numofPlayers; ++i){
-            Student s = Student{names[i], *gameBoard};
-            players.emplace_back(s);
+            players.emplace_back(make_unique<Student>(names[i], gameBoard.get()));
         }
 }
 
@@ -214,15 +212,35 @@ void next_turn(){
         return;
     }
 
-
     active_id++;
 
-    if(active_id >= 4){
+    if(active_id >= numofPlayers){
         active_id = 0;
         cur_turn++;
     }
+
+    std::cout << "Student " << players[active_id]->get_name() << "'s turn." << endl;
+    
+    // outputs status of Student
+    std::cout << *players[active_id];
+
+    // Then proceed to dice roll logic...
 }
 
+// info methods:
+void turn_num() const{
+    return cur_turn;
+}
+
+bool has_won() const{
+    for(auto it = players.begin(); it != player.end(); it++){
+        if ((*it)->get_criteria_count() >= 10) {
+            std::cout << "Student " << (*it)->get_name() << " has won!";
+            return true;
+        }
+    }
+    return false;
+}
 // Save methods:
 
 // Generate save
