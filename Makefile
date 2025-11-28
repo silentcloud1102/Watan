@@ -13,4 +13,4 @@ $(EXEC): $(SOURCES)
 	$(CXX) $(HEADERFLAGS) $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(SOURCES) 
 	$(CXX) $(OFILES) -o $(EXEC)
-	
+	rm *.o

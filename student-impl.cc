@@ -236,7 +236,7 @@ std::ostream &operator<<(std::ostream& os, Student &student){
 
 // output method for student completions
 std::string Student::completions() const {
-    std::ostreamstring oss;
+    std::ostringstream oss;
     oss << name << " has completed:" << std::endl;
     for(auto it = criteria.begin(); it != criteria.end(); it++){
         Criteria * target = board->get_criteria(*it);

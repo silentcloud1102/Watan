@@ -22,7 +22,7 @@ int main(int argc, char** argv){
     // Argument-line parsing;
     for (int i = 1; i < argc; i++){
 
-        if (to_string(argv[i]) == "-seed"){
+        if (string(argv[i]) == "-seed"){
             if (i + 1 < argc){
                 istringstream iss {argv[i + 1]};
                 iss >> seed;
@@ -44,7 +44,7 @@ int main(int argc, char** argv){
                 return 1;
             }
             load = true;
-        } else if (string(argv[i]) = "-board"){
+        } else if (string(argv[i]) == "-board"){
             if (i + 1 < argc){
                 boardfile = argv[i+1];
                 ++i;
@@ -101,7 +101,7 @@ int main(int argc, char** argv){
         // start game 
         if(!load){
             // starting at cur_turn 0.
-            game.setup()
+            game.setup();
         }
         
         cout << game;
@@ -111,7 +111,7 @@ int main(int argc, char** argv){
         while (game.has_won()){
             string command;
 
-            game.new_turn();
+            game.next_turn();
 
             while (cout << ">", cin >> command){
                 if (cin.eof()){

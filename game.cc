@@ -39,7 +39,7 @@ export class Game {
     void roll_dice();
     void setup();
     void next_turn();
-    void begin_turn() const;
+    void begin_turn() ;
     
     void board() const;
     void status() const;

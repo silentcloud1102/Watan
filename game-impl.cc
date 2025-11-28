@@ -285,7 +285,7 @@ void Game::next_turn(){
     }
 }
 
-void Game::begin_turn() const {
+void Game::begin_turn() {
 
     std::cout << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     
@@ -329,21 +329,21 @@ void Game::improve(int criteria){
     try{
         players[active_id]->upgrade_criteria(criteria);
     } catch (const std::runtime_error &e){
-        std:cerr << e.what() << std::endl;
+        std::cerr << e.what() << std::endl;
     }
 }
 
 void Game::trade(std::string colour, std::string give, std::string take){
     if(!players[active_id]->can_afford(Resource{give, 1})){
         std::cerr << "You cannot afford this trade." << std::endl;
-        break;
+        return;
     }
 
     for(auto it = players.begin(); it != players.end(); it++){
-        if(colour == it) {
+        if(*(*it) == colour) {
             if((*it)->can_afford(Resource{take, 1})) {
                 std::cerr << colour << " cannot afford this trade." << std::endl;
-                break;
+                return;
             }
             // else:
             std::cout << players[active_id]->get_name() << " offers " << colour << " one " << give << " for one " << take << "."  << std::endl;
@@ -364,17 +364,17 @@ void Game::trade(std::string colour, std::string give, std::string take){
 }
 
 void Game::help() const{
-    cout << "Valid Commands:" << endl;
-    cout << "board" << endl;
-    cout << "status" << endl;
-    cout << "criteria" << endl;
-    cout << "achieve <goal>" << endl;
-    cout << "complete <criterion>" << endl;
-    cout << "improve <criterion>" << endl;
-    cout << "trade <colour> <give> <take>" << endl;
-    cout << "next" << endl;
-    cout << "save <file>" << endl;
-    cout << "help" << endl;
+    std::cout << "Valid Commands:" << std::endl;
+    std::cout << "board" << std::endl;
+    std::cout << "status" << std::endl;
+    std::cout << "criteria" << std::endl;
+    std::cout << "achieve <goal>" << std::endl;
+    std::cout << "complete <criterion>" << std::endl;
+    std::cout << "improve <criterion>" << std::endl;
+    std::cout << "trade <colour> <give> <take>" << std::endl;
+    std::cout << "next" << std::endl;
+    std::cout << "save <file>" << std::endl;
+    std::cout << "help" << std::endl;
 }
 
 // info methods:
