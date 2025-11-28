@@ -12,6 +12,9 @@ using namespace std;
 int main(int argc, char** argv){
 
     int seed = 0; // default seed
+    bool load = false;
+    bool board = false;
+
     string loadfile = "";
     string boardfile = "";
 
@@ -31,18 +34,20 @@ int main(int argc, char** argv){
                 loadfile = argv[i+1];
                 ++i;
             }
+            load = true;
         } else if (argv[i] = "-board"){
             if (i + 1 < argc){
                 boardfile = argv[i+1];
                 ++i;
             }
+            board = true;
         }
     }
     
     
     Game default_game = Game(seed);
 
-    if (loadfile != ""){
+    if (load){
         while (true){
             cout << "Would like like to play on your loaded game or start a new game?[L/N]" << endl << ">";
             char response;
@@ -56,7 +61,7 @@ int main(int argc, char** argv){
                 break;
             }
         }
-    } else if (boardfile != ""){
+    } else if (board){
         while (true){
             cout << "Would like like to play on your board or start a new game?[B/N]" << endl << ">";
             char response;

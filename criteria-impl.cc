@@ -49,19 +49,28 @@ int Criteria::get_level() const{
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent(std::vector<int> &criteria, std::vector<int> &goals) const{
+bool Criteria::adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
     // check that there is no adjacent Criteria already owned
-    for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
-        if (*it == location) {
-            break;
+    for (auto adj = adjacent_criteria.begin(); adj != adjacent_criteria.end(); ++adj) {
+        for(auto other = criteria.begin(); other != criteria.end(); ++other){
+            if(*other == *adj){
+                // if there is an adjacent completed criteria, cannot complete
+                return false;
+            }
         }
     }
-    for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
-        if (location) {
-            return true;
+
+    for (auto adj = adjacent_goals.begin(); adj != adjacent_goals.end(); ++adj) {
+        for(auto other = goals.begin(); other != goals.end(); ++other){
+            if(*other == *adj){
+                // if there is an adjacent completed goal, and no adjacent criteria
+                // then we can complete this criteria.
+                return true;
+            }
         }
     }
-    // check that there is an adjacent owned Goal
+
+    // no adjacencies.
     return false;
 }
 
@@ -108,29 +117,15 @@ std::string Criteria::get_save_string() const{
 
 // ADJACENCY LOGIC METHODS: utilized by Criteria::adjacent()
 
-// checking if the provided goal location is adjacent to this course criterion
-bool Criteria::adjacent_goal_check(int location) {
-    for (auto it = adjacent_goals.begin(); it != adjacent_goals.end(); ++it) {
-        if (*it == location) {
-            return true;
-        }
-    }
-    return false;
-}
-
-// checking if the provided course criterion location is adjacent to this course criterion
-bool Criteria::adjacent_criteria_check(int location) {
-    return false;
-}
 
 // adding the adjacent course criterion
-void Criteria::addAdjacentcourse_criterion(ISubject* criteria) {
-    adjacent_course_criterion.push_back(criteria);
+void Criteria::set_adjacent_criteria(const std::vector<int> &criteria) {
+    adjacent_criteria = criteria;
 }
 
 // adding the adjacent goals
-void Criteria::addAdjacentgoal(const std::vector<int> &e) { 
-    adjacent_goals = e; 
+void Criteria::set_adjacent_goals(const std::vector<int> &goals) { 
+    adjacent_goals = goals;
 }
 
 // Notify Observer

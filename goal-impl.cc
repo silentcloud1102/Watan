@@ -68,8 +68,27 @@ bool Goal::owned() const{
 }
 
 // returns the eligibility of the goal based on adjacent goals/criteria
-bool Goal::adjacent(std::vector<int> &criteria, std::vector<int> &goals) const{
-    // WIP
+bool adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
+    // check that there is adjacent Criteria already completed
+    for (auto adj = adjacent_criteria.begin(); adj != adjacent_criteria.end(); ++adj) {
+        for(auto other = criteria.begin(); other != criteria.end(); ++other){
+            if(*other == *adj){
+                // if there is an adjacent completed criteria, we can complete the goal
+                return true;
+            }
+        }
+    }
+
+    // check for adjacent goals achieved
+    for (auto adj = adjacent_goals.begin(); adj != adjacent_goals.end(); ++adj) {
+        for(auto other = goals.begin(); other != goals.end(); ++other){
+            if(*other == *adj){
+                // if there is an adjacent completed goal
+                // then we can complete this goal
+                return true;
+            }
+        }
+    }
     return false;
 }
 
