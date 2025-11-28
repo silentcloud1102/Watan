@@ -89,10 +89,11 @@ std::string Resource::get_save_string() const {
     // consider just passing oss instead of returning string
 }
 
-void Resource::print_resource_status() {
-    std::cout << caffeine << " caffeines,";
-    std::cout << lab << " labs,";
-    std::cout << lecture << " lectures,";
-    std::cout << study << " studies,";
-    std::cout << tutorial << " tutorials.";
+std::string Resource::print_resource_status() {
+    std::string output = "";
+    output = stoi(caffeine) + " caffeines,";
+    output += stoi(lab) + " labs,";
+    output += stoi(lecture) + " lectures,";
+    output += stoi(study) + " studies,";
+    output += stoi(tutorial) + " tutorials.";
 }

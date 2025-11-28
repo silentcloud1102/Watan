@@ -12,13 +12,14 @@ import Board;
 
 export class Student : public IObserver {
     std::string name;
+    Board *board;
     Resource held_resources;
     std::vector<int> criteria;
     std::vector<int> goals;
     int criteria_count;
     bool isfair = true;
     public:
-        explicit Student(const std::string colour);
+        Student(const std::string colour, Board * board);
         std::string get_name() override;
         bool can_afford(const Resource & query) const;
 

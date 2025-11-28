@@ -6,12 +6,14 @@ import <vector>;
 import <string>;
 
 import Resource;
+import Criteria;
+import Goal;
 import IObserver;
 import ISubject;
 import Board;
 
-Student(const std::string colour, Board * board): 
-    name{colour}, board{board} {}
+Student::Student(const std::string colour, Board * board): 
+    name{colour}, board{board},held_resources(0,0,0,0,0) {}
 
 std::string Student::get_name() {
     return name;
@@ -19,7 +21,7 @@ std::string Student::get_name() {
 
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
-    Criteria * target = board->getCriteria(id);
+    const Criteria & target = board->getCriteria(id);
     Resource & cost = target->upgradeCost();
 
     bool affordable = can_afford(cost);
@@ -66,7 +68,7 @@ void Student::buy_goal(int id, bool set_up){
             throw "You do not have enough resources.";
         }
     }
-    Goal->acquire(this);
+    target->acquire(this);
     goals.push_back(id);
 }
 
@@ -120,7 +122,7 @@ std::string Student::get_save_string() const {
 
     oss << " c";
     for(auto it = criteria.begin(); it != criteria.end(); it++){
-        Criteria * target = board->getCriteria(*it);
+        criteria * target = board->getCriteria(*it);
         oss << ' ' << target->get_save_string();
     }
 
@@ -149,18 +151,18 @@ void Student::read_save_string(std::string save_data) {
     iss.clear();
     iss.ignore();
     while (iss >> read){
-        this->buy_criteia(read, true);
+        this->buy_criteria(read, true);
     }
     
 }
 
 void Student::print_status(){
-    cout << this->name << " has ";
-    cout << this->criteria.size() << " course criteria,";
-    cout << this->held_resources.print_resource_status() << endl;
+    std::cout << this->name << " has ";
+    std::cout << this->criteria.size() << " course criteria,";
+    std::cout << this->held_resources.print_resource_status() << std::endl;
 }
 
-void Student::trade(Student * colour, string give_r, string take_r){
+void Student::trade(Student * colour, std::string give_r, std::string take_r){
     Resource r1 = Resource(give_r, 1);
     Resource r2 = Resource(take_r, 1);
 
