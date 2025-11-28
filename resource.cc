@@ -27,7 +27,7 @@ export class Resource {
         int count() const;
         
         // output helper methods
-        std::vector<int> to_vector() const;
+        std::vector<int> to_vector(bool classify = true) const;
         static std::string print_output(int type, int amount) const;
 
         // save method

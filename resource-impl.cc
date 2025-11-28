@@ -90,8 +90,14 @@ int Resource::count() const {
     return caffeine + lab + lecture + study + tutorial;
 }
 
-std::vector<int> Resource::to_vector() const {
-    int types[5] = {caffeine, lab, lecture, study, tutorial};
+std::vector<int> Resource::to_vector(bool classify) const {
+    std::vector<int> types = {caffeine, lab, lecture, study, tutorial};
+
+    // a different form useful for printing...
+    if(!classify){
+        return types;
+    }
+
     std::vector<int> ret_val;
     for(int type_ind = 0; type_ind < 5; type_ind++){
         for(int j = 0; j < types[type_ind]; j++){
