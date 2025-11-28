@@ -28,7 +28,7 @@ std::string Criteria::get_num() const {
 
     // if owner is not nullptr, owned. Return with owner char and current level
     if (owner) {
-        return owner->get_name[0] + levels[upgradeLevel - 1];
+        return owner->get_name()[0] + std::to_string(upgradeLevel - 1);
     }
 
     // else, not owned. if the location is not two digits, add a space in front
@@ -49,7 +49,7 @@ int Criteria::get_level() const{
 
 // boolean value representing whether the adjacency requirements are achieved
 // indicates whether it is valid to attempt to buy
-bool Criteria::adjacent_check(vector<int> &criteria, vector<int> &goals) const{
+bool Criteria::adjacent_check(std::vector<int> &criteria, std::vector<int> &goals) const{
     // check that there is no adjacent Criteria already owned
     for (auto adj = adjacent_criteria.begin(); adj != adjacent_criteria.end(); ++adj) {
         for(auto other = criteria.begin(); other != criteria.end(); ++other){
@@ -83,7 +83,7 @@ bool Criteria::owned() const{
 // UPGRADE LOGIC METHODS:
 
 // returns the upgrade cost of the current level as a resource
-Resource & Criteria::upgradeCost() const{
+const Resource & Criteria::upgradeCost() const{
     if(!owned()){
         return level_costs[0]; // cost to "upgrade" to level 1
     } else if(max_level()){
@@ -129,16 +129,11 @@ bool Criteria::adjacent_goal_check(int location) {
 
 // checking if the provided course criterion location is adjacent to this course criterion
 bool Criteria::adjacent_criteria_check(int location) {
-    for (auto it = adjacent_course_criterion.begin(); it != adjacent_course_criterion.end(); ++it) {
-        if (*it == location) {
-            return true;
-        }
-    }
     return false;
 }
 
 // adding the adjacent course criterion
-void addAdjacentcourse_criterion(ISubject* criteria) {
+void Criteria::addAdjacentcourse_criterion(ISubject* criteria) {
     adjacent_course_criterion.push_back(criteria);
 }
 
@@ -148,10 +143,10 @@ void Criteria::addAdjacentgoal(const std::vector<int> &e) {
 }
 
 // Notify Observer
-void Criteria::newResource(string r) const {
+void Criteria::newResource(std::string r) const {
     Resource rchange{r, upgradeLevel};
     if (owned()) {
-        owner->resourceNotify(rchange);
+        owner->resource_notify(rchange);
     }
 }
 
