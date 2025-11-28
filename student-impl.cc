@@ -7,6 +7,8 @@ import <string>;
 import <iostream>;
 
 import Resource;
+import Criteria;
+import Goal;
 import IObserver;
 import ISubject;
 import Board;
@@ -20,7 +22,7 @@ std::string Student::get_name() {
 
 // set_up boolean to override checks: useful for setting up from saves
 void Student::buy_criteria(int id, bool set_up){
-    Criteria * target = board->getCriteria(id);
+    const Criteria & target = board->getCriteria(id);
     Resource & cost = target->upgradeCost();
 
     bool affordable = can_afford(cost);
@@ -66,7 +68,7 @@ void Student::buy_goal(int id, bool set_up){
             throw "You do not have enough resources.";
         }
     }
-    Goal->acquire(this);
+    target->acquire(this);
     goals.push_back(id);
 }
 
@@ -132,7 +134,7 @@ std::string Student::get_save_string() const {
 
     oss << " c";
     for(auto it = criteria.begin(); it != criteria.end(); it++){
-        Criteria * target = board->getCriteria(*it);
+        criteria * target = board->getCriteria(*it);
         oss << ' ' << target->get_save_string();
     }
 
@@ -166,9 +168,24 @@ void Student::read_save_string(std::string save_data) {
     
 }
 
+<<<<<<< HEAD
 // output operator for student
 std::ostream &operator<<(std::ostream& os, Student &student){
     os << student.name << " has " << student.criteria.size() << " course criteria, ";
     os << student.held_resources;
     return os;
+=======
+void Student::print_status(){
+    std::cout << this->name << " has ";
+    std::cout << this->criteria.size() << " course criteria,";
+    std::cout << this->held_resources.print_resource_status() << std::endl;
+}
+
+void Student::trade(Student * colour, std::string give_r, std::string take_r){
+    Resource r1 = Resource(give_r, 1);
+    Resource r2 = Resource(take_r, 1);
+
+    colour->held_resources += r2;
+    this->held_resources -= r1;
+>>>>>>> a17ecacc1ff0199a8e1438caac9a526a9abfb241
 }

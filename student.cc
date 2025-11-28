@@ -12,6 +12,7 @@ import Board;
 
 export class Student : public IObserver {
     std::string name;
+    Board *board;
     Resource held_resources;
     std::vector<int> criteria;
     std::vector<int> goals;
