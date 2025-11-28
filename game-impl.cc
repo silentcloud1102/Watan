@@ -61,22 +61,19 @@ void Game::roll_dice(){
             }
         }
     }
+    std::cout << "Roll: " << roll << std::endl;
 
     // if 7, GEESE!
     if (roll == 7) {
-        // lose half of resources if more than 10 randomly, print out
-        for (int i = 0; i < numofPlayers; ++i){
-            int amount = players[i].held_resources.count();
+        // randomly lose half of resources if more than 10, print out results of lost
+        for (auto it = players.begin(); it != players.end(); it++){
+            int amount = (*it)->resource_count();
             if (amount >= 10){
-                int generate = amount/2;
+                Resource loss = generate_goosed((*it)->resource_vector(), amount/2);
 
-                ///////// need to randomly generate half of what they have
+                (*it)->goosed(loss);
 
-                Resource r;
-                players[i].held_resources -= r;
-                Resource * resources = players[i].held_resources;
-
-                std::cout << "Student " << players[i].name << "loses ";
+                std::cout << "Student " << (*it)->get_name() << " loses ";
                 std::cout << generate << "resources to the geese. They lose:" << std::endl;
 
                 std::cout << resources.caffeine << " CAFFIENE" << std::endl;
