@@ -6,7 +6,7 @@ import <iostream>;
 import <vector>;
 
 // Constant for use by methods
-const std::vector<std::string> resource_names = {
+const std::vector<std::string> Resource::resource_names = {
     "CAFFEINE",
     "LAB",
     "LECTURE",
