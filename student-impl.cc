@@ -168,24 +168,9 @@ void Student::read_save_string(std::string save_data) {
     
 }
 
-<<<<<<< HEAD
 // output operator for student
 std::ostream &operator<<(std::ostream& os, Student &student){
     os << student.name << " has " << student.criteria.size() << " course criteria, ";
     os << student.held_resources;
     return os;
-=======
-void Student::print_status(){
-    std::cout << this->name << " has ";
-    std::cout << this->criteria.size() << " course criteria,";
-    std::cout << this->held_resources.print_resource_status() << std::endl;
-}
-
-void Student::trade(Student * colour, std::string give_r, std::string take_r){
-    Resource r1 = Resource(give_r, 1);
-    Resource r2 = Resource(take_r, 1);
-
-    colour->held_resources += r2;
-    this->held_resources -= r1;
->>>>>>> a17ecacc1ff0199a8e1438caac9a526a9abfb241
 }
