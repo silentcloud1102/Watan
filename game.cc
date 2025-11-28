@@ -4,7 +4,9 @@ import <string>;
 import <fstream>;
 import <vector>;
 import <memory>;
+import <random>;
 
+import Resource;
 import Board;
 import Student;
 

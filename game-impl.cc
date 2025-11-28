@@ -9,7 +9,7 @@ import <memory>;
 import <algorithm>;
 import <random>;
 
-import Resource
+import Resource;
 import Board;
 import Student;
 
@@ -24,7 +24,7 @@ Game::Game(int seed): cur_turn{0}, seed{seed}{
 
         // construct players vector
         for (int i = 0; i < numofPlayers; ++i){
-            players.emplace_back(std::make_unique<Student>(names[i], gameBoard.get()));
+            players.emplace_back(std::make_unique<Student>(names[i], gameBoard->get()));
         }
 }
 
@@ -90,8 +90,8 @@ void Game::roll_dice(bool isfair){
         int goose;
         while (true){
             std::cout << "Choose where to place the GEESE." << std::endl << ">";
-            cin >> goose;
-            if (goose < 0 || 18 < goose || (goose == gameBoard.goose_tile)){
+            std::cin >> goose;
+            if (goose < 0 || 18 < goose || (goose == gameBoard->get_goose_tile())){
                 // ask again;
                 continue;
             } else {
@@ -101,24 +101,25 @@ void Game::roll_dice(bool isfair){
         }
         
         // steal
+        std::string steal_from;
         int steal_from_count = 0;
-        std::cout << "Student " << player[playerIndex].name << "can choose to steal from ";
+        std::cout << "Student " << players[playerIndex]->get_name() << "can choose to steal from ";
         for (int i = 0; i < numofPlayers; ++i){
             Resource zero = Resource{0,0,0,0,0};
             if (i == playerIndex){
                 continue;
-            } else if (players[i]->held_resources <= zero){
+            } else if (players[i]->resource_vector() <= zero){
                 continue;
             }
 
             for (int j = 0; j < players[i]->criteria.size(); ++j){
-                for (int x = 0; x < gameBoard.tiles[goose].course_criteria.size(); ++x){
-                    if (players[i]->criteria[j] == gameBoard.tiles[goose].course_criteria[x]){
+                for (int x = 0; x < gameBoard->tiles[goose].course_criteria.size(); ++x){
+                    if (players[i]->criteria[j] == gameBoard->tiles[goose].course_criteria[x]){
                         ++steal_from_count;
                         if (i == (numofPlayers - 1)){
-                            std::cout << players[i]->name << "." << std::endl;
+                            std::cout << players[i]->get_name() << "." << std::endl;
                         } else {
-                            std::cout << players[i]->name << ", ";
+                            std::cout << players[i]->get_name() << ", ";
                         }
                     }
                 }
@@ -129,8 +130,7 @@ void Game::roll_dice(bool isfair){
             std::cout << "Student " << players[playerIndex] << " has no students to steal from." << std::endl;
         } else {
             std::cout << "Choose a student to steal from." << std::endl << ">";
-            string steal_from;
-            cin >> steal_from;
+            std::cin >> steal_from;
             
             int steal_from_index = -1;
             for (int i = 0; i < numofPlayers){
@@ -146,8 +146,8 @@ void Game::roll_dice(bool isfair){
             // randomly generate which 1 resource to steal? but have to make sure the student has it
 
             Resource r;
-            players[playerIndex]->held_resources += r;
-            players[steal_from_index]->held_resources -= r;
+            players[playerIndex]->resource_vector() += r;
+            players[steal_from_index]->resource_vector() -= r;
             std::cout << "Student " << players[playerIndex] << " steals " 
             std::cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << std::endl;
         }
@@ -158,14 +158,14 @@ void Game::roll_dice(bool isfair){
         Resource diff[4];
         for (int i = 0; i < 4; ++i){
             // saving old
-            diff[i] = players[i].held_resources;
+            diff[i] = players[i]->resource_vector();
         }
 
         // changes resource for players
         update_tiles(roll);
 
         for (int i = 0; i < 4; ++i){
-            diff[i] -= players[i].held_resources;
+            diff[i] -= players[i]->resource_vector();
         }
 
 
