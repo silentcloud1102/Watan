@@ -22,11 +22,12 @@ export class Student : public IObserver {
         std::string get_name() override;
         
         // win condition
-        int get_criteria_count();
+        int get_criteria_count() const;
 
         // geese methods
-        std::vector<int> resource_vector();
-        int resource_count();
+        std::vector<int> resource_vector() const;
+        Resource get_resource() const;
+        int resource_count() const;
 
         // boolean check
         bool can_afford(const Resource & query) const;

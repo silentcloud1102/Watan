@@ -141,18 +141,22 @@ std::string Student::get_name() {
 }
 
 // get number of criteria for use in checking for win conditions
-int Student::get_criteria_count(){
+int Student::get_criteria_count() const {
     return criteria.size();
 }
 
 // Geese methods: beware
 // gets a vector of resources, to be used for geese operations
-std::vector<int> Student::resource_vector(){
+std::vector<int> Student::resource_vector() const {
     return held_resources.to_vector();
 }
 
+Resource Student::get_resource() const {
+    return held_resources;
+}
+
 // number of resources to know when to tax collect.
-int Student::resource_count(){
+int Student::resource_count() const{
     return held_resources.count();
 }
 

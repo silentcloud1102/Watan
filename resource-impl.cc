@@ -110,7 +110,7 @@ std::vector<int> Resource::to_vector(bool classify) const {
 }
 
 
-std::string Resource::print_output(int type, int amount) const{
+std::string Resource::print_output(int type, int amount) {
     return std::to_string(amount) + " " + resource_names[type];
 }
 

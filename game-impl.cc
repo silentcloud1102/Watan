@@ -17,8 +17,7 @@ import Student;
 const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
-Game::Game(int seed): cur_turn{0}, seed{seed}{
-        std::default_random_engine rng{seed};
+Game::Game(int seed): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)){
         // construct board
         std::unique_ptr<Board> gameBoard = std::make_unique<Board>(Board(seed));
 
@@ -56,7 +55,7 @@ void Game::roll_dice(bool isfair){
             std::cout << "Input a roll between 2 and 12: ";
             std::cin >> roll;
             if ((roll < 2) || (12 < roll)){
-                std::cout < "Invalid roll." << std::endl;
+                std::cout << "Invalid roll." << std::endl;
             } else {
                 break;
             }
@@ -70,7 +69,6 @@ void Game::roll_dice(bool isfair){
         for (auto it = players.begin(); it != players.end(); it++){
             int amount = (*it)->resource_count();
             if (amount >= 10){
-                greedy = true;
                 Resource loss = generate_goosed((*it)->resource_vector(), amount/2);
 
                 (*it)->goosed(loss);
@@ -95,7 +93,7 @@ void Game::roll_dice(bool isfair){
                 // ask again;
                 continue;
             } else {
-                gameBoard.update_goose(goose);
+                gameBoard->update_goose(goose);
                 break;
             } 
         }
@@ -106,9 +104,9 @@ void Game::roll_dice(bool isfair){
         std::cout << "Student " << players[active_id]->get_name() << "can choose to steal from ";
         for (int i = 0; i < numofPlayers; ++i){
             Resource zero = Resource{0,0,0,0,0};
-            if (i == playerIndex){
+            if (i == active_id){
                 continue;
-            } else if (players[i]->resource_vector() <= zero){
+            } else if (players[i]->get_resource() <= zero){
                 continue;
             }
 
@@ -127,7 +125,7 @@ void Game::roll_dice(bool isfair){
         }
 
         if (steal_from_count == 0){
-            std::cout << "Student " << players[playerIndex] << " has no students to steal from." << std::endl;
+            std::cout << "Student " << players[active_id] << " has no students to steal from." << std::endl;
         } else {
             std::cout << "Choose a student to steal from." << std::endl << ">";
             std::cin >> steal_from;
@@ -146,9 +144,9 @@ void Game::roll_dice(bool isfair){
             // randomly generate which 1 resource to steal? but have to make sure the student has it
 
             Resource r;
-            players[playerIndex]->resource_vector() += r;
-            players[steal_from_index]->resource_vector() -= r;
-            std::cout << "Student " << players[playerIndex] << " steals " 
+            players[active_id]->get_resource() += r;
+            players[steal_from_index]->get_resource() -= r;
+            std::cout << "Student " << players[active_id] << " steals " 
             std::cout << !!!!!!!!!!!!<resource> << " from student " << steal_from << "." << std::endl;
         }
 
@@ -158,14 +156,14 @@ void Game::roll_dice(bool isfair){
         Resource diff[4];
         for (int i = 0; i < 4; ++i){
             // saving old
-            diff[i] = players[i]->resource_vector();
+            diff[i] = players[i]->get_resource();
         }
 
         // changes resource for players
         update_tiles(roll);
 
         for (int i = 0; i < 4; ++i){
-            diff[i] -= players[i]->resource_vector();
+            diff[i] -= players[i]->get_resource();
         }
 
 
