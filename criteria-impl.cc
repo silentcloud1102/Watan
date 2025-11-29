@@ -14,7 +14,7 @@ const Resource Criteria::level_costs[3] = {
 };
 
 // CONSTRUCTOR
-Criteria::Criteria(int location, bool colour): ISubject{location}, colour{colour} {}
+Criteria::Criteria(int location, bool colour): ISubject{location}, colour{colour}, upgradeLevel{1} {}
 
 // GET METHODS: printing
 
@@ -32,7 +32,18 @@ std::string Criteria::get_num(bool format) const {
             format_str = owner->colour();
             end_str = "\033[0m";
         }
+<<<<<<< HEAD
         return format_str + std::string(1, owner->get_name()[0]) + std::string(1, (Criteria::level_str[upgradeLevel - 1])[0]) + end_str;
+=======
+        char owner_char = owner->get_name()[0];
+        char level_char = (level_str[upgradeLevel - 1])[0];  // 'A', 'M', or 'E'
+        
+        std::string output;
+        output += owner_char;
+        output += level_char;
+        
+        return format_str + output + end_str;
+>>>>>>> 5ee46093eed46ef984e303fc1ab19f72d102ceb2
     }
 
     // else, not owned. if the location is not two digits, add a space in front

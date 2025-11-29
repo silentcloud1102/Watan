@@ -9,7 +9,7 @@ HEADERS = memory vector sstream iostream fstream string algorithm random stdexce
 EXEC = watan
 
 $(EXEC): $(SOURCES)
-	rm -r gcm.cache
+#rm -r gcm.cache
 	$(CXX) $(HEADERFLAGS) $(HEADERS)
 	$(CXX) $(CXXFLAGS) $(SOURCES) 
 	$(CXX) $(OFILES) -o $(EXEC)
