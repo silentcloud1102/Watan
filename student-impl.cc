@@ -303,8 +303,12 @@ std::string Student::completions() const {
     std::ostringstream oss;
     oss << name << " has completed:" << std::endl;
     for(auto it = criteria.begin(); it != criteria.end(); it++){
+        oss << "Criteria Number: ";
         Criteria * target = board->get_criteria(*it);
-        oss << target->get_save_string() << std::endl;
+        std::vector<std::string> completion = target->get_completion();
+        oss << completion[1];
+        oss << ", with Completion Level: ";
+        oss << completion[0] << std::endl;
     }
 
     return oss.str();

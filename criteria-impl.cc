@@ -6,7 +6,7 @@ import <vector>;
 import ISubject;
 
 // CONSTANTS
-const char Criteria::level_chars[3] = {'A','M','E'};
+const std::string Criteria::level_str[3] = {"Assignment","Midterm","Exam"};
 const Resource Criteria::level_costs[3] = {
     Resource {1, 1, 1, 0, 1},
     Resource {0, 0, 2, 3, 0},
@@ -35,7 +35,7 @@ std::string Criteria::get_num(bool format) const {
             format_str = owner->colour();
             end_str = "\033[0m";
         }
-        return format_str + owner->get_name()[0] + std::to_string(upgradeLevel) + end_str;
+        return format_str + owner->get_name()[0] + (level_str[upgradeLevel-1])[0] + end_str;
     }
 
     // else, not owned. if the location is not two digits, add a space in front
@@ -47,6 +47,12 @@ std::string Criteria::get_num(bool format) const {
     return std::to_string(location);
 }
 
+std::vector<std::string> Criteria::get_completion() const {
+    std::vector<std::string> return_val;
+    return_val.emplace_back(level_str[upgradeLevel - 1]);
+    return_val.emplace_back(std::to_string(upgradeLevel));
+    return return_val;
+}
 
 int Criteria::get_level() const{
     return upgradeLevel;

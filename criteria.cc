@@ -8,7 +8,7 @@ import ISubject;
 
 export class Criteria : public ISubject {
     // levels
-    static const char level_chars[3];
+    static const std::string level_str[3];
     static const Resource level_costs[3];
   
     int upgradeLevel;
@@ -26,6 +26,7 @@ export class Criteria : public ISubject {
       
       // Printing methods
       std::string get_num(bool format = true) const;
+      std::vector<std::string> get_completion() const;
       int get_level() const;
 
       // Checks for buying
