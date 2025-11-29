@@ -332,7 +332,9 @@ void Game::board(std::ostream & out) const {
 }
 
 void Game::status(std::ostream & out) const {
-    out << *players[active_id] << std::endl;
+    for (int i = 0; i < numofPlayers; i++) {
+        out << *players[i] << std::endl;
+    }
 }
 
 void Game::criteria(std::ostream & out) const {
