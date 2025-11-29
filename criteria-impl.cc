@@ -32,7 +32,7 @@ std::string Criteria::get_num(bool format) const {
             format_str = owner->colour();
             end_str = "\033[0m";
         }
-        return format_str + owner->get_name()[0] + (level_str[upgradeLevel-1])[0] + end_str;
+        return format_str + std::string(1, owner->get_name()[0]) + std::string(1, (Criteria::level_str[upgradeLevel - 1])[0]) + end_str;
     }
 
     // else, not owned. if the location is not two digits, add a space in front
