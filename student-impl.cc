@@ -280,7 +280,7 @@ void Student::read_save_string(std::string save_data) {
     while (iss >> read, iss >> lvl){
         this->buy_criteria(read, true);
         for(int i = 1; i < lvl; i++){
-            this->upgrade_criteria(read,true);
+            this->upgrade_criteria(read,true); // ensuring that we initialize levels properly
         }
     }
 }
