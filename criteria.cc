@@ -11,12 +11,13 @@ export class Criteria : public ISubject {
     static const char level_chars[3];
     static const Resource level_costs[3];
   
+    bool colour;
     int upgradeLevel;
     std::vector<int> adjacent_criteria;
     std::vector<int> adjacent_goals;
 
     public:
-      explicit Criteria(int location, int level = 1);
+      explicit Criteria(int location, bool colour);
 
       // "subscription" method
       void acquire(IObserver* student) override;

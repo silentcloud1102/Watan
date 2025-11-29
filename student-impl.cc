@@ -191,9 +191,9 @@ std::string Student::colour() {
 // get number of criteria for use in checking for win conditions
 int Student::get_criteria_count() const {
     int sum = 0;
-    for(auto id: criteria){
+    for(auto id : criteria) {
         Criteria * target = Board->get_criteria(id);
-        sum += ((*target)->get_level());
+        sum += target->get_level();
     }
 
     return sum;

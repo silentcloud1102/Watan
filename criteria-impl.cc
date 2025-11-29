@@ -14,9 +14,9 @@ const Resource Criteria::level_costs[3] = {
 };
 
 // CONSTRUCTOR
-Criteria::Criteria(int location, int level):
-    ISubject{location}, 
-    upgradeLevel{level} {}
+Criteria::Criteria(int location, bool colour): ISubject{location} {
+    colour = colour;
+}
 
 // GET METHODS: printing
 
@@ -27,11 +27,10 @@ std::string Criteria::get_num(bool format) const {
     // stringstream will be used when there are multiple fields to loop through
     
     // if owner is not nullptr, owned. Return with owner char and current level
-    
-    if (owner) {
+    if (owner && format) {
         std::string format_str;
         std::string end_str;
-        if (format){
+        if (colour){
             format_str = owner->colour();
             end_str = "\033[0m";
         }

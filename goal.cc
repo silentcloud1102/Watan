@@ -11,8 +11,10 @@ export class Goal : public ISubject {
 
   std::vector<int> adjacent_criteria;
   std::vector<int> adjacent_goals;
+
+  bool colour;
   public:
-    explicit Goal(int location); 
+    explicit Goal(int location, bool colour); 
 
     // "subscription" method
     void acquire(IObserver* student) override;

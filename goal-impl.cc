@@ -10,14 +10,16 @@ import ISubject;
 const Resource Goal::resource_cost{0, 0, 0, 1, 1};
 
 // CONSTRUCTOR
-Goal::Goal(int location): ISubject(location) {}
+Goal::Goal(int location, bool colour): ISubject(location) {
+    colour = colour;
+}
 
 // GET METHODS
 std::string Goal::get_num(bool format) const {
     if (owner) {
         std::string format_str;
         std::string end_str;
-        if(format){
+        if(format && colour){
             format_str = owner->colour();
             end_str = "\033[0m";
         }

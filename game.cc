@@ -25,7 +25,7 @@ export class Game {
     int active_id = 0;
   
   public:
-    Game(int seed);
+    Game(int seed, bool colour);
     
     int turn_num() const;
     bool has_won(std::ostream & out) const;

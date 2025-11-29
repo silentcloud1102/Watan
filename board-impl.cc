@@ -186,7 +186,7 @@ std::string Board::goose_printer(std::string tile) const {
 }
 
 // Board constructor
-Board::Board(unsigned seed): goose_tile{-1} {
+Board::Board(unsigned seed, bool colour): goose_tile{-1} {
     //  Randomizing our tiles
     std::default_random_engine rng{seed};
 
@@ -196,10 +196,10 @@ Board::Board(unsigned seed): goose_tile{-1} {
     
     // store unique pointers for safe access to members within a vector
     for (int i = 0; i < num_of_course_criteria; ++i) {
-        course_criteria.emplace_back(std::make_unique<Criteria>(i));
+        course_criteria.emplace_back(std::make_unique<Criteria>(i, colour));
     }
     for (int i = 0; i < num_of_goals; ++i) {
-        goals.emplace_back(std::make_unique<Goal>(i));
+        goals.emplace_back(std::make_unique<Goal>(i, colour));
     }
 
     // construct tiles, using random generation for resource type.

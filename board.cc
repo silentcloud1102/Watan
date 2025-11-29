@@ -30,7 +30,7 @@ export class Board {
 
     public:
         // constructor
-        Board(unsigned seed);
+        Board(unsigned seed, bool colour);
 
         // update tiles passes on notifications to criteria (Subjects observed by Player)
         void update_tiles(int roll_num) const;

@@ -17,14 +17,13 @@ import Student;
 const int numofPlayers = 4;
 const std::string names[numofPlayers] = {"Blue", "Red", "Orange", "Yellow"};
 
-Game::Game(int seed): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)) {
-        // construct board
-        gameBoard = std::make_unique<Board>(seed);
-
-        // construct players vector
-        for (int i = 0; i < numofPlayers; ++i){
-            players.emplace_back(std::make_unique<Student>(names[i], gameBoard.get()));
-        }
+Game::Game(int seed, bool colour): seed{seed}, cur_turn{0}, rng(static_cast<unsigned>(seed)) {
+    // construct board
+    gameBoard = std::make_unique<Board>(seed, colour);
+    // construct players vector
+    for (int i = 0; i < numofPlayers; ++i){
+        players.emplace_back(std::make_unique<Student>(names[i], gameBoard.get()));
+    }
 }
 
 Resource Game::generate_goosed(std::vector<int> resources, int amount){

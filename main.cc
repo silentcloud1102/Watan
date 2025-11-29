@@ -15,6 +15,7 @@ int main(int argc, char** argv){
     int seed = 0; // default seed
     bool load = false;
     bool board = false;
+    bool colour = true;
 
     string loadfile;
     string boardfile;
@@ -54,6 +55,20 @@ int main(int argc, char** argv){
             }
 
             board = true;
+        } else if (string(argv[i]) == "-colour"){
+            if(i + 1 < argc){
+                if(argv[i+1] == "true"){
+                    colour = true;
+                } else if(argv[i+1] == "false") {
+                    colour = false;
+                } else {
+                    cerr << "Error: Provide true/false after -colour argument!" << endl;
+                    return 1;
+                }
+            } else {
+                cerr << "Invalid arguments structure." << endl;
+                return 1;
+            }
         }
     }
 
@@ -65,7 +80,7 @@ int main(int argc, char** argv){
 
     bool play_again = true;
     while (play_again){
-        Game game = Game(seed);
+        Game game = Game(seed, colour);
 
         if (load){
             while (true){
