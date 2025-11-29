@@ -120,14 +120,14 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
         int goose;
         while (true){
             out << "Choose where to place the GEESE." << std::endl << ">";
-            in >> goose;
-            if(in.eof()){
-                // return if in is EOF
+            if (in.eof()) {
                 return;
             }
-            if (goose < 0 || goose > 18 || (goose == gameBoard->get_goose_tile())){
+            if (!(in >> goose) || goose < 0 || goose > 18 || (goose == gameBoard->get_goose_tile())){
                 // ask again;
                 std::cerr << "Goose cannot be placed in this tile. ";
+                in.clear();
+                in.ignore();
                 continue;
             } else {
                 gameBoard->update_goose(goose);
@@ -269,12 +269,16 @@ void Game::setup(std::ostream & out, std::istream & in){
         out << "Student " << players[i]->get_name(); 
         out << ", where do you want to complete an Assignment?" << std::endl << ">";
         
+        if (in.eof()) {
+            return;
+        }
         // we only back-up after setup.
         if(!(in >> idx)){
             in.clear();
             in.ignore();
-            out << "Bad input, try again.";
+            out << "Bad input, try again. ";
             i--;
+            continue;
         }
 
         try{
@@ -456,7 +460,7 @@ void Game::save(std::string filename, std::ostream & out){
 }
 
 // Read board line from save (used by -board and -load)
-void Game::board_from_file(std::ifstream &file){
+void Game::board_from_file(std::ifstream &file, std::ostream & out){
     // read from file
     std::vector<int> givenBoard;
     std::string line;
@@ -466,8 +470,8 @@ void Game::board_from_file(std::ifstream &file){
     int temp;
     for (int i = 0; i < 38; ++i){
         if (!(iss >> temp) && i != 37){
-            std::cout << temp << std::endl;
-            std::cout << line << std::endl;
+            out << temp << std::endl;
+            out << line << std::endl;
             // don't expect to be catched since this is an error with arguments
             throw std::runtime_error("Invalid save file format.");
         }
@@ -478,7 +482,7 @@ void Game::board_from_file(std::ifstream &file){
 }
 
 // Read game from save, used by -load
-void Game::load_game(std::ifstream &file){
+void Game::load_game(std::ifstream &file, std::ostream& out){
     std::string line;
     std::getline(file, line);
     // first line is the turn number
@@ -492,7 +496,7 @@ void Game::load_game(std::ifstream &file){
     }
 
     // reads board line
-    board_from_file(file);
+    board_from_file(file, out);
 
     std::getline(file, line);
     gameBoard->update_goose(std::stoi(line));

@@ -32,8 +32,8 @@ export class Game {
     Resource generate_goosed(std::vector<int> resources, int amount);
 
     // save methods from file and to file
-    void board_from_file(std::ifstream &file);
-    void load_game(std::ifstream &file);
+    void board_from_file(std::ifstream &file, std::ostream & out);
+    void load_game(std::ifstream &file, std::ostream& out);
     void save(std::string filename, std::ostream & out);
 
     // interface methods: tied to player actions

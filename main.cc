@@ -120,7 +120,7 @@ int main(int argc, char** argv){
                 }
                 if (response == 'L'){
                     ifstream ifsl{loadfile};
-                    game.load_game(ifsl);
+                    game.load_game(ifsl, cout);
                     break;
                 } else if (response == 'N'){
                     // new game
@@ -138,7 +138,7 @@ int main(int argc, char** argv){
                 }
                 if (response == 'B'){
                     ifstream ifsb{boardfile};
-                    game.board_from_file(ifsb);
+                    game.board_from_file(ifsb, cout);
                     break;
                 } else if (response == 'N'){
                     // new game
