@@ -9,6 +9,35 @@ import Game;
 
 using namespace std;
 
+/**
+ * Start program: ./executable
+ *     ./executable [-seed <int>] [-load <file>] [-board <file>]
+ *
+ * Options:
+ *   -seed <int>      Sets random seed (integer).
+ *   -load <file>     Loads a saved game (exclusive with -board).
+ *   -board <file>    Loads a board layout (exclusive with -load).
+ *
+ * Behaviour:
+ *   • With -load or -board, user may continue the file or start new.
+ *   • Without -load, performs initial setup.
+ *   • EOF during play triggers auto-save to "backup.sv".
+ *
+ * In-game Commands:
+ *   board            Print board.
+ *   status           Player status.
+ *   criteria         List criteria.
+ *   achieve <g>      Achieve goal g.
+ *   complete <c>     Complete criteria c.
+ *   improve <c>      Improve criteria c.
+ *   trade <col> <give> <take>
+ *                    Trade with player; resources: CAFFEINE/LAB/LECTURE/STUDY/TUTORIAL.
+ *   next             End turn.
+ *   save <file>      Save game.
+ *   help             Show commands.
+ *
+ * Program ends when a player wins or user declines replay.
+ */
 int main(int argc, char** argv){
     int numofPlayers = 4;
 
