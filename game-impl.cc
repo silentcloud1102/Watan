@@ -264,9 +264,9 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
 
 void Game::setup(std::ostream & out, std::istream & in){
     // setup = true so buy_criteria does not deduct from held_resources.
+    out << std::endl << *this;
     for (int i = 0; i < numofPlayers; ++i){
         int idx;
-        out << std::endl << *this;
         out << "Student " << players[i]->get_name(); 
         out << ", where do you want to complete an Assignment?" << std::endl << ">";
         
@@ -289,7 +289,6 @@ void Game::setup(std::ostream & out, std::istream & in){
     //backwards
     for (int i = (numofPlayers - 1); i >= 0; --i){
         int idx;
-        out << std::endl << *this;
         out << "Student " << players[i]->get_name(); 
         out << ", where do you want to complete an Assignment?" << std::endl << ">";
 
@@ -307,7 +306,7 @@ void Game::setup(std::ostream & out, std::istream & in){
             i++;
         }
     }
-
+    out << std::endl << *this;
     cur_turn++;
     return;
 }
@@ -324,9 +323,7 @@ void Game::next_turn(std::ostream & out){
 }
 
 void Game::begin_turn(std::ostream & out) {
-
     out << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
-    
     // outputs status of Student
     status(out);
 }
@@ -408,9 +405,9 @@ void Game::help(std::ostream & out) const{
     out << "board" << std::endl;
     out << "status" << std::endl;
     out << "criteria" << std::endl;
-    out << "achieve <goal>" << std::endl;
-    out << "complete <criterion>" << std::endl;
-    out << "improve <criterion>" << std::endl;
+    out << "achieve <goal/#>" << std::endl;
+    out << "complete <criterion/#>" << std::endl;
+    out << "improve <criterion/#>" << std::endl;
     out << "trade <colour> <give> <take>" << std::endl;
     out << "next" << std::endl;
     out << "save <file>" << std::endl;
