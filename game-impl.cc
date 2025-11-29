@@ -305,7 +305,6 @@ void Game::setup(std::ostream & out, std::istream & in){
             i++;
         }
     }
-    out << std::endl << *this;
     cur_turn++;
     return;
 }
@@ -317,11 +316,11 @@ void Game::next_turn(std::ostream & out){
     if(active_id >= numofPlayers){
         active_id = 0;
         cur_turn++;
-        out << "Turn " << cur_turn;
     }
 }
 
 void Game::begin_turn(std::ostream & out) {
+    out << "===================" << std::endl << "Turn " << cur_turn << std::endl << "===================" << std::endl;
     out << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     // outputs status of Student
     status(out);
@@ -464,7 +463,9 @@ void Game::board_from_file(std::ifstream &file){
     std::istringstream iss {line};
     int temp;
     for (int i = 0; i < 38; ++i){
-        if (!(iss >> temp)){
+        if (!(iss >> temp) && i != 37){
+            std::cout << temp << std::endl;
+            std::cout << line << std::endl;
             // don't expect to be catched since this is an error with arguments
             throw std::runtime_error("Invalid save file format.");
         }

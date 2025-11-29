@@ -10,9 +10,7 @@ import ISubject;
 const Resource Goal::resource_cost{0, 0, 0, 1, 1};
 
 // CONSTRUCTOR
-Goal::Goal(int location, bool colour): ISubject(location) {
-    colour = colour;
-}
+Goal::Goal(int location, bool colour): ISubject(location), colour{colour} {}
 
 // GET METHODS
 std::string Goal::get_num(bool format) const {

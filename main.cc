@@ -39,8 +39,6 @@ using namespace std;
  * Program ends when a player wins or user declines replay.
  */
 int main(int argc, char** argv){
-    int numofPlayers = 4;
-
     int seed = 0; // default seed
     bool load = false;
     bool board = false;
@@ -86,9 +84,9 @@ int main(int argc, char** argv){
             board = true;
         } else if (string(argv[i]) == "-colour"){
             if(i + 1 < argc){
-                if(argv[i+1] == "true"){
+                if(string(argv[i+1]) == "true"){
                     colour = true;
-                } else if(argv[i+1] == "false") {
+                } else if(string(argv[i+1]) == "false") {
                     colour = false;
                 } else {
                     cerr << "Error: Provide true/false after -colour argument!" << endl;
@@ -159,7 +157,6 @@ int main(int argc, char** argv){
         
         cout << game;
 
-        bool playing_game = true;
 
         while (!game.has_won(cout)){
             string command;
