@@ -190,7 +190,13 @@ std::string Student::colour() {
 
 // get number of criteria for use in checking for win conditions
 int Student::get_criteria_count() const {
-    return criteria.size();
+    int sum = 0;
+    for(auto id: criteria){
+        Criteria * target = Board->get_criteria(id);
+        sum += ((*target)->get_level());
+    }
+
+    return sum;
 }
 
 // Geese methods: beware
@@ -265,8 +271,13 @@ void Student::read_save_string(std::string save_data) {
     }
     iss.clear();
     iss >> garbage;
-    while (iss >> read){
+    int lvl;
+    while (iss >> read; iss >> lvl){
+
         this->buy_criteria(read, true);
+        for(int i = 0; i < lvl; i++){
+            this->upgrade_criteria(read, true);
+        }
     }
 }
 
