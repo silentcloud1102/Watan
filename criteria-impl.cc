@@ -32,9 +32,6 @@ std::string Criteria::get_num(bool format) const {
             format_str = owner->colour();
             end_str = "\033[0m";
         }
-<<<<<<< HEAD
-        return format_str + std::string(1, owner->get_name()[0]) + std::string(1, (Criteria::level_str[upgradeLevel - 1])[0]) + end_str;
-=======
         char owner_char = owner->get_name()[0];
         char level_char = (level_str[upgradeLevel - 1])[0];  // 'A', 'M', or 'E'
         
@@ -43,7 +40,6 @@ std::string Criteria::get_num(bool format) const {
         output += level_char;
         
         return format_str + output + end_str;
->>>>>>> 5ee46093eed46ef984e303fc1ab19f72d102ceb2
     }
 
     // else, not owned. if the location is not two digits, add a space in front
@@ -55,11 +51,8 @@ std::string Criteria::get_num(bool format) const {
     return std::to_string(location);
 }
 
-std::vector<std::string> Criteria::get_completion() const {
-    std::vector<std::string> return_val;
-    return_val.emplace_back(level_str[upgradeLevel - 1]);
-    return_val.emplace_back(std::to_string(upgradeLevel));
-    return return_val;
+std::string Criteria::get_completion() const {
+    return level_str[upgradeLevel - 1];
 }
 
 int Criteria::get_level() const{

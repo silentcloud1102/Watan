@@ -305,10 +305,9 @@ std::string Student::completions() const {
     for(auto it = criteria.begin(); it != criteria.end(); it++){
         oss << "Criteria Number: ";
         Criteria * target = board->get_criteria(*it);
-        std::vector<std::string> completion = target->get_completion();
-        oss << completion[1];
+        oss << *it;
         oss << ", with Completion Level: ";
-        oss << completion[0] << std::endl;
+        oss << target->get_completion() << std::endl;
     }
 
     return oss.str();

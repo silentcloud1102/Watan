@@ -27,7 +27,7 @@ export class Criteria : public ISubject {
       
       // Printing methods
       std::string get_num(bool format = true) const;
-      std::vector<std::string> get_completion() const;
+      std::string get_completion() const;
       int get_level() const;
 
       // Checks for buying
