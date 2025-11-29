@@ -120,14 +120,14 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
         int goose;
         while (true){
             out << "Choose where to place the GEESE." << std::endl << ">";
-            in >> goose;
-            if(in.eof()){
-                // return if in is EOF
+            if (in.eof()) {
                 return;
             }
-            if (goose < 0 || goose > 18 || (goose == gameBoard->get_goose_tile())){
+            if (!(in >> goose) || goose < 0 || goose > 18 || (goose == gameBoard->get_goose_tile())){
                 // ask again;
                 std::cerr << "Goose cannot be placed in this tile. ";
+                in.clear();
+                in.ignore();
                 continue;
             } else {
                 gameBoard->update_goose(goose);
@@ -269,6 +269,9 @@ void Game::setup(std::ostream & out, std::istream & in){
         out << "Student " << players[i]->get_name(); 
         out << ", where do you want to complete an Assignment?" << std::endl << ">";
         
+        if (in.eof()) {
+            return;
+        }
         // we only back-up after setup.
         if(!(in >> idx)){
             in.clear();
