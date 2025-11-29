@@ -161,7 +161,6 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
         if (victims.size() == 0){
             out << "Student " << players[active_id]->get_name() << " has no students to steal from." << std::endl;
         } else {
-            out << victims.size();
             out << "Student " << players[active_id]->get_name() << " can choose to steal from ";
             for(auto it = victims.begin(); it != victims.end(); it++){
                 out << (*it)->get_name();
