@@ -119,7 +119,7 @@ int main(int argc, char** argv){
 
         while (!game.has_won(cout)){
             string command;
-            
+
             if (cin.eof()){
                 game.save("backup.sv", cout);
                 cerr << "Program ended via EOF. backup.sv created." << endl;
@@ -153,6 +153,16 @@ int main(int argc, char** argv){
                     string give_r;
                     string take_r;
                     cin >> colour >> give_r >> take_r;
+                    if (give_r != "CAFFEINE" && give_r != "LAB" && give_r != "LECTURE" && 
+                        give_r != "STUDY" && give_r != "TUTORIAL") {
+                        cout << "Please resources in the form: CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL" << endl;
+                        continue;
+                    }
+                    if (take_r != "CAFFEINE" && take_r != "LAB" && take_r != "LECTURE" && 
+                        take_r != "STUDY" && take_r != "TUTORIAL") {
+                        cout << "Please resources in the form: CAFFEINE, LAB, LECTURE, STUDY, TUTORIAL" << endl;
+                        continue;
+                    }
                     game.trade(colour, give_r, take_r, cout, cin);
                     
                 } else if (command == "next"){
@@ -167,11 +177,12 @@ int main(int argc, char** argv){
                 } else {
                     cout << "Invalid command." << endl;
                 }
+                if (game.has_won(cout)) break;
             }
         } 
 
         while (true){
-            cout << "Would you like to play again?[yes/no]" << endl << ">";
+            cout << "Would you like to play again? [yes/no]" << endl << ">";
             string ans;
             cin >> ans;
             if (cin.eof()){
