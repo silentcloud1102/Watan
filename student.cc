@@ -36,7 +36,7 @@ export class Student : public IObserver {
         // student actions
         void buy_criteria(int id, bool set_up = false);
         void buy_goal(int id, bool set_up = false);
-        void upgrade_criteria(int id);
+        void upgrade_criteria(int id, bool set_up = false);
 
         // method for geese (stealing and taxes when Resource count > 10)
         void goosed(Resource rchange);

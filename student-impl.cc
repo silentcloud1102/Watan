@@ -114,8 +114,8 @@ void Student::buy_goal(int id, bool set_up) {
     goals.push_back(id);
 }
 
-// will not be run at set-up, no need to include a set-up override
-void Student::upgrade_criteria(int id) {
+// has an override since runtime 
+void Student::upgrade_criteria(int id, bool set_up) {
     bool found = false;
     for(auto val: criteria){
         if (val == id) {
@@ -130,6 +130,11 @@ void Student::upgrade_criteria(int id) {
 
     Criteria * target = board->get_criteria(id);
     const Resource & cost = target->upgrade_cost();
+    // assuming that it is called in a valid case, i.e. no invalid input
+    if (set_up) {
+        target->upgrade();
+        return;
+    }
 
     // save results 
     bool affordable = can_afford(cost);
@@ -191,8 +196,8 @@ std::string Student::colour() {
 // get number of criteria for use in checking for win conditions
 int Student::get_criteria_count() const {
     int sum = 0;
-    for(auto id : criteria) {
-        Criteria * target = Board->get_criteria(id);
+    for(auto id: criteria){
+        Criteria * target = board->get_criteria(id);
         sum += target->get_level();
     }
 
@@ -272,11 +277,10 @@ void Student::read_save_string(std::string save_data) {
     iss.clear();
     iss >> garbage;
     int lvl;
-    while (iss >> read; iss >> lvl){
-
+    while (iss >> read, iss >> lvl){
         this->buy_criteria(read, true);
-        for(int i = 0; i < lvl; i++){
-            this->upgrade_criteria(read, true);
+        for(int i = 1; i < lvl; i++){
+            this->upgrade_criteria(read,true);
         }
     }
 }
