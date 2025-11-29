@@ -328,7 +328,7 @@ void Game::begin_turn(std::ostream & out) {
     out << "===================" << std::endl << "Turn " << cur_turn << std::endl << "===================" << std::endl;
     out << "Student " << players[active_id]->get_name() << "'s turn." << std::endl;
     // outputs status of Student
-    out << *players[active_it] << std::endl;
+    out << *players[active_id] << std::endl;
 }
 
 
