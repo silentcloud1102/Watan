@@ -119,16 +119,15 @@ int main(int argc, char** argv){
 
         while (!game.has_won(cout)){
             string command;
-
-            game.begin_turn(cout);
-            // Then proceed to dice roll logic...
-            game.roll_dice(cout, cin);
-
+            
             if (cin.eof()){
                 game.save("backup.sv", cout);
                 cerr << "Program ended via EOF. backup.sv created." << endl;
                 return 1;
             }
+            game.begin_turn(cout);
+            // Then proceed to dice roll logic...
+            game.roll_dice(cout, cin);
 
             while (cout << ">", cin >> command){
                 if (command == "board"){

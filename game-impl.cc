@@ -140,6 +140,10 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
         std::vector<std::string> victim_ids = gameBoard->goose_victims();
         std::vector<Student *> victims;
         for (int i = 0; i < numofPlayers; ++i){
+            if(in.eof()){
+                // return if in is EOF
+                return;
+            }
             // if self or broke, don't steal :)
             if (i == active_id){
                 continue;
@@ -158,19 +162,23 @@ void Game::roll_dice(std::ostream & out, std::istream & in){
         if (victims.size() == 0){
             out << "Student " << players[active_id]->get_name() << " has no students to steal from." << std::endl;
         } else {
-            out << "Student " << players[active_id]->get_name() << "can choose to steal from ";
+            out << "Student " << players[active_id]->get_name() << " can choose to steal from ";
             for(auto it = victims.begin(); it != victims.end(); it++){
                 out << (*it)->get_name();
                 if(it + 1 != victims.end()){
                     out << ", ";
                 } else {
-                    out << '.';
+                    out << ". ";
                 }
             }
 
             std::string steal_from;
             bool valid_choice = false;
             while(!valid_choice){
+                if(in.eof()){
+                    // return if in is EOF
+                    return;
+                }
                 out << "Choose a student to steal from." << std::endl << ">";
                 in >> steal_from;
             
@@ -417,7 +425,7 @@ int Game::turn_num() const{
 bool Game::has_won(std::ostream & out) const{
     for(auto it = players.begin(); it != players.end(); it++){
         if ((*it)->get_criteria_count() >= 10) {
-            out << "Student " << (*it)->get_name() << " has won!";
+            out << "Student " << (*it)->get_name() << " has won! ";
             return true;
         }
     }
